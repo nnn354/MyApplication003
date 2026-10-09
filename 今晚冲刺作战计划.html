@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智慧选课系统 · 今晚冲刺作战计划</title>
+<style>
+  :root{
+    --purple:#6D4AE0; --purple-deep:#5B3FD1; --purple-light:#9B7BF5;
+    --purple-tint:#EFEAFE; --purple-track:#EEEDFE;
+    --red:#E24B4A; --red-tint:#FCEBEB; --orange:#FF7043; --green:#22C55E;
+    --ink:#1A1A1A; --ink-2:#4A4A57; --ink-3:#8A8A9E;
+    --line:#E8E8F0; --page:#F7F7FB; --white:#fff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:40px 20px 80px; background:var(--page); color:var(--ink);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.75;
+  }
+  .wrap{max-width:960px; margin:0 auto;}
+  header{
+    background:linear-gradient(135deg,var(--purple) 0%,var(--purple-light) 100%);
+    color:#fff; border-radius:20px; padding:32px 34px; margin-bottom:28px;
+  }
+  header h1{margin:0 0 8px; font-size:26px; font-weight:600; letter-spacing:.5px;}
+  header p{margin:0; opacity:.92; font-size:14px;}
+  header .meta{margin-top:16px; font-size:13px; opacity:.85;}
+  section{background:var(--white); border-radius:18px; padding:28px 32px; margin-bottom:22px;
+    border:1px solid var(--line);}
+  h2{font-size:19px; margin:0 0 6px; font-weight:600; display:flex; align-items:center; gap:10px;}
+  h2 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:9px; background:var(--purple-tint);
+    color:var(--purple-deep); font-size:14px; font-weight:600; flex:none;
+  }
+  h2 + .sub{color:var(--ink-3); font-size:13px; margin:0 0 20px 38px;}
+  h3{font-size:15px; margin:26px 0 10px; font-weight:600; color:var(--ink);}
+  h3:first-of-type{margin-top:8px;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin:12px 0;}
+  th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{background:#FAFAFE; font-weight:600; color:var(--ink-2); font-size:13px;}
+  tr:last-child td{border-bottom:none;}
+  code{background:#F3F1FD; color:var(--purple-deep); padding:2px 6px; border-radius:5px;
+    font-family:"Cascadia Code",Consolas,monospace; font-size:12.5px;}
+  pre{background:#1E1B2E; color:#E4E0F5; padding:16px 18px; border-radius:12px;
+    overflow-x:auto; font-size:12.5px; line-height:1.7; margin:10px 0;
+    font-family:"Cascadia Code",Consolas,monospace;}
+  pre .c{color:#8A86A8;}
+  pre .k{color:#C4A7F7;}
+  pre .s{color:#9DE0A8;}
+  .tag{display:inline-block; padding:2px 9px; border-radius:7px; font-size:12px; font-weight:500;
+    line-height:18px; white-space:nowrap;}
+  .t-red{background:var(--red-tint); color:#A32D2D;}
+  .t-amber{background:#FDF2E0; color:#8A5A10;}
+  .t-green{background:#E7F7EC; color:#1E7A3C;}
+  .t-purple{background:var(--purple-tint); color:var(--purple-deep);}
+  .callout{border-left:4px solid var(--purple); background:var(--purple-tint);
+    padding:14px 18px; border-radius:0 12px 12px 0; font-size:14px; margin:16px 0;}
+  .callout.danger{border-color:var(--red); background:var(--red-tint);}
+  .callout.warn{border-color:var(--orange); background:#FEF1EC;}
+  .phase{display:flex; gap:16px; padding:18px 0; border-bottom:1px dashed var(--line);}
+  .phase:last-child{border-bottom:none;}
+  .phase .time{flex:none; width:112px; font-size:12.5px; color:var(--ink-3);
+    font-variant-numeric:tabular-nums; padding-top:2px;}
+  .phase .body{flex:1;}
+  .phase .body h4{margin:0 0 8px; font-size:15px; font-weight:600;}
+  .phase ul{margin:0; padding-left:0; list-style:none;}
+  .phase li{position:relative; padding-left:24px; font-size:13.5px; color:var(--ink-2); line-height:1.85;}
+  .phase li::before{content:""; position:absolute; left:4px; top:9px;
+    width:10px; height:10px; border:1.5px solid #C9C5DC; border-radius:3px;}
+  .phase li.done::before{background:var(--purple); border-color:var(--purple);}
+  .page-card{border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin:14px 0;
+    background:#FDFDFF;}
+  .page-card .head{display:flex; align-items:center; justify-content:space-between;
+    gap:12px; margin-bottom:10px;}
+  .page-card .head strong{font-size:15px;}
+  .page-card ul{margin:6px 0 0; padding-left:20px; font-size:13.5px; color:var(--ink-2);}
+  .page-card li{margin:3px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){
+    .grid2{grid-template-columns:1fr;}
+    .phase{flex-direction:column; gap:6px;}
+    .phase .time{width:auto;}
+    section{padding:22px 18px;}
+  }
+  .final{background:linear-gradient(135deg,#2B2145 0%,#4A3A87 100%); color:#fff;}
+  .final h2{color:#fff;} .final h2 .num{background:rgba(255,255,255,.16); color:#fff;}
+  .final .sub{color:rgba(255,255,255,.7); margin-left:38px;}
+  .final li{color:rgba(255,255,255,.88);}
+  .final table th{background:rgba(255,255,255,.08); color:#fff;}
+  .final table td{border-color:rgba(255,255,255,.14); color:rgba(255,255,255,.9);}
+</style>
+
+<!-- 深蓝主题（统一覆盖） -->
+<style id="dark-blue-theme">
+:root{
+  --bg:#0A1733!important; --page:#0A1733!important; --white:#14244D!important;
+  --card:#14244D!important; --ink:#E7EEFF!important; --text:#E7EEFF!important;
+  --ink2:#BCCBEC!important; --ink-2:#BCCBEC!important; --ink3:#93A6CC!important;
+  --ink-3:#93A6CC!important; --sub:#A9B8DA!important; --line:#25365E!important;
+  --line2:#25365E!important; --purple-bg:#1C2A55!important; --purple-l:#1C2A55!important;
+  --purple-tint:#1C2A55!important; --purple-light:#1C2A55!important; --purple-b:#2C3F6E!important;
+  --purple-dark:#C3B4FF!important; --purple-deep:#C3B4FF!important;
+}
+html{background:#0A1733!important;}
+body{background:#0A1733!important;background-image:none!important;
+  background-attachment:scroll!important;color:#E7EEFF!important;}
+.card,section,table,.box,.verdict,.kill,.feat,.log,article,main,aside,figure,details,.tbl{
+  background-color:#14244D!important;background-image:none!important;}
+th{background:#1B2C55!important;color:#C6D4F2!important;}
+td{background-color:transparent!important;}
+tr:nth-child(even) td{background-color:#111F42!important;}
+pre{background:#0D1932!important;border-color:#25365E!important;}
+pre code{background:none!important;color:#D7E6FF!important;}
+code{background:#1B2C55!important;color:#9FC8FF!important;border-color:#2A3F6E!important;}
+hr,td,th{border-color:#25365E!important;}
+a{color:#93B6FF!important;}
+.banner{background:#13224A!important;background-image:none!important;}
+.banner.ok{background:#0E3524!important;}
+.banner.warn{background:#3A2A0C!important;}
+.banner.bad{background:#3A1520!important;}
+.callout{background:#1B2A52!important;background-image:none!important;}
+[style*="background:#fdf6e3"],[style*="background:#fffafa"],[style*="background:#faf9ff"],
+[style*="background:#fff "],[style*="background: #fff"],[style*="background:#ffffff"]{
+  background:#1B2A52!important;border-color:#2C3F6E!important;}
+body *:not(pre):not(code):not(.banner):not(.banner *):not(.callout):not(.callout *):not(.badge):not(.chip):not(.tag):not(.pill):not(.pct):not(.t0):not(.t1):not(.t2):not(.t-ok):not(.t-p0):not(.t-p1):not(.t-p2):not(.t-off):not(.t-red):not(.t-amber):not(.t-green):not(.t-purple):not(.t-crash):not(.t-none):not(.ok):not(.warn):not(.bad):not(.p0):not(.p1):not(.p2){color:#E7EEFF;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>智慧选课系统 · 今晚冲刺作战计划</h1>
+  <p>从当前代码状态冲到六张效果图 · 单人独立完成</p>
+  <div class="meta">起始 2026-09-30 16:10 &nbsp;|&nbsp; 目标 23:20 前打包出 APK &nbsp;|&nbsp; 总时长 7 小时 10 分</div>
+</header>
+
+<section>
+  <h2><span class="num">0</span>先看这一句</h2>
+  <p class="sub">决定你怎么分配今晚的注意力</p>
+  <div class="callout danger">
+    <strong>项目现在编译不过。</strong>不是"差多少美化"的问题——<code>CourseHallFragment.java:47</code> 调用了不存在的构造函数，<code>DbManager.java:73</code> 是语法错误。这两处不修，Android Studio 连运行按钮都点不亮，后面所有工作都无从谈起。<br><br>
+    <strong>视觉完成度约 15%。</strong>六页里 <span class="tag t-red">注册页</span><span class="tag t-red">课程详情弹窗</span> 完全不存在；<span class="tag t-amber">我的课表</span><span class="tag t-amber">个人中心</span> 只有一个占位 TextView 和一排默认 Button；<span class="tag t-amber">登录页</span> 能用但零样式。<br><br>
+    <strong>但地基其实是好的。</strong>Course 实体九个字段齐全、SQLite 三张表建表语句正确、底部导航骨架已搭。这些不用重做，直接拿来用——这是今晚能做完的关键前提。
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">1</span>项目体检表</h2>
+  <p class="sub">逐个文件核对，标出真实状态</p>
+  <table>
+    <thead>
+      <tr><th style="width:30%">文件</th><th style="width:16%">状态</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>LoginActivity.java</code></td><td><span class="tag t-amber">能跑</span></td><td>硬编码 2024001/123456 校验逻辑可用，但 UI 是裸控件</td></tr>
+      <tr><td><code>acti_login.xml</code></td><td><span class="tag t-red">零样式</span></td><td>纯 LinearLayout，跟效果图的渐变 + 白卡差得最远</td></tr>
+      <tr><td><code>MainActivity.java</code></td><td><span class="tag t-amber">有 Bug</span></td><td>4 个 Tab 只配了 3 个 Fragment，点"成绩查询"会跳回"选课大厅"</td></tr>
+      <tr><td><code>bottom_nav_menu.xml</code></td><td><span class="tag t-amber">缺图标</span></td><td>4 个 item 都没有 <code>android:icon</code>，底部栏是纯文字</td></tr>
+      <tr><td><code>CourseHallFragment.java</code></td><td><span class="tag t-red">编译错</span></td><td>第 47-50 行用了 4 参构造器；数据只填了 4 个字段，跟不上效果图信息量</td></tr>
+      <tr><td><code>CourseAdapter.java</code></td><td><span class="tag t-amber">太薄</span></td><td>只绑定了 4 个 TextView，没有点击回调、没有容量条、没有"选课"按钮</td></tr>
+      <tr><td><code>item_courselist.xml</code></td><td><span class="tag t-amber">太薄</span></td><td>4 行 TextView + 2 个 Button，无卡片、无头像、无进度条</td></tr>
+      <tr><td><code>MyCoursesFragment.java</code></td><td><span class="tag t-red">没做</span></td><td>直接 inflate 布局，零逻辑</td></tr>
+      <tr><td><code>acti_mycourse.xml</code></td><td><span class="tag t-red">占位</span></td><td>只有一行字"这是我的课表，看什么看"</td></tr>
+      <tr><td><code>ProfileFragment.java</code></td><td><span class="tag t-red">没做</span></td><td>零逻辑</td></tr>
+      <tr><td><code>acti_profile.xml</code></td><td><span class="tag t-amber">结构对</span></td><td>四个分组 + 退出按钮的结构跟效果图一致，但全是默认 Button 样式</td></tr>
+      <tr><td><code>CoursehallActivity.java</code></td><td><span class="tag t-red">会崩</span></td><td><code>onCreate</code> 是空的，没调 <code>setContentView</code>；且未在 Manifest 注册</td></tr>
+      <tr><td><code>DbManager.java</code></td><td><span class="tag t-red">编译错</span></td><td>第 73 行 <code>List&lt;Course&gt; result= ArrayList;</code>，第 74 行 query 参数个数也不对</td></tr>
+      <tr><td><code>MyDbHelper.java</code></td><td><span class="tag t-green">可用</span></td><td>三张表建表语句完整正确，直接用</td></tr>
+      <tr><td><code>entity/Course.java</code></td><td><span class="tag t-green">可用</span></td><td>courseId / 名称 / 教师 / 学分 / 时间 / 地点 / 容量 / 已选 / 类型，字段齐</td></tr>
+      <tr><td><code>colors.xml</code></td><td><span class="tag t-red">空</span></td><td>只有 black / white，没有主题紫色板</td></tr>
+      <tr><td><code>drawable/</code></td><td><span class="tag t-red">空</span></td><td>只有启动图标，没有任何渐变 / 圆角 / 卡片资源</td></tr>
+      <tr><td>注册页</td><td><span class="tag t-red">不存在</span></td><td>效果图第 6 张，需从零新建 Activity + 布局</td></tr>
+      <tr><td>课程详情弹窗</td><td><span class="tag t-red">不存在</span></td><td>效果图第 2 张，需从零新建 Dialog + 布局</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>依赖提醒：</strong>当前 <code>app/build.gradle</code> 没有显式声明 <code>recyclerview</code>，现在靠 <code>material:1.10.0</code> 间接传递才能编过。建议开新页面前先在 <code>libs.versions.toml</code> 里补一行显式依赖，避免后面报找不到类的怪错。
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">2</span>第一步：修掉三个阻断点</h2>
+  <p class="sub">16:10–16:40 这 30 分钟只干这件事，别往后拖</p>
+
+  <h3>阻断点 1 · CourseHallFragment 用了不存在的构造函数</h3>
+  <p><code>Course.java</code> 只提供了无参和九参两个构造函数，但 <code>CourseHallFragment.java:47-50</code> 写的是 <code>new Course("数据结构", "李老师", "4.0", "30")</code>。最省事的修法是直接在 <code>Course.java</code> 里补一个四参构造函数，让旧代码继续可用：</p>
+<pre><span class="c">// entity/Course.java 里追加</span>
+<span class="k">public</span> Course(String courseName, String teacher, String credit, String remain) {
+    <span class="k">this</span>.courseName = courseName;
+    <span class="k">this</span>.teacher = teacher;
+    <span class="k">this</span>.credit = Double.parseDouble(credit);
+    <span class="k">this</span>.selectedCount = Integer.parseInt(remain);
+    <span class="k">this</span>.capacity = 60;
+}</pre>
+  <p>不过更推荐的正解是：重构 <code>CourseHallFragment</code> 时统一改用九参构造器，一次把时间、地点、容量都填进去（效果图的课程卡需要这些字段）。</p>
+
+  <h3>阻断点 2 · DbManager.searchclass 语法错误</h3>
+  <p>第 73 行 <code>List&lt;Course&gt; result= ArrayList;</code> 不成立，第 74 行 <code>query()</code> 的列名参数位传成了条件字符串，参数个数也少一个。整段重写：</p>
+<pre><span class="k">public</span> List&lt;Course&gt; searchclass(<span class="k">int</span> userid, String passwd) {
+    SQLiteDatabase db = helper.getReadableDatabase();
+    List&lt;Course&gt; result = <span class="k">new</span> ArrayList&lt;&gt;();
+    String sql = <span class="s">"select c.* from table_course c "</span>
+               + <span class="s">"inner join table_selection s on s.courseid = c.courseid "</span>
+               + <span class="s">"inner join table_user u on u.userid = s.userid "</span>
+               + <span class="s">"where u.username = ? and u.passwd = ?"</span>;
+    Cursor cursor = db.rawQuery(sql, <span class="k">new</span> String[]{String.valueOf(userid), passwd});
+    <span class="k">while</span> (cursor.moveToNext()) {
+        Course c = <span class="k">new</span> Course();
+        c.courseId   = String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow(<span class="s">"courseid"</span>)));
+        c.courseName = cursor.getString(cursor.getColumnIndexOrThrow(<span class="s">"coursename"</span>));
+        c.teacher    = cursor.getString(cursor.getColumnIndexOrThrow(<span class="s">"teacher"</span>));
+        c.credit     = cursor.getDouble(cursor.getColumnIndexOrThrow(<span class="s">"credit"</span>));
+        c.time       = cursor.getString(cursor.getColumnIndexOrThrow(<span class="s">"time"</span>));
+        c.location   = cursor.getString(cursor.getColumnIndexOrThrow(<span class="s">"location"</span>));
+        c.capacity   = cursor.getInt(cursor.getColumnIndexOrThrow(<span class="s">"capacity"</span>));
+        result.add(c);
+    }
+    cursor.close();
+    db.close();
+    <span class="k">return</span> result;
+}</pre>
+
+  <h3>阻断点 3 · 底部导航 4 个 Tab 只配了 3 个 Fragment</h3>
+  <p>两个选择，按你的时间选：</p>
+  <ul style="color:var(--ink-2); font-size:13.5px;">
+    <li><strong>省事做法（推荐）</strong>：删掉 <code>bottom_nav_menu.xml</code> 里的"成绩查询" item，改成 3 个 Tab，和 <code>fragments[]</code> 数组对齐。成绩查询入口反正效果图里也没有。</li>
+    <li><strong>完整做法</strong>：新建 <code>ScoresFragment</code>，把数组扩成 4 个元素，同时补上 <code>nav_scores</code> 的分支判断。</li>
+  </ul>
+  <div class="callout warn">
+    <strong>顺手一起处理：</strong><code>CoursehallActivity.java</code> 的 <code>onCreate</code> 是空的，被任何入口调用都会崩。要么删掉这个文件，要么补上 <code>setContentView(R.layout.acti_course)</code> 并在 Manifest 注册。现在它是"埋在项目里的雷"。
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">3</span>六张效果图逐页差距清单</h2>
+  <p class="sub">每一项都是必须落地的具体元素，照着做就不会漏</p>
+
+  <div class="page-card">
+    <div class="head"><strong>① 登录页</strong><span class="tag t-amber">改造现有 · 约 40 分钟</span></div>
+    <p style="margin:0; font-size:13.5px; color:var(--ink-2);">现有 <code>acti_login.xml</code> 是纵向裸控件堆叠，需要整页重写。</p>
+    <ul>
+      <li>浅紫渐变背景 + 右上角一块模糊紫色圆形装饰</li>
+      <li>大标题「欢迎使用智慧选课」+ 副标题「学号登录 · 安全选课」</li>
+      <li>白色圆角卡片容器，内含两个胶囊输入框</li>
+      <li>输入框：左侧紫色图标 + 中间 hint + 右侧灰色标签（学号 / 密码）</li>
+      <li>紫色圆角主按钮「登录」，带按压水波纹</li>
+      <li>三行文字链：还没有账号？立即注册 / 忘记学号？找回账号 / 忘记密码？重置密码</li>
+      <li>卡片底部脚注「当前学期：2026-2027学年第一学期」（可直接复用 <code>str15</code>）</li>
+      <li>登录成功依旧是跳 MainActivity，逻辑不用改</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="head"><strong>② 注册账号页</strong><span class="tag t-red">从零新建 · 约 40 分钟</span></div>
+    <ul>
+      <li>新建 <code>RegisterActivity.java</code> + <code>acti_register.xml</code>，在 Manifest 注册</li>
+      <li>顶部返回箭头 + 大标题「注册账号」+ 副标题「填写真实信息完成账号开通」</li>
+      <li>白色圆角卡片，5 个胶囊输入框：学号 / 姓名 / 身份证号 / 密码 / 确认密码</li>
+      <li>每个输入框右侧有状态提示文字，颜色随校验结果变化（如「可用」绿色、「强度：强」紫色）</li>
+      <li>「我已阅读并同意《选课系统使用协议》」勾选框</li>
+      <li>紫色圆角主按钮「立即注册」+ 底部「已有账号？返回登录」</li>
+      <li>逻辑：用 <code>DbManager.insertUser()</code> 写库，注册成功 Toast 后 <code>finish()</code> 回登录页</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="head"><strong>③ 选课大厅</strong><span class="tag t-amber">改造现有 · 约 70 分钟</span></div>
+    <p style="margin:0; font-size:13.5px; color:var(--ink-2);">这是今晚的工作量重心。<code>acti_course.xml</code> 的筛选 Tab 现在是一排 Button，课程项只有 4 行文字。</p>
+    <ul>
+      <li>顶部紫色渐变头 + 居中标题「选课大厅」+ 右侧「筛选」和齿轮图标</li>
+      <li>胶囊搜索栏：放大镜图标 + hint「搜索课程名称、教师、教室」+ 右侧紫色「搜索」按钮</li>
+      <li>6 个筛选 Tab（全部 / 公共课 / 专业课 / 选修课 / 已选 / 冲突），选中态是紫色文字 + 底部紫色下划线，未选中是灰色文字</li>
+      <li>课程卡片（MaterialCardView，圆角 18dp，白底细描边）：
+        <br>· 左侧圆形头像
+        <br>· 课程名 + 教师名
+        <br>· 学分 / 学时的胶囊标签
+        <br>· 右上角「已关注」状态</li>
+      <li>卡片下半区信息行：上课时间（含「周一3-4节 / 周三5-6节」）、上课地点（实验楼A203）、已选人数</li>
+      <li>容量进度条 + 「已选45 / 60」，满员时数字变橙色并显示「余量紧张」</li>
+      <li>右下角紫色圆角「选课」按钮 → 点击弹出课程详情弹窗</li>
+      <li>点卡片任意位置也能弹详情，不要只让按钮可点</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="head"><strong>④ 课程详情弹窗</strong><span class="tag t-red">从零新建 · 约 40 分钟</span></div>
+    <ul>
+      <li>新建 <code>dialog_course_detail.xml</code>，用 <code>Dialog</code> + 自定义布局实现，不要用系统 AlertDialog</li>
+      <li>弹窗外层半透明黑色遮罩，内部白色大圆角卡片</li>
+      <li>居中标题「Java程序设计」+ 右上角关闭 ✕</li>
+      <li>标题下方紫色胶囊标签「专业课」</li>
+      <li>两栏信息网格（左栏：课程编号 / 教师 / 学时 / 上课时间 / 上课地点 / 考核方式；右栏：课程名称 / 学分 / 学时 / 上课地点 / 已选人数 / 容量上限 / 选课状态）</li>
+      <li>底部两个按钮：白底紫描边的「取消」+ 紫色实心的「确认选课」</li>
+      <li>底部小字提示「选课后请在我的课表中确认上课时间与地点」</li>
+      <li>点「确认选课」后：写入 selection 表 → 关闭弹窗 → Toast 提示</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="head"><strong>⑤ 我的课表</strong><span class="tag t-red">从零做 · 约 50 分钟</span></div>
+    <ul>
+      <li>顶部紫色渐变头 + 居中「我的课表」+ 右侧「总学分：15.0」</li>
+      <li>学期切换条：「2026-2027学年第一学期」+「第6周」+ 右侧「切换周次」胶囊按钮</li>
+      <li>列表头一行：学期周次 / 备注 / 学分 3.0</li>
+      <li>课程卡片：左圆头像 + 课程名 + 教师 + 学分标签 + 「周一3-4节，实验楼A203」+ 右侧「退课」按钮</li>
+      <li>第一条卡片用红色描边突出（代表当前/冲突课程），其余用灰色描边；退课按钮也分红底实心和白底紫描边两种</li>
+      <li>底部汇总卡：已选课程 5 门 / 累计学分 15.0 / 本周上课 12 节，右侧箭头</li>
+      <li>空状态：一节课都没选时显示引导文案，别留白屏</li>
+    </ul>
+  </div>
+
+  <div class="page-card">
+    <div class="head"><strong>⑥ 个人中心</strong><span class="tag t-amber">改造现有 · 约 50 分钟</span></div>
+    <p style="margin:0; font-size:13.5px; color:var(--ink-2);"><code>acti_profile.xml</code> 的分组结构已经对了，主要是换皮 + 补细节。</p>
+    <ul>
+      <li>顶部紫色渐变用户卡：左圆头像 + 姓名 XXX + 两列四行信息（学号 2024001 / 学院 计算机学院 / 专业 软件工程 / 班级 软工2401班）</li>
+      <li>右上角设置齿轮图标</li>
+      <li>四个白色分组卡，每张结构一致：主标题行（图标 + 文字 + 右侧箭头）+ 下方三个子项（图标 + 文字）</li>
+      <li>分组内容：账号信息（修改资料 / 修改密码 / 绑定手机）、选课服务（选课记录 / 退课记录 / 成绩查询）、系统设置（消息通知 / 清除缓存 / 字体大小）、帮助与反馈（使用指南 / 常见问题 / 意见反馈）</li>
+      <li>把默认 Button 全部换成「ImageView 图标 + TextView」的行，Button 的默认阴影和灰底是最大违和点</li>
+      <li>底部红色实心圆角「退出登录」按钮，点击后回登录页并清栈</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">4</span>阶段任务清单</h2>
+  <p class="sub">按顺序执行，每完成一项就打勾</p>
+
+  <div class="phase">
+    <div class="time">16:10–16:40</div>
+    <div class="body">
+      <h4>阶段 0 · 地基（最优先，别跳过）</h4>
+      <ul>
+        <li>修 <code>Course</code> 构造函数 / 修 <code>DbManager.searchclass</code> / 补 RecyclerView 依赖</li>
+        <li>处理 <code>CoursehallActivity</code> 空 onCreate 与 4 Tab 3 Fragment 的不匹配</li>
+        <li>确认此时 <strong>能编译 + 能装到模拟器跑起来</strong>（这一步是今晚的止损点）</li>
+        <li>重写 <code>colors.xml</code>：紫色主色板 + 文字三级灰 + 红橙绿语义色</li>
+        <li>建通用 drawable 素材库：渐变头 / 圆角卡片 / 圆角输入框 / 胶囊标签 / 按钮</li>
+        <li><code>themes.xml</code> 设 colorPrimary 与 statusBarColor</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">16:40–17:40</div>
+    <div class="body">
+      <h4>阶段 1 · 登录页 + 注册页</h4>
+      <ul>
+        <li>重写 <code>acti_login.xml</code>，还原渐变背景 + 白卡 + 胶囊输入框 + 主按钮 + 三行文字链</li>
+        <li>给输入框加左侧图标（用 <code>drawableStart</code>）</li>
+        <li>新建 <code>RegisterActivity</code> 与布局，接上 <code>insertUser()</code></li>
+        <li>登录页「立即注册」跳注册页，注册成功返回登录页</li>
+        <li>验收：两页截图跟效果图对照，布局比例基本一致</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">17:40–18:50</div>
+    <div class="body">
+      <h4>阶段 2 · 选课大厅（今晚重点）</h4>
+      <ul>
+        <li>重写 <code>acti_course.xml</code>：渐变头 + 搜索栏 + 6 筛选 Tab + RecyclerView</li>
+        <li>重写 <code>item_courselist.xml</code> 为完整课程卡（头像 / 名称 / 教师 / 学分胶囊 / 时间地点 / 容量进度条 / 选课按钮）</li>
+        <li>扩充 <code>CourseAdapter</code>：绑定全部字段 + 暴露 <code>OnItemClick</code> 接口</li>
+        <li>用九参构造器灌 8-10 条像样的假数据（Java程序设计、数据结构、大学英语…）</li>
+        <li>筛选 Tab 实现选中态切换 + 按 type 过滤列表</li>
+        <li>搜索框按课程名/教师过滤</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">18:50–19:30</div>
+    <div class="body">
+      <h4>阶段 3 · 课程详情弹窗 + 选课动作</h4>
+      <ul>
+        <li>新建 <code>dialog_course_detail.xml</code>（两栏信息网格）</li>
+        <li>写 <code>showCourseDetail(Course c)</code>：构造 Dialog、设宽 90%、遮罩透明背景</li>
+        <li>在弹窗内填充课程数据（标题 / 标签 / 各项字段）</li>
+        <li>「确认选课」写库 + 关闭弹窗 + Toast；「取消」直接关闭</li>
+        <li>验收：点课程卡能弹出弹窗，确认后能写入选课记录</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">19:30–20:20</div>
+    <div class="body">
+      <h4>阶段 4 · 我的课表</h4>
+      <ul>
+        <li>重写 <code>acti_mycourse.xml</code>：渐变头 + 学期切换条 + RecyclerView + 底部汇总卡</li>
+        <li>新建 <code>item_mycourse.xml</code>（头像 / 课程名 / 教师 / 学分 / 时间地点 / 退课按钮）</li>
+        <li>写 <code>MyCourseAdapter</code> + 退课回调</li>
+        <li>退课逻辑：删除 selection 记录 → 刷新列表 → 重算学分和门数</li>
+        <li>数据从 DbManager 查当前用户的选课，替代硬编码</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">20:20–21:10</div>
+    <div class="body">
+      <h4>阶段 5 · 个人中心</h4>
+      <ul>
+        <li>重写 <code>acti_profile.xml</code>：渐变用户卡 + 四个分组卡 + 红色退出按钮</li>
+        <li>把默认 Button 换成 ImageView + TextView 的图标行</li>
+        <li>抽一个可复用的「分组卡」布局或自定义 View，避免手写 4 遍</li>
+        <li>退出登录：<code>Intent</code> 回 LoginActivity + <code>FLAG_ACTIVITY_CLEAR_TASK</code></li>
+        <li>用户信息优先从数据库读，读不到再回落硬编码</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">21:10–21:40</div>
+    <div class="body">
+      <h4>阶段 6 · 底部导航 + 状态栏 + 图标</h4>
+      <ul>
+        <li>给 <code>bottom_nav_menu.xml</code> 四个 item 补 vector 图标</li>
+        <li>底部栏白底 + 选中紫色，未选中灰色</li>
+        <li>用 FrameLayout 把中间圆形紫色 FAB 浮在底栏上方居中</li>
+        <li>状态栏沉浸：深色渐变页设白字状态栏，浅色登录页设深字状态栏</li>
+        <li>应用名与启动图标改成「智慧选课」，别留 My Application003</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">21:40–22:40</div>
+    <div class="body">
+      <h4>阶段 7 · 数据打通</h4>
+      <ul>
+        <li>自查闭环：登录 → 大厅选课 → 弹窗确认 → 课表出现该课程 → 退课 → 课表消失</li>
+        <li>容量联动：选课成功后 selectedCount +1，进度条刷新，满员时按钮置灰</li>
+        <li>学分汇总：课表页总学分、个人中心的选课记录跟着变</li>
+        <li>所有数据库操作放到子线程（或用 <code>allowMainThreadQueries</code> 图省事，但要注释说明）</li>
+        <li>边界情况：重复选课要拦截，容量满了要提示</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="time">22:40–23:20</div>
+    <div class="body">
+      <h4>阶段 8 · 比对打磨 + 打包</h4>
+      <ul>
+        <li>六页逐一在模拟器截图，跟效果图左右并排看，修间距/字号/圆角/颜色</li>
+        <li>重点抠：卡片外边距是否统一、文字层级是否清晰、按钮圆角是否够</li>
+        <li>跑一遍完整流程确认没有崩溃</li>
+        <li>Build → Build APK(s)，把 APK 和截图一起存档</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">5</span>素材库：复制即用</h2>
+  <p class="sub">阶段 0 一次性建好，后面五个页面全靠它们，能省 1 小时以上</p>
+
+  <h3>配色板 · <code>res/values/colors.xml</code></h3>
+<pre>&lt;resources&gt;
+    &lt;color name=<span class="s">"purple_deep"</span>&gt;#5B3FD1&lt;/color&gt;
+    &lt;color name=<span class="s">"purple"</span>&gt;#6D4AE0&lt;/color&gt;
+    &lt;color name=<span class="s">"purple_light"</span>&gt;#9B7BF5&lt;/color&gt;
+    &lt;color name=<span class="s">"purple_tint"</span>&gt;#EFEAFE&lt;/color&gt;
+    &lt;color name=<span class="s">"bg_page"</span>&gt;#F7F7FB&lt;/color&gt;
+    &lt;color name=<span class="s">"red"</span>&gt;#F5333F&lt;/color&gt;
+    &lt;color name=<span class="s">"orange"</span>&gt;#FF7043&lt;/color&gt;
+    &lt;color name=<span class="s">"green"</span>&gt;#22C55E&lt;/color&gt;
+    &lt;color name=<span class="s">"text_main"</span>&gt;#1A1A1A&lt;/color&gt;
+    &lt;color name=<span class="s">"text_sub"</span>&gt;#8A8A9E&lt;/color&gt;
+    &lt;color name=<span class="s">"line"</span>&gt;#E8E8F0&lt;/color&gt;
+    &lt;color name=<span class="s">"white"</span>&gt;#FFFFFF&lt;/color&gt;
+    &lt;color name=<span class="s">"black"</span>&gt;#FF000000&lt;/color&gt;
+&lt;/resources&gt;</pre>
+
+  <h3>渐变头部 · <code>drawable/bg_header_gradient.xml</code></h3>
+<pre>&lt;shape xmlns:android=<span class="s">"http://schemas.android.com/apk/res/android"</span>&gt;
+    &lt;gradient android:angle=<span class="s">"315"</span>
+        android:startColor=<span class="s">"@color/purple"</span>
+        android:endColor=<span class="s">"@color/purple_light"</span>/&gt;
+    &lt;corners android:bottomLeftRadius=<span class="s">"24dp"</span>
+        android:bottomRightRadius=<span class="s">"24dp"</span>/&gt;
+&lt;/shape&gt;</pre>
+
+  <h3>圆角卡片 · <code>drawable/bg_card.xml</code></h3>
+<pre>&lt;shape xmlns:android=<span class="s">"http://schemas.android.com/apk/res/android"</span>&gt;
+    &lt;solid android:color=<span class="s">"@color/white"</span>/&gt;
+    &lt;corners android:radius=<span class="s">"18dp"</span>/&gt;
+    &lt;stroke android:width=<span class="s">"1dp"</span> android:color=<span class="s">"@color/line"</span>/&gt;
+&lt;/shape&gt;</pre>
+
+  <h3>胶囊输入框 · <code>drawable/bg_input.xml</code></h3>
+<pre>&lt;shape xmlns:android=<span class="s">"http://schemas.android.com/apk/res/android"</span>&gt;
+    &lt;solid android:color=<span class="s">"@color/white"</span>/&gt;
+    &lt;corners android:radius=<span class="s">"26dp"</span>/&gt;
+    &lt;stroke android:width=<span class="s">"1dp"</span> android:color=<span class="s">"#E8E8F0"</span>/&gt;
+&lt;/shape&gt;</pre>
+
+  <h3>紫色胶囊标签 · <code>drawable/bg_tag.xml</code></h3>
+<pre>&lt;shape xmlns:android=<span class="s">"http://schemas.android.com/apk/res/android"</span>&gt;
+    &lt;solid android:color=<span class="s">"@color/purple_tint"</span>/&gt;
+    &lt;corners android:radius=<span class="s">"10dp"</span>/&gt;
+&lt;/shape&gt;</pre>
+
+  <div class="callout">
+    <strong>按钮别写 drawable。</strong>直接用 <code>com.google.android.material.button.MaterialButton</code>，圆角和按压水波纹都是内置的，一条属性搞定，比手写 selector 快得多：
+<pre style="margin-top:12px">&lt;com.google.android.material.button.MaterialButton
+    android:layout_width=<span class="s">"match_parent"</span>
+    android:layout_height=<span class="s">"52dp"</span>
+    android:text=<span class="s">"登录"</span>
+    android:textSize=<span class="s">"17sp"</span>
+    app:cornerRadius=<span class="s">"26dp"</span>
+    app:backgroundTint=<span class="s">"@color/purple"</span>
+    android:textColor=<span class="s">"@color/white"</span>
+    app:elevation=<span class="s">"0dp"</span> /&gt;</pre>
+  </div>
+
+  <h3>课程卡片骨架 · <code>item_courselist.xml</code></h3>
+<pre>&lt;com.google.android.material.card.MaterialCardView
+    android:layout_width=<span class="s">"match_parent"</span>
+    android:layout_height=<span class="s">"wrap_content"</span>
+    android:layout_marginBottom=<span class="s">"12dp"</span>
+    app:cardCornerRadius=<span class="s">"18dp"</span>
+    app:cardElevation=<span class="s">"0dp"</span>
+    app:strokeWidth=<span class="s">"1dp"</span>
+    app:strokeColor=<span class="s">"@color/line"</span>&gt;
+
+    &lt;LinearLayout ... android:orientation=<span class="s">"vertical"</span> android:padding=<span class="s">"16dp"</span>&gt;
+        <span class="c">&lt;!-- 上半区：头像 + 课程名 + 教师 + 学分胶囊 --&gt;</span>
+        <span class="c">&lt;!-- 下半区：时间 / 地点 / 已选人数 --&gt;</span>
+        <span class="c">&lt;!-- 容量进度条 --&gt;</span>
+        &lt;ProgressBar
+            android:id=<span class="s">"@+id/pb_capacity"</span>
+            style=<span class="s">"?android:attr/progressBarStyleHorizontal"</span>
+            android:layout_width=<span class="s">"match_parent"</span>
+            android:layout_height=<span class="s">"6dp"</span>
+            android:max=<span class="s">"100"</span>
+            android:progressTint=<span class="s">"@color/purple"</span>
+            android:progressBackgroundTint=<span class="s">"#EDEDF5"</span> /&gt;
+        <span class="c">&lt;!-- 右下角「选课」按钮 --&gt;</span>
+    &lt;/LinearLayout&gt;
+&lt;/com.google.android.material.card.MaterialCardView&gt;</pre>
+
+  <h3>圆形头像 · <code>res/values/styles.xml</code> + ShapeableImageView</h3>
+<pre><span class="c">&lt;!-- styles.xml --&gt;</span>
+&lt;style name=<span class="s">"CircleImage"</span>&gt;
+    &lt;item name=<span class="s">"cornerFamily"</span>&gt;rounded&lt;/item&gt;
+    &lt;item name=<span class="s">"cornerSize"</span>&gt;50%&lt;/item&gt;
+&lt;/style&gt;
+
+<span class="c">&lt;!-- 布局里 --&gt;</span>
+&lt;com.google.android.material.imageview.ShapeableImageView
+    android:layout_width=<span class="s">"56dp"</span>
+    android:layout_height=<span class="s">"56dp"</span>
+    android:scaleType=<span class="s">"centerCrop"</span>
+    android:src=<span class="s">"@drawable/ic_avatar"</span>
+    app:shapeAppearanceOverlay=<span class="s">"@style/CircleImage"</span> /&gt;</pre>
+
+  <h3>自定义详情弹窗 · Java</h3>
+<pre>Dialog dialog = <span class="k">new</span> Dialog(requireContext());
+dialog.setContentView(R.layout.dialog_course_detail);
+dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+<span class="k">int</span> w = (<span class="k">int</span>) (getResources().getDisplayMetrics().widthPixels * 0.9);
+dialog.getWindow().setLayout(w, ViewGroup.LayoutParams.WRAP_CONTENT);
+dialog.show();</pre>
+
+  <h3>沉浸状态栏 · <code>themes.xml</code>（最省事的做法）</h3>
+<pre><span class="c">&lt;!-- 深色渐变页：白字状态栏 --&gt;</span>
+&lt;item name=<span class="s">"android:statusBarColor"</span>&gt;@color/purple&lt;/item&gt;
+&lt;item name=<span class="s">"android:windowLightStatusBar"</span>&gt;<span class="k">false</span>&lt;/item&gt;
+
+<span class="c">&lt;!-- 登录/注册页：另建主题，浅底深字 --&gt;</span>
+&lt;item name=<span class="s">"android:statusBarColor"</span>&gt;@color/bg_page&lt;/item&gt;
+&lt;item name=<span class="s">"android:windowLightStatusBar"</span>&gt;<span class="k">true</span>&lt;/item&gt;</pre>
+
+  <div class="callout warn">
+    <strong>图标去哪拿：</strong>不要手写矢量路径。Android Studio 里 <code>res/drawable</code> 右键 → <code>New</code> → <code>Vector Asset</code> → 选 <code>Clip Art</code>，Material Icons 里搜 <code>search / settings / person / schedule / logout / arrow</code> 之类，一次导入全部所需图标。这是今晚插画层面唯一推荐花时间的动作。
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">6</span>时间不够时的兜底策略</h2>
+  <p class="sub">22:00 还没做完，就按这个顺序砍</p>
+  <table>
+    <thead><tr><th style="width:22%">优先级</th><th style="width:26%">页面</th><th>砍到最简是什么样</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag t-purple">P0 必保</span></td><td>登录页</td><td>门面，必须精致。实在赶就砍掉背景装饰圆，保留渐变 + 白卡 + 主按钮</td></tr>
+      <tr><td><span class="tag t-purple">P0 必保</span></td><td>选课大厅</td><td>课程卡是全场核心。搜索栏和筛选 Tab 可以只留 UI 不接逻辑</td></tr>
+      <tr><td><span class="tag t-amber">P1 尽量</span></td><td>课程详情弹窗</td><td>两栏网格改成一栏纵向列表，信息项照贴</td></tr>
+      <tr><td><span class="tag t-amber">P1 尽量</span></td><td>我的课表</td><td>底部汇总卡可以砍，退课按钮可以只做 UI 不做逻辑</td></tr>
+      <tr><td><span class="tag t-amber">P1 尽量</span></td><td>个人中心</td><td>四个分组卡结构对就行，子项图标可先用文字符号占位</td></tr>
+      <tr><td><span class="tag t-green">P2 可弃</span></td><td>注册页</td><td>整个页面砍掉，「立即注册」改成弹 Toast「请联系管理员」</td></tr>
+      <tr><td><span class="tag t-green">P2 可弃</span></td><td>成绩查询 Tab</td><td>直接删掉这个 item，TTab 变 3 个，跟现有 Fragment 数组刚好对齐</td></tr>
+      <tr><td><span class="tag t-green">P2 可弃</span></td><td>真实 SQLite 读写</td><td>换成内存单例 <code>CourseRepository</code>，全局一个 List 存选课状态。答辩演示完全够用，且省掉 threading 的坑</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>关于数据库的取舍建议：</strong>如果 21:40 时你还在跟 SQLite 的 <code>Cursor</code> 索引较劲，立刻切到内存方案。效果图里没有任何一处能看出数据是不是真的存进了 SQLite，但每一处都能看出 UI 有没有还原。把剩下的时间全投到 UI 上。
+  </div>
+</section>
+
+<section class="final">
+  <h2><span class="num">✓</span>今晚验收标准</h2>
+  <p class="sub">六条全绿就算完成</p>
+  <table>
+    <thead><tr><th style="width:10%">#</th><th>验收项</th><th style="width:22%">判定方式</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>项目能编译、能装到模拟器、能启动不闪退</td><td>Build 成功 + 启动无 crash</td></tr>
+      <tr><td>2</td><td>六张效果图对应的六个界面全部存在且能导航到</td><td>逐页截图</td></tr>
+      <tr><td>3</td><td>每页的紫色渐变、圆角卡片、马卡龙配色体系统一</td><td>六页并排看不出风格割裂</td></tr>
+      <tr><td>4</td><td>底部导航 3-4 个 Tab 都能正常切换，不跳错页</td><td>逐个点击</td></tr>
+      <tr><td>5</td><td>选课闭环走通：大厅 → 弹窗 → 确认 → 课表出现</td><td>完整演示一遍</td></tr>
+      <tr><td>6</td><td>退课闭环走通：课表 → 退课 → 列表移除 + 学分重算</td><td>完整演示一遍</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:18px; padding:16px 20px; background:rgba(255,255,255,.1); border-radius:12px; font-size:13.5px; line-height:1.8;">
+    <strong>最后一句提醒：</strong>今晚最大的风险不是做不完，是<strong>卡在细节里</strong>。任何一个颜色值、圆角半径、间距，调三轮就该放过它。效果图是"看起来像"，不是像素级一致——先把六个页面都铺出来，再回头统一抠细节。18:50 时如果你的选课大厅还没出来，说明阶段 1 超时了，果断跳到下一阶段。
+  </div>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/course_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        />
+    <TextView
+        android:id="@+id/course_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        />
+    <TextView
+        android:id="@+id/course_credit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        />
+    <TextView
+        android:id="@+id/course_remain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        />
+    <Button
+        android:id="@+id/choosecourse"
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:text="@string/str23"
+        android:layout_height="wrap_content"
+        />
+    <Button
+        android:id="@+id/unchoosecourse"
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:text="@string/str24"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

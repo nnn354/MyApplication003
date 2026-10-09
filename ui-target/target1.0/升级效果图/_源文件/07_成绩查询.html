@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html,body{width:390px;height:844px;overflow:hidden}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+ font-size:13px;color:#1B1B24;background:#F4F6FF;line-height:1.45}
+.screen{width:390px;height:844px;display:flex;flex-direction:column;overflow:hidden;position:relative;background:#F4F6FF}
+/* 状态栏 */
+.sb{height:28px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+ padding:0 20px;font-size:12px;font-weight:700;color:#1B1B24;z-index:9}
+.sb.light,.sb.light *{color:#fff}
+.sb .r{display:flex;gap:6px;align-items:center}
+.sb .bat{width:21px;height:11px;border:1.4px solid currentColor;border-radius:3px;position:relative;display:block}
+.sb .bat:after{content:"";position:absolute;right:-3.5px;top:3px;width:2px;height:5px;background:currentColor;border-radius:0 1.5px 1.5px 0}
+.sb .bat i{position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:12px;background:currentColor;border-radius:1.5px;display:block}
+/* 顶栏 */
+.hd{height:54px;flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:0 16px;background:#fff}
+.hd.flat{background:transparent}
+.hd .back{width:34px;height:34px;border-radius:11px;background:#F0F3FF;display:flex;align-items:center;justify-content:center;color:#4A63E8}
+.hd .t{font-size:17px;font-weight:800;letter-spacing:.2px}
+.hd .act{margin-left:auto;font-size:13px;color:#6C4CF1;font-weight:700}
+.hd svg{width:19px;height:19px}
+.content{flex:1 1 auto;min-height:0;overflow:hidden;position:relative}
+/* 底部导航 */
+.nav{height:66px;flex:0 0 auto;background:#fff;border-top:1px solid #EAEEF9;
+ display:flex;align-items:flex-start;justify-content:space-around;padding-top:9px}
+.nav .it{display:flex;flex-direction:column;align-items:center;gap:4px;color:#9AA3B8;font-size:11px;font-weight:600;width:25%}
+.nav .it.on{color:#6C4CF1}
+.nav svg{width:22px;height:22px}
+/* 通用 */
+.pad{padding:0 16px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(80,100,180,.07)}
+.mi{width:13px;height:13px;vertical-align:-2px;margin-right:4px;flex:0 0 auto}
+.tag{font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;background:#EFECFF;color:#6C4CF1;flex:0 0 auto}
+.tag.blue{background:#E8EFFF;color:#4A63E8}
+.tag.green{background:#E6F7EC;color:#16A34A}
+.tag.amber{background:#FFF4E0;color:#C77700}
+.tag.red{background:#FFE9E9;color:#E23B3B}
+.chips{display:flex;gap:8px;padding:0 16px;overflow:hidden}
+.chip{flex:0 0 auto;padding:7px 15px;border-radius:999px;background:#fff;color:#6B7280;
+ font-size:12.5px;font-weight:700;border:1px solid #EAEEF9}
+.chip.on{background:linear-gradient(135deg,#6C4CF1,#4A63E8);color:#fff;border-color:transparent;
+ box-shadow:0 4px 12px rgba(108,76,241,.28)}
+.btn{height:50px;border-radius:15px;background:linear-gradient(135deg,#6C4CF1,#4A63E8);color:#fff;
+ font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;
+ box-shadow:0 8px 20px rgba(108,76,241,.32);letter-spacing:.5px}
+.btn.ghost{background:#fff;color:#4A63E8;border:1.5px solid #DFE6FB;box-shadow:none}
+.btn.sm{height:38px;border-radius:11px;font-size:13px;box-shadow:0 4px 12px rgba(108,76,241,.25)}
+.mini-btn{padding:6px 16px;border-radius:999px;background:linear-gradient(135deg,#6C4CF1,#4A63E8);
+ color:#fff;font-size:12px;font-weight:800;box-shadow:0 4px 10px rgba(108,76,241,.28)}
+.mini-btn.gray{background:#F0F3FF;color:#4A63E8;box-shadow:none}
+.inp{height:52px;border-radius:14px;background:#fff;border:1.5px solid #EAEEF9;display:flex;
+ align-items:center;gap:10px;padding:0 14px;color:#1B1B24}
+.inp.err{border-color:#FFC9C9;background:#FFF7F7}
+.inp .ph{color:#A6AEC2;font-size:13.5px}
+.inp svg{width:18px;height:18px;color:#8A94AC;flex:0 0 auto}
+.prog{height:6px;border-radius:999px;background:#EDF0FA;overflow:hidden;flex:1 1 auto}
+.prog i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#6C4CF1,#4A63E8)}
+.prog.warn i{background:linear-gradient(90deg,#F59E0B,#F97316)}
+.prog.full i{background:linear-gradient(90deg,#EF4444,#DC2626)}
+.avatar{border-radius:50%;background:linear-gradient(135deg,#8B6CF5,#5A8DE0);color:#fff;
+ display:flex;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto}
+.row{display:flex;align-items:center}
+.grow{flex:1 1 auto}
+/* 列表条目 */
+.li{background:#fff;border-radius:14px;display:flex;align-items:center;gap:12px;padding:14px;box-shadow:0 2px 10px rgba(80,100,180,.06)}
+.li .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.li .ic svg{width:19px;height:19px}
+.li .tt{font-size:14px;font-weight:700}
+.li .ss{font-size:11.5px;color:#8A94AC;margin-top:3px}
+.li .ar{color:#C4CBDD}
+.li .ar svg{width:16px;height:16px}
+.grp{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(80,100,180,.07)}
+.grp .h{font-size:11.5px;font-weight:800;color:#8A94AC;letter-spacing:1px;padding:4px 4px 8px}
+.sw{width:44px;height:30px;border-radius:999px;background:#E3E8F6;position:relative;flex:0 0 auto;transition:.2s}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.sw.on{background:linear-gradient(135deg,#6C4CF1,#4A63E8)}
+.sw.on:after{left:17px}
+.divider{height:1px;background:#F0F3FA;margin:0 14px}
+</style></head><body><div class="screen "><div class="sb"><span>9:41</span><span class="r"><span style="font-size:10.5px">5G</span><span class="bat"><i></i></span></span></div><div class="hd"><div class="t">成绩查询</div></div>
+<div class="content" style="padding:2px 16px 0;overflow:hidden">
+  <div style="border-radius:20px;padding:18px;background:linear-gradient(160deg,#6C4CF1 0%,#5A5CE8 45%,#3F7BE0 100%);color:#fff;box-shadow:0 12px 28px rgba(80,70,200,.3)">
+    <div class="row"><div class="grow"><div style="font-size:11.5px;opacity:.85">平均学分绩点 GPA</div>
+      <div style="font-size:34px;font-weight:800;line-height:1.15;margin-top:2px">3.72</div></div>
+      <div style="text-align:right"><div style="font-size:11.5px;opacity:.85">专业排名</div><div style="font-size:20px;font-weight:800;margin-top:2px">12 <span style="font-size:12px;font-weight:600;opacity:.8">/ 168</span></div></div></div>
+    <div class="row" style="gap:18px;margin-top:14px;font-size:11.5px;opacity:.92">
+      <span>已修学分 86.0</span><span>挂科 0</span><span>较上学期 +0.15 ↑</span></div>
+  </div>
+  <div class="chips" style="padding:12px 0 10px">
+    <div class="chip on">2025-2026-1</div><div class="chip">2024-2025-2</div><div class="chip">2024-2025-1</div>
+  </div>
+  <div class="card" style="padding:14px;margin-bottom:12px">
+    <div class="row" style="margin-bottom:12px"><div style="font-size:13px;font-weight:800">学期成绩趋势</div><div class="grow"></div><span style="font-size:10.5px;color:#8A94AC">平均分</span></div>
+    <div class="row" style="align-items:flex-end;height:96px"><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:10px;color:#8A94AC;font-weight:700">68</div><div style="width:26px;height:42px;border-radius:8px;background:linear-gradient(180deg,#8B6CF5,#4A63E8);opacity:0.5"></div><div style="font-size:9.5px;color:#A6AEC2">2023-1</div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:10px;color:#8A94AC;font-weight:700">74</div><div style="width:26px;height:45px;border-radius:8px;background:linear-gradient(180deg,#8B6CF5,#4A63E8);opacity:0.625"></div><div style="font-size:9.5px;color:#A6AEC2">2023-2</div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:10px;color:#8A94AC;font-weight:700">81</div><div style="width:26px;height:50px;border-radius:8px;background:linear-gradient(180deg,#8B6CF5,#4A63E8);opacity:0.75"></div><div style="font-size:9.5px;color:#A6AEC2">2024-1</div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:10px;color:#8A94AC;font-weight:700">88</div><div style="width:26px;height:54px;border-radius:8px;background:linear-gradient(180deg,#8B6CF5,#4A63E8);opacity:0.875"></div><div style="font-size:9.5px;color:#A6AEC2">2024-2</div></div><div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="font-size:10px;color:#8A94AC;font-weight:700">92</div><div style="width:26px;height:57px;border-radius:8px;background:linear-gradient(180deg,#8B6CF5,#4A63E8);opacity:1.0"></div><div style="font-size:9.5px;color:#A6AEC2">2025-1</div></div></div>
+  </div>
+  <div class="card" style="overflow:hidden">
+    <div class="row" style="padding:12px 14px;border-bottom:1px solid #F2F5FC"><div style="font-size:13px;font-weight:800">2025-2026 学年第 1 学期</div><div class="grow"></div><span style="font-size:11px;color:#8A94AC">共 5 门</span></div>
+    <div class="row" style="padding:12px 14px;gap:10px"><div class="grow"><div style="font-size:13.5px;font-weight:700">Java 程序设计</div><div style="font-size:11px;color:#8A94AC;margin-top:3px">3.0 学分 · 绩点 4.0</div></div><div style="font-size:17px;font-weight:800;color:#16A34A">92</div><span class="tag green">优秀</span></div><div class="row" style="padding:12px 14px;gap:10px"><div class="grow"><div style="font-size:13.5px;font-weight:700">数据结构</div><div style="font-size:11px;color:#8A94AC;margin-top:3px">4.0 学分 · 绩点 3.7</div></div><div style="font-size:17px;font-weight:800;color:#1B1B24">88</div><span class="tag blue">良好</span></div><div class="row" style="padding:12px 14px;gap:10px"><div class="grow"><div style="font-size:13.5px;font-weight:700">大学英语（三）</div><div style="font-size:11px;color:#8A94AC;margin-top:3px">2.0 学分 · 绩点 3.5</div></div><div style="font-size:17px;font-weight:800;color:#1B1B24">85</div><span class="tag blue">良好</span></div><div class="row" style="padding:12px 14px;gap:10px"><div class="grow"><div style="font-size:13.5px;font-weight:700">高等数学 A</div><div style="font-size:11px;color:#8A94AC;margin-top:3px">5.0 学分 · 绩点 3.0</div></div><div style="font-size:17px;font-weight:800;color:#1B1B24">78</div><span class="tag amber">中等</span></div><div class="row" style="padding:12px 14px;gap:10px"><div class="grow"><div style="font-size:13.5px;font-weight:700">人工智能导论</div><div style="font-size:11px;color:#8A94AC;margin-top:3px">2.0 学分 · 绩点 4.0</div></div><div style="font-size:17px;font-weight:800;color:#16A34A">95</div><span class="tag green">优秀</span></div>
+  </div>
+</div><div class="nav"><div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>选课</span></div><div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 10h18"/></svg><span>课表</span></div><div class="it on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>成绩</span></div><div class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4 3.5-6 7.5-6s7.5 2 7.5 6"/></svg><span>我的</span></div></div></div></body></html>

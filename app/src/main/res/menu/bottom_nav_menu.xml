@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item       android:id="@+id/nav_hall"  android:title="@string/str20" />
+    <item   android:id="@+id/nav_my"  android:title="@string/str21"/>
+    <item android:id="@+id/nav_scores" android:title="@string/str16"/>
+    <item android:id="@+id/nav_profile"  android:title="@string/str22"  />
+</menu>

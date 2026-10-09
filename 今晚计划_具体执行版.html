@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今晚执行计划 · 智慧选课系统</title>
+<style>
+  :root{
+    --purple:#6D4AE0;
+    --purple-dark:#4B2FA8;
+    --purple-light:#EFEAFE;
+    --ink:#1A1A1A;
+    --ink-2:#5A5A6E;
+    --ink-3:#8A8A9E;
+    --line:#E8E8F0;
+    --bg:#F7F7FB;
+    --red:#E03B3B;
+    --red-bg:#FDECEC;
+    --amber:#B26A00;
+    --amber-bg:#FEF4E4;
+    --green:#1F8A4C;
+    --green-bg:#EAF7EF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;padding:32px 20px 80px;
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px;line-height:1.7;
+  }
+  .wrap{max-width:1000px;margin:0 auto;}
+
+  header.top{
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:24px 28px;margin-bottom:22px;
+  }
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:.5px;}
+  .sub{color:var(--ink-3);font-size:13px;margin:0;}
+  .clock{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    margin-top:18px;padding-top:18px;border-top:1px dashed var(--line);
+  }
+  .clock .big{font-size:30px;font-weight:600;color:var(--purple);letter-spacing:1px;}
+  .clock .lbl{font-size:13px;color:var(--ink-2);}
+  .pill{
+    display:inline-block;padding:3px 10px;border-radius:999px;
+    font-size:12px;font-weight:600;letter-spacing:.3px;
+  }
+  .pill.red{background:var(--red-bg);color:var(--red);}
+  .pill.amber{background:var(--amber-bg);color:var(--amber);}
+  .pill.green{background:var(--green-bg);color:var(--green);}
+  .pill.purple{background:var(--purple-light);color:var(--purple-dark);}
+
+  /* timeline strip */
+  .strip{display:flex;height:46px;border-radius:10px;overflow:hidden;margin-top:18px;}
+  .strip div{
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:#fff;
+    border-right:2px solid #fff;white-space:nowrap;overflow:hidden;
+  }
+  .strip div:last-child{border-right:0;}
+  .c1{background:#8B72EA;}
+  .c2{background:#6D4AE0;}
+  .c3{background:#5A8DE0;}
+  .c4{background:#3F7AD6;}
+
+  h2{
+    font-size:17px;margin:34px 0 14px;padding-left:12px;
+    border-left:4px solid var(--purple);
+  }
+
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:20px 24px;margin-bottom:16px;
+  }
+  .card .head{
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line);
+  }
+  .card .head .id{
+    font-size:13px;font-weight:700;color:#fff;background:var(--purple);
+    padding:2px 10px;border-radius:6px;letter-spacing:.5px;
+  }
+  .card .head .name{font-size:17px;font-weight:600;}
+  .card .head .time{margin-left:auto;font-size:13px;color:var(--purple-dark);font-weight:600;}
+  .card .head .dur{font-size:12px;color:var(--ink-3);}
+
+  .meta{font-size:13px;color:var(--ink-2);margin:0 0 12px;}
+  .meta b{color:var(--ink);font-weight:600;}
+  code{
+    background:#F3F2F9;border:1px solid #E4E2F0;border-radius:4px;
+    padding:1px 6px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px;color:#43328C;
+  }
+  pre{
+    background:#2C2C3A;color:#E8E6F5;border-radius:10px;
+    padding:14px 16px;overflow-x:auto;
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px;line-height:1.65;margin:10px 0;
+  }
+  pre .cm{color:#8E8CA8;}
+  pre .kw{color:#C7A6FF;}
+  pre .st{color:#9EE6B4;}
+
+  ul.steps{list-style:none;margin:0;padding:0;}
+  ul.steps>li{
+    position:relative;padding:7px 0 7px 30px;
+    border-bottom:1px dashed #F0EFF7;
+  }
+  ul.steps>li:last-child{border-bottom:0;}
+  ul.steps>li::before{
+    content:"";position:absolute;left:4px;top:13px;
+    width:13px;height:13px;border:1.5px solid #C6C4D8;border-radius:3px;background:#fff;
+  }
+  .filetag{
+    display:inline-block;font-size:11.5px;font-weight:600;
+    background:#F3F2F9;color:#43328C;border-radius:4px;
+    padding:1px 6px;margin-right:6px;
+  }
+
+  .judge{
+    margin-top:14px;padding:10px 14px;border-radius:10px;
+    background:var(--green-bg);color:#15663A;font-size:13.5px;
+  }
+  .judge b{color:#0E4A2A;}
+  .risk{
+    margin-top:8px;padding:10px 14px;border-radius:10px;
+    background:var(--amber-bg);color:#7A4A00;font-size:13.5px;
+  }
+  .risk b{color:#5C3700;}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px;}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-weight:600;color:var(--ink-2);font-size:12.5px;background:#FAFAFD;}
+  td.n{width:34px;color:var(--ink-3);}
+  .no-go{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px;}
+  .no-go li{position:relative;padding-left:20px;font-size:13.5px;color:var(--ink-2);}
+  .no-go li::before{content:"—";position:absolute;left:0;color:var(--red);font-weight:700;}
+
+  .stop{
+    background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);
+    border-radius:12px;padding:16px 20px;margin-bottom:12px;
+  }
+  .stop .t{font-weight:600;font-size:14.5px;margin-bottom:4px;}
+  .stop .t span{color:var(--red);}
+  .stop p{margin:4px 0 0;font-size:13.5px;color:var(--ink-2);}
+
+  footer{color:var(--ink-3);font-size:12.5px;text-align:center;margin-top:36px;}
+  @media print{
+    body{background:#fff;padding:0;}
+    .card,.stop{break-inside:avoid;}
+  }
+</style>
+
+<!-- 深蓝主题（统一覆盖） -->
+<style id="dark-blue-theme">
+:root{
+  --bg:#0A1733!important; --page:#0A1733!important; --white:#14244D!important;
+  --card:#14244D!important; --ink:#E7EEFF!important; --text:#E7EEFF!important;
+  --ink2:#BCCBEC!important; --ink-2:#BCCBEC!important; --ink3:#93A6CC!important;
+  --ink-3:#93A6CC!important; --sub:#A9B8DA!important; --line:#25365E!important;
+  --line2:#25365E!important; --purple-bg:#1C2A55!important; --purple-l:#1C2A55!important;
+  --purple-tint:#1C2A55!important; --purple-light:#1C2A55!important; --purple-b:#2C3F6E!important;
+  --purple-dark:#C3B4FF!important; --purple-deep:#C3B4FF!important;
+}
+html{background:#0A1733!important;}
+body{background:#0A1733!important;background-image:none!important;
+  background-attachment:scroll!important;color:#E7EEFF!important;}
+.card,section,table,.box,.verdict,.kill,.feat,.log,article,main,aside,figure,details,.tbl{
+  background-color:#14244D!important;background-image:none!important;}
+th{background:#1B2C55!important;color:#C6D4F2!important;}
+td{background-color:transparent!important;}
+tr:nth-child(even) td{background-color:#111F42!important;}
+pre{background:#0D1932!important;border-color:#25365E!important;}
+pre code{background:none!important;color:#D7E6FF!important;}
+code{background:#1B2C55!important;color:#9FC8FF!important;border-color:#2A3F6E!important;}
+hr,td,th{border-color:#25365E!important;}
+a{color:#93B6FF!important;}
+.banner{background:#13224A!important;background-image:none!important;}
+.banner.ok{background:#0E3524!important;}
+.banner.warn{background:#3A2A0C!important;}
+.banner.bad{background:#3A1520!important;}
+.callout{background:#1B2A52!important;background-image:none!important;}
+[style*="background:#fdf6e3"],[style*="background:#fffafa"],[style*="background:#faf9ff"],
+[style*="background:#fff "],[style*="background: #fff"],[style*="background:#ffffff"]{
+  background:#1B2A52!important;border-color:#2C3F6E!important;}
+body *:not(pre):not(code):not(.banner):not(.banner *):not(.callout):not(.callout *):not(.badge):not(.chip):not(.tag):not(.pill):not(.pct):not(.t0):not(.t1):not(.t2):not(.t-ok):not(.t-p0):not(.t-p1):not(.t-p2):not(.t-off):not(.t-red):not(.t-amber):not(.t-green):not(.t-purple):not(.t-crash):not(.t-none):not(.ok):not(.warn):not(.bad):not(.p0):not(.p1):not(.p2){color:#E7EEFF;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>今晚执行计划 · 智慧选课系统</h1>
+  <p class="sub">目标：20:30 前交付一个「能装机、能登录、能选课、能退课、能看课表、能退出」的可运行版本 · 放弃全部界面美化</p>
+  <div class="clock">
+    <div>
+      <div class="big">18:55 → 20:30</div>
+      <div class="lbl">剩余可支配时间</div>
+    </div>
+    <div>
+      <div class="big" style="color:var(--red)">95<small style="font-size:14px;font-weight:400;color:var(--ink-3)"> 分钟</small></div>
+      <div class="lbl">共 7 个阶段</div>
+    </div>
+    <div>
+      <div class="big" style="color:var(--ink-2)">7<small style="font-size:14px;font-weight:400;color:var(--ink-3)"> 处</small></div>
+      <div class="lbl">当前编译错误</div>
+    </div>
+  </div>
+  <div class="strip">
+    <div class="c1" style="flex:10">P0<br>10′</div>
+    <div class="c1" style="flex:25">P1<br>25′</div>
+    <div class="c2" style="flex:10">P2<br>10′</div>
+    <div class="c3" style="flex:20">P3<br>20′</div>
+    <div class="c3" style="flex:15">P4<br>15′</div>
+    <div class="c4" style="flex:7">P5<br>7′</div>
+    <div class="c4" style="flex:8">P6<br>8′</div>
+  </div>
+</header>
+
+<h2>开工前先看一眼：项目现在的位置</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:26%">检查项</th><th>结论</th></tr>
+    <tr>
+      <td>编译状态</td>
+      <td><span class="pill red">编不过</span> 7 处错误，2 个文件：<code>CourseAdapter.java</code> 第 34/36/37 行、<code>CourseHallFragment.java</code> 第 47/48/49/50 行</td>
+    </tr>
+    <tr>
+      <td>你已修好的</td>
+      <td><span class="pill green">已解决</span> <code>DbManager</code> 的三处：<code>new ArrayList&lt;&gt;()</code>、<code>rawQuery</code> 调用、SQL 拼接空格（18:52 改的，现在正确）</td>
+    </tr>
+    <tr>
+      <td>数据层还差</td>
+      <td><code>insertUser</code> 漏 3 个 NOT NULL 字段 · <code>toCourse</code> 下标错位 · 表里没有任何数据 · 缺 7 个业务方法</td>
+    </tr>
+    <tr>
+      <td>页面现状</td>
+      <td>选课大厅/我的课表/个人中心 都还没接数据库 · 登录还是硬编码比对 · 注册页与详情弹窗不存在（<b>今晚不做</b>）</td>
+    </tr>
+  </table>
+</div>
+
+<h2>计划主体</h2>
+
+<!-- P0 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P0</span>
+    <span class="name">修编译</span>
+    <span class="time">18:55 – 19:05</span>
+    <span class="dur">10 分钟</span>
+  </div>
+  <p class="meta"><b>这一阶段只有一个目的：让工程能跑起来。</b>不通过就不往下走。</p>
+  <ul class="steps">
+    <li><span class="filetag">CourseAdapter.java:34</span><code>c.name</code> 改成 <code>c.courseName</code></li>
+    <li><span class="filetag">CourseAdapter.java:36</span><code>c.credit</code> 是 <code>double</code>，<code>setText</code> 没有这个重载 → 改成 <code>String.valueOf(c.credit)</code></li>
+    <li><span class="filetag">CourseAdapter.java:37</span><code>Course</code> 里没有 <code>remain</code> 字段 → 改成 <code>(c.capacity - c.selectedCount) + ""</code></li>
+    <li><span class="filetag">CourseHallFragment.java:47-50</span>四行改为九参构造器，<b>参数顺序不能错</b>：<br>
+      <code>(courseId, courseName, teacher, credit:double, time, location, capacity:int, selectedCount:int, type)</code>
+    </li>
+  </ul>
+  <pre>list.add(new Course(<span class="st">"1"</span>, <span class="st">"数据结构"</span>, <span class="st">"李老师"</span>, <span class="kw">4.0</span>, <span class="st">"周二1-2节"</span>, <span class="st">"教学楼B105"</span>, <span class="kw">45</span>, <span class="kw">30</span>, <span class="st">"专业课"</span>));</pre>
+  <pre><span class="cm"># 构建命令（PowerShell）</span>
+$env:JAVA_HOME=<span class="st">'D:\aaaaa_安卓开发\jbr'</span>
+.\gradlew.bat assembleDebug</pre>
+  <div class="judge"><b>完成判据：</b>输出里出现 <code>BUILD SUCCESSFUL</code>，模拟器能启动到登录页。</div>
+  <div class="risk"><b>超时预案：</b>19:05 还没编过，就把这 7 行直接注释掉（先让工程跑起来），修编译的时间不计入后续阶段。今晚最大的风险不是写不完，是卡在编译错误里出不来。</div>
+</div>
+
+<!-- P1 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P1</span>
+    <span class="name">打通数据层</span>
+    <span class="time">19:05 – 19:30</span>
+    <span class="dur">25 分钟</span>
+  </div>
+  <p class="meta"><b>这一阶段是今晚的杠杆点。</b>数据通了，后面三个页面都是十几分钟的事；数据不通，哪个页面都动不了。</p>
+  <ul class="steps">
+    <li><span class="filetag">MyDbHelper.java</span>在 <code>onCreate</code> 建表之后，插入 10 门课程 + 1 个测试账号（见下方代码）</li>
+    <li><span class="filetag">DbManager.java</span><code>insertUser</code> 改成 5 个参数，把 <code>name</code> / <code>college</code> / <code>major</code> 也 put 进去</li>
+    <li><span class="filetag">DbManager.java</span>修正 <code>toCourse</code> 的取值顺序（这是最容易埋雷的一处）</li>
+    <li><span class="filetag">entity/User.java</span>6 个字段前加 <code>public</code>，否则跨包读不到</li>
+    <li><span class="filetag">DbManager.java</span>新增 7 个方法</li>
+  </ul>
+
+  <p class="meta" style="margin-top:16px"><b>① 建表顺序必须记牢</b>（<code>toCourse</code> 就是栽在这里）</p>
+  <pre>table_course 列序：
+0 courseid   1 coursename  2 teacher   3 credit   4 time
+5 location   6 capacity    <span class="kw">7 type     8 selectedCount</span>   9 isSelected
+
+<span class="cm">// 构造器要的是：… capacity, selectedCount, type</span>
+<span class="cm">// 所以：第 8 个实参用 getInt(8)，第 9 个实参用 getString(7) —— 顺序是反的</span></pre>
+
+  <p class="meta" style="margin-top:16px"><b>② 种子数据</b>（放进 <code>MyDbHelper.onCreate</code>，10 列一个都不能少，<code>type</code> / <code>selectedCount</code> / <code>isSelected</code> 都是 NOT NULL）</p>
+  <pre>db.execSQL(<span class="st">"insert into table_user(username,passwd,name,college,major) "</span>
+  + <span class="st">"values('2024001','123456','张三','计算机学院','软件工程')"</span>);
+
+db.execSQL(<span class="st">"insert into table_course(coursename,teacher,credit,time,location,capacity,type,selectedCount,isSelected) "</span>
+  + <span class="st">"values('Java程序设计','张老师',3.0,'周一3-4节','实验楼A203',60,'专业课',45,0)"</span>);
+<span class="cm">// 再补 9 条：数据结构 / 计算机网络 / 操作系统 / 数据库原理 / 大学英语
+// 注意留一门把 selectedCount 设成 58、capacity 60，方便演示"余量紧张"</span></pre>
+
+  <p class="meta" style="margin-top:16px"><b>③ 要新增的 7 个方法（签名）</b></p>
+  <table>
+    <tr><th>方法签名</th><th>做什么</th></tr>
+    <tr><td><code>int checkLogin(String username, String passwd)</code></td><td>查到返回 userid，查不到返回 -1</td></tr>
+    <tr><td><code>User getUser(int userid)</code></td><td>按 id 取用户，个人中心用</td></tr>
+    <tr><td><code>List&lt;Course&gt; getAllCourses()</code></td><td>查全部课程，选课大厅用</td></tr>
+    <tr><td><code>List&lt;Course&gt; getMyCourses(int userid)</code></td><td>按用户查已选（把 <code>searchclass</code> 改掉，去掉没用的 passwd 参数）</td></tr>
+    <tr><td><code>boolean selectCourse(int userid, int courseid)</code></td><td>写 table_selection，同时把 selectedCount +1</td></tr>
+    <tr><td><code>boolean dropCourse(int userid, int courseid)</code></td><td>删记录，同时把 selectedCount -1</td></tr>
+    <tr><td><code>double getTotalCredit(int userid)</code></td><td>sum(credit)，没记录返回 0</td></tr>
+  </table>
+
+  <div class="judge"><b>完成判据：</b>临时写一句 Toast 打印 <code>getAllCourses().size()</code>，能打出 <code>10</code>。打完删掉。</div>
+  <div class="risk"><b>两个必踩的坑，提前说：</b><br>
+    1. <code>table_selection</code> 上有 <code>unique(userid,courseid)</code> → 重复选同一门会抛异常。用 <code>insertWithOnConflict(..., CONFLICT_IGNORE)</code>，或先查再插。<br>
+    2. 数据库文件 <code>app01.db</code> 如果已经存在，<code>onCreate</code> <b>不会再跑</b>，种子数据插不进去。<b>改完先把 App 从模拟器上卸载一次</b>（或把 <code>db_version</code> 从 1 改成 2）。
+  </div>
+  <div class="risk"><b>超时预案：</b>19:30 还没通，就砍掉 selectedCount 的 ±1 维护，总分改成在列表里累加。</div>
+</div>
+
+<!-- P2 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P2</span>
+    <span class="name">登录走数据库 + 记住当前用户</span>
+    <span class="time">19:30 – 19:40</span>
+    <span class="dur">10 分钟</span>
+  </div>
+  <p class="meta">现在登录是拿 <code>str7</code>/<code>str8</code> 硬编码比对（2024001/123456），改完密码就登不进去。更关键的是：<b>没有任何地方记住"谁登录了"</b>，后面三个页面全靠它。</p>
+  <ul class="steps">
+    <li><span class="filetag">新建 Session.java</span>一个静态类，三个字段：<code>public static int userId = -1;</code> / <code>username</code> / <code>realName</code></li>
+    <li><span class="filetag">LoginActivity.java</span>把 4 个 <code>if-else</code> 分支整段换成一次 <code>checkLogin</code> 调用</li>
+    <li><span class="filetag">LoginActivity.java</span>保留"不能为空"的前置判断，其余提示统一为"学号或密码错误"</li>
+    <li><span class="filetag">LoginActivity.java</span>给 <code>btn2</code>（注册）挂一个 Toast「注册功能开发中」，先别留死按钮</li>
+  </ul>
+  <pre>int uid = <span class="kw">new</span> DbManager(<span class="kw">this</span>).checkLogin(stuId, passwd);
+<span class="kw">if</span> (uid &gt; 0) {
+    Session.userId = uid;
+    startActivity(<span class="kw">new</span> Intent(<span class="kw">this</span>, MainActivity.class));
+    finish();
+} <span class="kw">else</span> {
+    Toast.makeText(<span class="kw">this</span>, <span class="st">"学号或密码错误"</span>, Toast.LENGTH_SHORT).show();
+}</pre>
+  <div class="judge"><b>完成判据：</b>用 <code>2024001 / 123456</code> 能登进去；随便乱填报错；进去之后打一行日志确认 <code>Session.userId</code> 不是 -1。</div>
+</div>
+
+<!-- P3 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P3</span>
+    <span class="name">选课大厅接真数据 + 选课/退课</span>
+    <span class="time">19:40 – 20:00</span>
+    <span class="dur">20 分钟</span>
+  </div>
+  <ul class="steps">
+    <li><span class="filetag">CourseHallFragment.java</span>把写死的 4 条 <code>list.add(...)</code> 删掉，改成 <code>new DbManager(getContext()).getAllCourses()</code></li>
+    <li><span class="filetag">CourseAdapter.java</span>给卡片上的「选课」「退选」两个按钮挂监听 —— 这两个按钮现在<b>完全没有被引用过</b>，点了毫无反应</li>
+    <li><span class="filetag">CourseAdapter.java</span>做法：构造函数多传一个 <code>Context</code>（或一个回调接口），在 <code>onBindViewHolder</code> 里 <code>holder.itemView.findViewById(R.id.choosecourse)</code> 挂点击</li>
+    <li><span class="filetag">CourseAdapter.java</span>点完要刷新 —— 重新查一次数据再 <code>notifyDataSetChanged()</code>（比直接改内存可靠，因为 selectedCount 变了）</li>
+    <li><span class="filetag">acti_course.xml</span><b>可选但建议做</b>：删掉最外层 <code>ScrollView</code>（第 2 行）和它的闭合标签（第 101 行）。RecyclerView 嵌在 ScrollView 里会一次性渲染全部条目，回收复用彻底失效</li>
+  </ul>
+  <div class="judge"><b>完成判据：</b>列表显示 10 门真实课程；点「选课」弹 Toast；切到「我的课表」能看到刚选的课。</div>
+  <div class="risk"><b>超时预案：</b>20:00 还没出列表，就只做"列表能出数据"，选课按钮先只弹 Toast 不落库，把时间全留给 P4 和 P6。</div>
+</div>
+
+<!-- P4 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P4</span>
+    <span class="name">我的课表</span>
+    <span class="time">20:00 – 20:15</span>
+    <span class="dur">15 分钟</span>
+  </div>
+  <p class="meta">现在这一页只有一行字「这是我的课表，看什么看」，Java 里连一行逻辑都没有。</p>
+  <ul class="steps">
+    <li><span class="filetag">acti_mycourse.xml</span>重写为三件套：竖向 LinearLayout → 顶部一个 <code>TextView</code>（显示"总学分：X · 已选 N 门"）→ 一个 <code>RecyclerView</code>（<code>id=mylist</code>）</li>
+    <li><span class="filetag">MyCoursesFragment.java</span><code>getMyCourses(Session.userId)</code> 取列表，配 <code>LinearLayoutManager</code>，复用现有的 <code>CourseAdapter</code></li>
+    <li><span class="filetag">MyCoursesFragment.java</span>总学分用 <code>getTotalCredit(Session.userId)</code> 单独查，别自己去遍历</li>
+    <li><span class="filetag">MyCoursesFragment.java</span>列表为空时提示一行「还没有选课」</li>
+    <li><span class="filetag">MyCoursesFragment.java</span>退课按钮 → <code>dropCourse()</code> → 重新查一次 → 刷新列表和总学分</li>
+  </ul>
+  <div class="judge"><b>完成判据：</b>刚选的课出现在这里；退课后从列表消失；总学分和门数跟着变。</div>
+</div>
+
+<!-- P5 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P5</span>
+    <span class="name">个人中心 + 退出登录</span>
+    <span class="time">20:15 – 20:22</span>
+    <span class="dur">7 分钟</span>
+  </div>
+  <ul class="steps">
+    <li><span class="filetag">acti_profile.xml</span>精简：一个 <code>TextView</code> 显示「姓名 / 学号 / 学院 / 专业」+ 一个「退出登录」按钮</li>
+    <li><span class="filetag">acti_profile.xml</span>给「退出登录」补上 <code>android:id="@+id/btn_logout"</code> —— 现在它连 id 都没有</li>
+    <li><span class="filetag">ProfileFragment.java</span><code>getUser(Session.userId)</code> 填进那个 TextView</li>
+    <li><span class="filetag">ProfileFragment.java</span>退出登录：<code>Session.userId = -1</code> → 跳 <code>LoginActivity</code> → <code>getActivity().finish()</code></li>
+  </ul>
+  <div class="judge"><b>完成判据：</b>显示的是登录那个账号的真实信息；退出后回到登录页，按返回键回不去。</div>
+  <div class="risk"><b>不要动</b>那 4 组共 20 个按钮（账号信息 / 选课服务 / 系统设置 / 帮助与反馈）。它们没有 id 也没有监听，留着不影响运行，答辩时可以说是"预留功能"。删它们反而费时间。</div>
+</div>
+
+<!-- P6 -->
+<div class="card">
+  <div class="head">
+    <span class="id">P6</span>
+    <span class="name">联调 + 打包</span>
+    <span class="time">20:22 – 20:30</span>
+    <span class="dur">8 分钟</span>
+  </div>
+  <ul class="steps">
+    <li><span class="filetag">bottom_nav_menu.xml</span>删掉 <code>nav_scores</code>（成绩查询）那一项 —— 现在 4 个 Tab 对 3 个 Fragment，点它会跳到选课大厅</li>
+    <li>完整走一遍：<b>登录 → 选课大厅 → 选 2 门 → 我的课表 → 退 1 门 → 个人中心 → 退出登录 → 重新登录</b></li>
+    <li>每一步都按一次返回键，确认不崩</li>
+    <li>跑 <code>.\gradlew.bat assembleDebug</code>，把 <code>app/build/outputs/apk/debug/app-debug.apk</code> 复制到桌面改名</li>
+  </ul>
+  <div class="judge"><b>完成判据：</b>6 步流程全程不崩，APK 文件生成并能装到手机上。</div>
+</div>
+
+<h2>今晚明确不做（想都别想，会吃掉整晚）</h2>
+<div class="card">
+  <ul class="no-go">
+    <li>注册页（从零建 Activity + 布局 + Manifest 注册）</li>
+    <li>课程详情弹窗（两栏信息网格 + 确认选课）</li>
+    <li>课程搜索功能</li>
+    <li>6 个分类筛选按钮（全部/公共课/专业课/选修课/已选/冲突）</li>
+    <li>全部视觉美化：渐变、圆角卡片、图标、头像、进度条、徽章</li>
+    <li>底部导航图标 + 中间那个紫色悬浮按钮</li>
+    <li>修改密码 / 找回账号 / 绑定手机</li>
+    <li>成绩查询页</li>
+  </ul>
+  <p class="meta" style="margin-top:14px;margin-bottom:0">这些加起来约 <b>10～12 小时</b>。今晚 95 分钟只够走功能闭环。</p>
+</div>
+
+<h2>两个止损点（请盯死）</h2>
+<div class="stop">
+  <div class="t">止损点一 · <span>19:05 · 编译必须通</span></div>
+  <p>到点还没有 <code>BUILD SUCCESSFUL</code>，立刻停手只修编译 —— 不碰数据层、不碰布局。实在改不动就把那 7 行注释掉先让工程跑起来，功能后面再补。</p>
+</div>
+<div class="stop">
+  <div class="t">止损点二 · <span>19:40 · 数据层必须通</span></div>
+  <p>到点还查不出课程列表，果断放弃 SQLite，改成在内存里写死一个 <code>List&lt;Course&gt;</code> 假数据源。今天的交付目标是「功能能演示」而不是「数据真落库」——<b>看效果图的人分不出数据是不是真的存在数据库里，但一眼就能看出页面能不能点。</b></p>
+</div>
+
+<h2>最终验收清单</h2>
+<div class="card">
+  <ul class="steps">
+    <li>1. <code>assembleDebug</code> 输出 <code>BUILD SUCCESSFUL</code></li>
+    <li>2. APK 能装、能启动、不闪退</li>
+    <li>3. 登录页：空账号 → 提示不能为空</li>
+    <li>4. 登录页：错误账号 → 提示"学号或密码错误"</li>
+    <li>5. 登录页：2024001 / 123456 → 进入主页</li>
+    <li>6. 选课大厅：显示数据库里的真实课程（10 门）</li>
+    <li>7. 选课大厅：点「选课」能落库，退出重进状态还在</li>
+    <li>8. 选课大厅：点「退选」能删掉记录</li>
+    <li>9. 我的课表：只显示当前登录用户选的课</li>
+    <li>10. 我的课表：总学分 / 已选门数算得对</li>
+    <li>11. 个人中心：显示真实姓名、学号、学院、专业</li>
+    <li>12. 个人中心：退出登录回到登录页，返回键回不去</li>
+    <li>13. 底部三个 Tab 都能切，不会切错页</li>
+    <li>14. 全流程按返回键不崩</li>
+  </ul>
+</div>
+
+<footer>
+  生成于 2026-09-30 18:55 · 距交付 95 分钟 · 计划不含任何代码改动
+</footer>
+
+</div>
+</body>
+</html>

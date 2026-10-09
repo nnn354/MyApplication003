@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>校园课栈 v2.0 升级蓝图</title>
+<style>
+  :root{
+    --bg:#EEF3FF; --card:#FFFFFF; --pri:#4A63E8; --pri2:#6C4CF1;
+    --text:#1B1B24; --sub:#5B6478; --mut:#8A94AC; --line:#E1E9FA;
+    --ok:#16A34A; --warn:#C77700; --dan:#E23B3B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 10% -10%, #E4ECFF 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #F0EAFF 0%, transparent 55%),
+      var(--bg);
+      color:var(--text);font:14px/1.75 -apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;}
+  .wrap{max-width:1040px;margin:0 auto;padding:34px 20px 90px}
+  header.hero{background:linear-gradient(135deg,#6C4CF1 0%,#4A63E8 100%);border-radius:24px;
+    padding:32px 34px;color:#fff;box-shadow:0 18px 44px rgba(74,99,232,.30)}
+  header.hero h1{margin:0;font-size:30px;letter-spacing:.5px}
+  header.hero p{margin:10px 0 0;opacity:.9;font-size:14px}
+  .pill{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.34);
+    border-radius:999px;padding:4px 13px;font-size:12px;font-weight:700;margin:16px 8px 0 0}
+  h2{margin:44px 0 14px;font-size:21px;letter-spacing:.3px;display:flex;align-items:center;gap:10px}
+  h2 .n{display:inline-flex;width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#6C4CF1,#4A63E8);
+    color:#fff;font-size:14px;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 6px 14px rgba(74,99,232,.28)}
+  h3{margin:26px 0 10px;font-size:16px}
+  p{margin:10px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;
+    box-shadow:0 4px 18px rgba(74,99,232,.06);margin:14px 0}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;
+    box-shadow:0 4px 18px rgba(74,99,232,.06);font-size:13px}
+  th,td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid #EEF2FC}
+  th{background:#F5F8FF;font-size:12px;color:var(--sub);letter-spacing:.5px;font-weight:800;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td.k{font-weight:700;color:#2B3350;white-space:nowrap}
+  code{background:#EEF2FF;color:#3B4FD8;padding:1px 6px;border-radius:6px;font-size:12.5px;
+    font-family:ui-monospace,Consolas,monospace}
+  .tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 9px;border-radius:999px;margin:0 5px 5px 0}
+  .t-a{background:#EFECFF;color:#6C4CF1}.t-b{background:#E8EFFF;color:#4A63E8}
+  .t-c{background:#E6F7EC;color:#16A34A}.t-d{background:#FFF4E0;color:#C77700}
+  .t-e{background:#FFE9E9;color:#E23B3B}.t-f{background:#EAF3FF;color:#2F6FE4}
+  .badge{display:inline-block;background:#E6F7EC;color:#16A34A;font-size:11.5px;font-weight:800;
+    padding:2px 9px;border-radius:999px}
+  .badge.w{background:#FFF4E0;color:#C77700}
+  .badge.d{background:#FFE9E9;color:#E23B3B}
+  ul{margin:8px 0 8px 0;padding-left:20px}
+  li{margin:5px 0}
+  .muted{color:var(--mut)}
+  .note{background:#F7FAFF;border-left:4px solid var(--pri);border-radius:0 12px 12px 0;padding:12px 16px;margin:14px 0;font-size:13.5px}
+  .warnbox{background:#FFFBF3;border-left:4px solid #E9A23B;border-radius:0 12px 12px 0;padding:12px 16px;margin:14px 0;font-size:13.5px}
+  .shot{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 4px 16px rgba(74,99,232,.07)}
+  .shot img{width:100%;display:block;border-radius:10px}
+  .shot .cap{font-size:12px;font-weight:800;color:#2B3350;margin:9px 2px 3px;text-align:center}
+  .shot .sub{font-size:11px;color:var(--mut);text-align:center;line-height:1.5}
+  .stage{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:0 4px 18px rgba(74,99,232,.06)}
+  .stage h4{margin:0 0 6px;font-size:15px}
+  .stage .out{font-size:12.5px;color:var(--sub);margin-top:8px}
+  .num{font-size:26px;font-weight:800;color:var(--pri);line-height:1}
+  footer{margin-top:50px;text-align:center;color:var(--mut);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>校园课栈 v2.0 · 升级蓝图</h1>
+  <p>不新开项目 —— 把你现在这个能跑的 MVP，改造成一座把 Android 全栈知识点全部串起来的完整产品。</p>
+  <div>
+    <span class="pill">15 个页面目标效果图</span>
+    <span class="pill">7 大知识域 · 60+ 知识点</span>
+    <span class="pill">4 阶段落地路线</span>
+    <span class="pill">Java 优先</span>
+  </div>
+</header>
+
+<h2><span class="n">1</span>先看清起点：你现在站在哪</h2>
+
+<div class="card">
+  <p><b>一句话定位：</b>当前项目是一个「<b>能跑通主流程的 MVP</b>」。它已经证明了你会用 Activity / Fragment / RecyclerView / SQLite / 资源多语言这些<b>概念型 API</b>；但它离「成熟独立开发者」缺的不是某个 API，而是<b>整整两层</b>——<b>架构层</b>（状态怎么管、依赖怎么给、数据从哪来）和<b>工程层</b>（怎么测、怎么发布、怎么合规）。</p>
+</div>
+
+<h3>已经拿到的（别小看）</h3>
+<div class="grid g3">
+  <div class="card"><b>UI 基础</b><div class="muted" style="font-size:12.5px">Activity / Fragment 生命周期、RecyclerView + ViewHolder、XML 布局与控件绑定</div></div>
+  <div class="card"><b>数据基础</b><div class="muted" style="font-size:12.5px">SQLiteOpenHelper 手写建表、CRUD、<code>inner join</code>、<code>CONFLICT_IGNORE</code></div></div>
+  <div class="card"><b>资源与国际化</b><div class="muted" style="font-size:12.5px">values / values-en / values-de 三套字符串、应用内切语言 <code>attachBaseContext</code></div></div>
+  <div class="card"><b>清单与跳转</b><div class="muted" style="font-size:12.5px">AndroidManifest 注册、Intent 显式跳转、LAUNCHER 入口</div></div>
+  <div class="card"><b>适配意识</b><div class="muted" style="font-size:12.5px">targetSdk 高版本 edge-to-edge、<code>fitsSystemWindows</code> 处理</div></div>
+  <div class="card"><b>调试能力 <span class="badge">最值钱</span></b><div class="muted" style="font-size:12.5px">用 adb / logcat / uiautomator 自己定位崩溃——很多工作三年的人都不熟</div></div>
+</div>
+
+<h3>14 处「欠账」＝ 你现成的练习题库</h3>
+<table>
+  <tr><th>位置</th><th>现状</th><th>暴露的知识缺口</th></tr>
+  <tr><td class="k">MyDbHelper.onUpgrade</td><td>三张表全 <code>drop</code> 重建，用户数据全丢</td><td>Room Migration / <code>ALTER TABLE</code></td></tr>
+  <tr><td class="k">DbManager.checklogin</td><td>密码明文入库、明文比较</td><td>加盐哈希、安全存储</td></tr>
+  <tr><td class="k">DbManager 选课</td><td><code>insert</code> + <code>updateCount</code> 两步、无事务</td><td>数据库事务与一致性</td></tr>
+  <tr><td class="k">MainActivity.lang / currentuserid</td><td><code>static</code> 变量，重启回中文、要重登</td><td>DataStore 持久化状态</td></tr>
+  <tr><td class="k">全部 DB 调用</td><td>跑在 UI 回调里（主线程）</td><td>协程 / 线程池 / 异步</td></tr>
+  <tr><td class="k">各 Fragment</td><td>每次跳转重新查库、无缓存</td><td>ViewModel + Repository</td></tr>
+  <tr><td class="k">各 Fragment</td><td>到处 <code>new DbManager(getContext())</code></td><td>依赖注入 Hilt</td></tr>
+  <tr><td class="k">导航</td><td>手写 FragmentTransaction 切换</td><td>Navigation Component</td></tr>
+  <tr><td class="k">列表刷新</td><td><code>notifyDataSetChanged()</code> 全量刷新</td><td>ListAdapter + DiffUtil</td></tr>
+  <tr><td class="k">选课大厅</td><td>一次性加载全部，无分页</td><td>Paging 3</td></tr>
+  <tr><td class="k">列表布局</td><td>RecyclerView 套在 ScrollView 内，复用失效、滑动冲突</td><td>正确的嵌套滚动</td></tr>
+  <tr><td class="k">项目根目录</td><td>没有 <code>.git</code></td><td>Git（最便宜也最该先补）</td></tr>
+  <tr><td class="k">app/build.gradle</td><td>无混淆 / 无签名 / 无变体 / 无 ViewBinding</td><td>R8、签名、多渠道</td></tr>
+  <tr><td class="k">全局</td><td>无 Loading/Empty/Error 三态、无异常兜底</td><td>健壮性设计</td></tr>
+</table>
+
+<div class="note"><b>核心方法论：</b>不要为了学知识点去新开 Demo。上面每一条欠账，都是这个产品<b>本来就应该有</b>的东西。把「修欠账」当任务做，知识点就长在你自己的项目里，而且能写进简历。</div>
+
+<h2><span class="n">2</span>知识点 → 功能 映射矩阵</h2>
+<p class="muted">这张表是整份蓝图的核心：左边是你要补的知识，右边是它在 v2.0 里<b>落到哪个功能</b>。做完功能，知识就补上了。</p>
+
+<h3>A · 架构与状态管理</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">ViewModel + StateFlow/LiveData</td><td>选课大厅、课表、成绩三个页面各自 ViewModel</td><td>旋转屏幕 / 切后台回来，列表与筛选状态不丢</td></tr>
+  <tr><td class="k">Repository 单一数据源</td><td><code>CourseRepository</code> 统一供数，页面不直接碰 DAO</td><td>页面里搜不到任何 <code>DbManager</code> / <code>Cursor</code></td></tr>
+  <tr><td class="k">MVVM 分层</td><td>UI(Activity/Fragment) → ViewModel → Repository → Room</td><td>每层只依赖下一层，无反向引用</td></tr>
+  <tr><td class="k">Hilt 依赖注入</td><td><code>AppModule</code> 提供 Database / DAO / Repository / Api</td><td>全项目无手写 <code>new Repository()</code></td></tr>
+  <tr><td class="k">Navigation Component</td><td>登录 → 主页 → 详情 → 编辑资料 全部走 <code>nav_graph</code></td><td>用 Safe Args 传 <code>courseId</code>，类型安全</td></tr>
+  <tr><td class="k">Fragment Result API</td><td>详情页退选后，回传刷新列表与筛选计数</td><td>退选后返回列表，容量与"已选"角标同步变化</td></tr>
+  <tr><td class="k">单向数据流 UDF</td><td>ViewModel 暴露不可变 <code>UiState</code>，页面只渲染</td><td>UI 层没有业务判断分支</td></tr>
+  <tr><td class="k">三态 UI</td><td>统一 <code>Loading / Empty / Error</code> 组件（见效果图 14）</td><td>任何页面都不出现白屏无反馈</td></tr>
+</table>
+
+<h3>B · 数据与持久化</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">Room（Entity/DAO/Database）</td><td>用 Room 重写 table_user / table_course / table_selection</td><td>编译期校验 SQL，无手写 Cursor 遍历</td></tr>
+  <tr><td class="k">Room Migration</td><td>给"新增 banji 列"补一个迁移，而不是 drop 重建</td><td>升级 DB 版本后老数据仍在</td></tr>
+  <tr><td class="k">@Transaction</td><td>选课 = 插记录 + 加人数，包在一个事务里</td><td>中途失败时两边都回滚</td></tr>
+  <tr><td class="k">DataStore（Preferences）</td><td>登录态 Token、记住我、语言、主题、上次登录学号</td><td>杀进程重启，语言与登录态保持</td></tr>
+  <tr><td class="k">密码加盐哈希</td><td>注册写库前 <code>MessageDigest</code>+salt，登录比对哈希</td><td>DB 里看不到明文密码</td></tr>
+  <tr><td class="k">Paging 3</td><td>选课大厅分页加载（每页 10 条）</td><td>滚动到底部自动加载下一页</td></tr>
+  <tr><td class="k">离线优先 + 缓存</td><td>网络失败时回落到本地 Room 数据</td><td>断网仍能看到上次的课表与成绩</td></tr>
+</table>
+
+<h3>C · 网络与异步</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">Retrofit + OkHttp</td><td>接一个 Mock 服务（登录 / 选课 / 成绩），本地也能跑</td><td>断网时错误态正确、有网时数据来自网络</td></tr>
+  <tr><td class="k">拦截器 Interceptor</td><td>统一加 Token、打请求日志、加缓存头</td><td>Logcat 能看到请求/响应耗时</td></tr>
+  <tr><td class="k">序列化（Gson/Moshi）</td><td>接口 DTO ↔ 实体映射</td><td>DTO 与 Entity 分离，不混用</td></tr>
+  <tr><td class="k">协程 / ExecutorService</td><td>所有 DB 与网络调用移出主线程</td><td>列表快速滚动不掉帧</td></tr>
+  <tr><td class="k">Flow + 操作符</td><td>搜索框输入防抖（<code>debounce</code>）后触发查询</td><td>连续输入只发一次请求</td></tr>
+  <tr><td class="k">超时 / 重试 / 错误映射</td><td>统一 <code>Result</code> 包装，映射成用户看得懂的文案</td><td>错误提示能区分网络/服务器/校验</td></tr>
+</table>
+
+<h3>D · 平台能力（你目前几乎空白的一整块）</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">运行时权限</td><td>注册/编辑资料页换头像 → 申请相机、相册权限</td><td>拒绝后给解释、能跳设置页</td></tr>
+  <tr><td class="k">通知 + NotificationChannel</td><td>选课截止、成绩发布、余量告急推送（见效果图 09）</td><td>点击通知能深链进详情页</td></tr>
+  <tr><td class="k">WorkManager</td><td>每天定时查余量、每周查成绩，触发提醒</td><td>杀进程后任务仍按时执行</td></tr>
+  <tr><td class="k">前台服务（进阶）</td><td>抢课倒计时 / 余量监听</td><td>常驻通知可见、可停止</td></tr>
+  <tr><td class="k">BroadcastReceiver</td><td>监听网络变化，自动刷新并提示"网络已恢复"</td><td>开关飞行模式能看到联动</td></tr>
+  <tr><td class="k">Deep Link / App Links</td><td>通知与外部链接直达课程详情</td><td><code>adb shell am start -a VIEW -d ...</code> 能打开</td></tr>
+  <tr><td class="k">相机 / 相册</td><td>头像拍照与选图、裁剪</td><td>选完头像立即持久化</td></tr>
+  <tr><td class="k">WebView</td><td>用户协议 / 隐私政策页（见效果图 13）</td><td>加载本地 assets 页面，处理返回键</td></tr>
+  <tr><td class="k">应用内语言切换（进阶）</td><td>深化现有实现：语言持久化 + 重启保持 + 跟随系统</td><td><code>AppCompatDelegate</code> 或按语言重建，三语全覆盖</td></tr>
+</table>
+
+<h3>E · UI 与体验</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">Material 3 主题体系</td><td>建立 <code>colors / type / dimens / shape</code> 四件套（见效果图 00）</td><td>没有硬编码色值，改一处全局生效</td></tr>
+  <tr><td class="k">深浅色模式</td><td><code>values-night</code> + 设置页三选一（跟随/浅/深）</td><td>切深色全页可读，无白底白字</td></tr>
+  <tr><td class="k">ViewBinding</td><td>全项目替换 <code>findViewById</code></td><td>空指针在编译期就被拦住</td></tr>
+  <tr><td class="k">ListAdapter + DiffUtil</td><td>三个列表页统一改造</td><td>刷新只重绘变化的条目，有动画</td></tr>
+  <tr><td class="k">自定义 View</td><td>周课表视图（见效果图 06）：自绘网格与课程块</td><td>支持点击、冲突高亮、横竖屏</td></tr>
+  <tr><td class="k">动画与转场</td><td>列表→详情共享元素、底部导航切换过渡</td><td>跳转有连贯感，不闪白</td></tr>
+  <tr><td class="k">下拉刷新 + 骨架屏</td><td>首页与成绩页</td><td>首屏先出骨架，不出现长时间空白</td></tr>
+  <tr><td class="k">无障碍与大字体</td><td><code>contentDescription</code>、sp 单位、TalkBack 走查</td><td>系统字体放大后不截断</td></tr>
+</table>
+
+<h3>F · 工程与质量</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">Git + 分支规范</td><td>初始化仓库，<code>main / dev / feature-*</code>，写好 .gitignore</td><td>每个功能一个 PR，历史清晰</td></tr>
+  <tr><td class="k">Gradle 变体</td><td><code>buildTypes</code>（debug/release）+ <code>productFlavors</code>（dev/staging/prod）</td><td>一套代码打出三种环境包</td></tr>
+  <tr><td class="k">签名 + keystore</td><td>生成正式 keystore，配置 <code>signingConfig</code></td><td>release 包能装到真机</td></tr>
+  <tr><td class="k">R8 混淆 + 资源压缩</td><td>开启 <code>minifyEnabled</code> / <code>shrinkResources</code>，写 keep 规则</td><td>混淆后功能正常、包体积下降</td></tr>
+  <tr><td class="k">单元测试</td><td>Repository 选课事务、ViewModel 状态流转（JUnit + Mockito）</td><td>覆盖核心分支，CI 上会自动跑</td></tr>
+  <tr><td class="k">仪器测试</td><td>Espresso：登录 → 选课 → 课表 主流程</td><td>一条命令跑通核心链路</td></tr>
+  <tr><td class="k">Lint</td><td>接入 <code>lint</code> 并清空 error 级问题</td><td>构建不再有硬编码/可访问性告警</td></tr>
+  <tr><td class="k">CI（GitHub Actions）</td><td>push 自动 build + test + lint</td><td>README 上有绿色构建徽章</td></tr>
+  <tr><td class="k">崩溃与内存</td><td>Crashlytics 上报 + LeakCanary 检测</td><td>能查到一次真实崩溃的堆栈与设备信息</td></tr>
+  <tr><td class="k">启动与体积优化</td><td>SplashScreen API、Baseline Profile、APK 分析</td><td>冷启动与包体积有前后对比数据</td></tr>
+</table>
+
+<h3>G · 发布与合规</h3>
+<table>
+  <tr><th style="width:22%">知识点</th><th style="width:34%">落地功能</th><th>验收标准</th></tr>
+  <tr><td class="k">隐私政策 + 用户协议</td><td>启动页勾选同意、设置页可查阅（效果图 01 / 13）</td><td>不同意则不可收集任何数据</td></tr>
+  <tr><td class="k">权限最小化</td><td>只申请相机/相册/通知，且都在使用场景中弹</td><td>无"一启动就要一堆权限"</td></tr>
+  <tr><td class="k">APP 备案</td><td>完成工信部 APP 备案，展示备案号</td><td>国产应用商店要求的前置条件</td></tr>
+  <tr><td class="k">AAB / 多渠道上架</td><td>打 AAB 或分渠道 APK，投华为/小米/OPPO/vivo/应用宝</td><td>至少在一个商店审核通过上线</td></tr>
+  <tr><td class="k">版本管理</td><td><code>versionCode</code> / <code>versionName</code> 规范 + 更新日志</td><td>能说清每个版本改了什么</td></tr>
+</table>
+
+<h2><span class="n">3</span>升级后的项目功能设计</h2>
+<p class="muted">下面 15 个页面构成 v2.0 的完整功能面。加粗的是<b>新增</b>或<b>大改</b>的部分。</p>
+
+<table>
+  <tr><th style="width:20%">页面</th><th style="width:44%">核心功能</th><th>主要知识点</th></tr>
+  <tr><td class="k">00 设计规范</td><td>色板 / 字阶 / 组件库（按钮、Chip、输入框、进度条、标签）</td><td>Material 3 主题体系、设计令牌</td></tr>
+  <tr><td class="k">01 启动页 <span class="badge">新增</span></td><td>SplashScreen API、品牌展示、<b>隐私政策勾选</b>、初始化数据与登录态校验</td><td>启动优化、SplashScreen、合规、DataStore 读取</td></tr>
+  <tr><td class="k">02 登录页</td><td>学号/密码登录、记住我、忘记密码、<b>手机验证码 / 统一身份认证</b>、语言切换</td><td>表单校验、DataStore、OkHttp 登录接口、错误态</td></tr>
+  <tr><td class="k">03 注册页</td><td>完整表单 + 实时校验、<b>头像上传</b>、手机验证码、学院/班级选择</td><td>运行时权限、相机相册、密码哈希、ViewModel 校验</td></tr>
+  <tr><td class="k">04 选课大厅</td><td><b>搜索(课程/教师/教室) + 防抖</b>、7 类筛选、<b>下拉刷新 + 分页</b>、容量进度、选课</td><td>Paging 3、Flow debounce、DiffUtil、三态 UI</td></tr>
+  <tr><td class="k">05 课程详情</td><td>课程信息 / 上课安排 / 简介、<b>冲突检测提示</b>、加入或退选、分享收藏</td><td>Navigation Safe Args、事务、共享元素动画</td></tr>
+  <tr><td class="k">06 我的课表</td><td><b>周课表网格视图</b> + 列表视图切换、总学分/学时统计、<b>冲突高亮</b></td><td>自定义 View、自绘网格、数据聚合</td></tr>
+  <tr><td class="k">07 成绩查询 <span class="badge">从 0 实现</span></td><td>GPA 卡片、学期筛选、成绩列表、<b>趋势图表</b>、排名</td><td>RecyclerView 多类型、图表绘制、ViewModel</td></tr>
+  <tr><td class="k">08 学习计划 <span class="badge">新增</span></td><td>待办清单 + 打卡、完成进度环、<b>定时提醒</b>、新建任务</td><td>WorkManager、通知、Room、自定义进度环</td></tr>
+  <tr><td class="k">09 消息中心 <span class="badge">新增</span></td><td>通知列表分类、未读红点、<b>通知权限引导</b>、点击深链跳转</td><td>Notification、Deep Link、未读状态持久化</td></tr>
+  <tr><td class="k">10 个人中心</td><td>资料卡 + 数据概览、功能入口聚合、退出登录</td><td>多入口导航、DataStore 清理</td></tr>
+  <tr><td class="k">11 编辑资料 <span class="badge">新增</span></td><td>头像更换（拍照/相册/移除）、多字段编辑与校验、保存</td><td>权限、图片处理、表单校验、Repository 更新</td></tr>
+  <tr><td class="k">12 设置 <span class="badge">新增</span></td><td><b>深色模式三选一</b>、语言切换、通知开关、清缓存、检查更新、关于</td><td>values-night、DataStore、缓存管理、应用内更新</td></tr>
+  <tr><td class="k">13 关于与隐私政策 <span class="badge">新增</span></td><td>版本信息、协议与隐私政策入口、开源许可、备案号</td><td>WebView、合规文案、版本读取</td></tr>
+  <tr><td class="k">14 全局状态规范</td><td>Loading 骨架屏 / Empty 空态 / Error 重试 / 未登录 四态统一样式</td><td>健壮性设计、统一 UiState 封装</td></tr>
+</table>
+
+<h3>建议的包结构（升级后）</h3>
+<div class="card">
+<pre style="margin:0;font-size:12.5px;line-height:1.85;overflow:auto;color:#2B3350">com.example.myapplication003
+├─ data/            ← 数据层
+│   ├─ local/       Room：AppDatabase、Dao、Entity、Migration
+│   ├─ remote/      Retrofit：ApiService、DTO、Interceptor
+│   ├─ prefs/       DataStore：UserPrefs（语言/主题/登录态）
+│   └─ repository/  CourseRepository、UserRepository（唯一供数口）
+├─ di/              Hilt：AppModule、DatabaseModule、NetworkModule
+├─ ui/
+│   ├─ splash/  login/  register/
+│   ├─ hall/    CourseHallFragment + CourseHallViewModel
+│   ├─ detail/  course/    ← 详情
+│   ├─ schedule/ mycourse/ ← 周课表（含自定义 View）
+│   ├─ score/   plan/   message/   profile/  setting/  about/
+│   └─ common/  UiState、三态组件、通用 Adapter
+├─ work/            WorkManager Worker（余量/成绩提醒）
+├─ receiver/        网络变化广播
+└─ widget/          自定义 View（TimetableView 等）</pre>
+</div>
+
+<h2><span class="n">4</span>落地路线：4 个阶段</h2>
+<p class="muted">每阶段都以「可运行、可演示」为终点。不要跳阶段——架构没打好就做网络，后面会返工。</p>
+
+<div class="grid g2">
+  <div class="stage">
+    <div class="num">00</div>
+    <h4>阶段 0 · 地基（先做这个！）</h4>
+    <ul>
+      <li>Git 初始化 + .gitignore + 首条提交</li>
+      <li>接入 ViewBinding，清掉 findViewById</li>
+      <li>建 colors / type / dimens / shape 四件套，替换全部硬编码</li>
+      <li>接通 Lint，清 error 级问题</li>
+    </ul>
+    <div class="out"><b>交付：</b>项目有版本历史、有设计体系、构建干净</div>
+  </div>
+  <div class="stage">
+    <div class="num">01</div>
+    <h4>阶段 1 · 架构与数据</h4>
+    <ul>
+      <li>Room 重写三张表 + 迁移 + 事务</li>
+      <li>Repository 单一数据源；密码加盐哈希</li>
+      <li>ViewModel + StateFlow；三态 UI</li>
+      <li>Hilt 注入；Navigation Component + Safe Args</li>
+      <li>DataStore 管语言 / 主题 / 登录态</li>
+    </ul>
+    <div class="out"><b>交付：</b>登录→选课→课表全流程走新架构，断网不崩</div>
+  </div>
+  <div class="stage">
+    <div class="num">02</div>
+    <h4>阶段 2 · 网络与体验</h4>
+    <ul>
+      <li>Retrofit + OkHttp + 拦截器（Mock 服务）</li>
+      <li>协程承担全部 IO；搜索防抖</li>
+      <li>Paging 3 分页；DiffUtil 替换全量刷新</li>
+      <li>自定义周课表 View；下拉刷新 + 骨架屏</li>
+      <li>补齐成绩、消息、学习计划三页</li>
+    </ul>
+    <div class="out"><b>交付：</b>15 个页面全部有真实功能，体验接近成品</div>
+  </div>
+  <div class="stage">
+    <div class="num">03</div>
+    <h4>阶段 3 · 平台能力与质量</h4>
+    <ul>
+      <li>权限（相机/相册/通知）、通知渠道、Deep Link</li>
+      <li>WorkManager 定时提醒；网络变化广播</li>
+      <li>深浅色模式；设置页落地</li>
+      <li>JUnit + Espresso 测试；LeakCanary / Crashlytics</li>
+      <li>GitHub Actions CI</li>
+    </ul>
+    <div class="out"><b>交付：</b>CI 绿、测试覆盖核心链路、崩溃可追踪</div>
+  </div>
+  <div class="stage" style="grid-column:1/-1">
+    <div class="num">04</div>
+    <h4>阶段 4 · 发布与合规</h4>
+    <ul>
+      <li>keystore 签名 + buildTypes/flavors 多渠道</li>
+      <li>R8 混淆与资源压缩 + keep 规则</li>
+      <li>隐私政策 / 用户协议 / 权限说明；APP 备案</li>
+      <li>打 AAB，投至少一个应用商店并通过审核</li>
+      <li>同步开始学 Kotlin，之后用 Kotlin + Compose 复刻本项目</li>
+    </ul>
+    <div class="out"><b>交付：</b>应用真正上架，链接可分享；简历上有一个完整闭环项目</div>
+  </div>
+</div>
+
+<div class="warnbox"><b>取舍提醒：</b>阶段 1 是分水岭。如果你时间紧，宁可把「消息中心 / 学习计划 / 深色模式」砍掉，也<b>必须</b>把 Room + ViewModel + Repository + Hilt + Navigation 做完——面试问的、工作用的是这些，而不是多几个页面。</div>
+
+<h2><span class="n">5</span>目标效果图 · 15 张（PNG）</h2>
+<p class="muted">完整尺寸 PNG 位于项目根目录 <code>升级效果图/</code>，每张 390×844@2x（780×1688）。下面按流程顺序排布。</p>
+
+<div class="grid g4">
+  <div class="shot"><img src="升级效果图/00_设计规范.png" alt="设计规范"><div class="cap">00 设计规范</div><div class="sub">色板 / 字阶 / 组件</div></div>
+  <div class="shot"><img src="升级效果图/01_启动页.png" alt="启动页"><div class="cap">01 启动页</div><div class="sub">隐私合规 + 初始化</div></div>
+  <div class="shot"><img src="升级效果图/02_登录页.png" alt="登录页"><div class="cap">02 登录页</div><div class="sub">多方式登录</div></div>
+  <div class="shot"><img src="升级效果图/03_注册页.png" alt="注册页"><div class="cap">03 注册页</div><div class="sub">头像 + 实时校验</div></div>
+</div>
+
+<div class="grid g4" style="margin-top:14px">
+  <div class="shot"><img src="升级效果图/04_选课大厅.png" alt="选课大厅"><div class="cap">04 选课大厅</div><div class="sub">搜索 / 筛选 / 分页</div></div>
+  <div class="shot"><img src="升级效果图/05_课程详情.png" alt="课程详情"><div class="cap">05 课程详情</div><div class="sub">冲突检测 + 选退课</div></div>
+  <div class="shot"><img src="升级效果图/06_我的课表.png" alt="我的课表"><div class="cap">06 我的课表</div><div class="sub">周课表网格</div></div>
+  <div class="shot"><img src="升级效果图/07_成绩查询.png" alt="成绩查询"><div class="cap">07 成绩查询</div><div class="sub">GPA + 趋势图</div></div>
+</div>
+
+<div class="grid g4" style="margin-top:14px">
+  <div class="shot"><img src="升级效果图/08_学习计划.png" alt="学习计划"><div class="cap">08 学习计划</div><div class="sub">待办 + 定时提醒</div></div>
+  <div class="shot"><img src="升级效果图/09_消息中心.png" alt="消息中心"><div class="cap">09 消息中心</div><div class="sub">通知 + 深链</div></div>
+  <div class="shot"><img src="升级效果图/10_个人中心.png" alt="个人中心"><div class="cap">10 个人中心</div><div class="sub">资料 + 入口聚合</div></div>
+  <div class="shot"><img src="升级效果图/11_编辑资料.png" alt="编辑资料"><div class="cap">11 编辑资料</div><div class="sub">头像 + 字段校验</div></div>
+</div>
+
+<div class="grid g4" style="margin-top:14px">
+  <div class="shot"><img src="升级效果图/12_设置.png" alt="设置"><div class="cap">12 设置</div><div class="sub">深色 / 语言 / 通知</div></div>
+  <div class="shot"><img src="升级效果图/13_关于与隐私政策.png" alt="关于与隐私政策"><div class="cap">13 关于与隐私政策</div><div class="sub">WebView + 合规</div></div>
+  <div class="shot"><img src="升级效果图/14_全局状态规范.png" alt="全局状态规范"><div class="cap">14 全局状态规范</div><div class="sub">四态统一</div></div>
+  <div class="shot" style="display:flex;align-items:center;justify-content:center;background:#F7FAFF">
+    <div style="text-align:center;color:#8A94AC;font-size:12.5px;line-height:1.9">
+      <b style="color:#4A63E8;font-size:15px">共 15 张</b><br>
+      与效果图并列存放<br>
+      可直接作为开发对照
+    </div>
+  </div>
+</div>
+
+<h2><span class="n">6</span>怎么用这套东西</h2>
+<div class="card">
+  <ul>
+    <li><b>每做一页：</b>打开对应效果图，先照图把静态布局铺出来（ViewBinding + 主题色），再接 ViewModel 与 Repository，最后挂上三态 UI。</li>
+    <li><b>每完成一页：</b>回本文件第 2 节的表格，把该页对应的知识点逐条打勾，写进 README 的进度表。</li>
+    <li><b>每完成一个阶段：</b>打一个 git tag（<code>v0.1-arch</code>、<code>v0.2-network</code>…），简历上就是一条可验证的时间线。</li>
+    <li><b>遇到卡点：</b>把卡点浓缩成一句话，再回来问我——我按"只诊断给方案、不代写代码"的方式陪你走完。</li>
+  </ul>
+</div>
+
+<footer>校园课栈 v2.0 升级蓝图 · 2026-10-09 · 效果图与本文档均为设计稿，未修改任何项目源码</footer>
+</div>
+</body>
+</html>

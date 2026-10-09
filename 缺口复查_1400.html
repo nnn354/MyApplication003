@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>缺口复查 · 14:00</title>
+<style>
+  :root{
+    --bg:#0A1733; --card:#14244D; --card2:#1B2C55; --line:#25365E;
+    --ink:#E7EEFF; --ink2:#BCCBEC; --ink3:#93A6CC;
+    --purple:#8B6CF5; --blue:#5A8DE0;
+    --red:#FF8F8F; --red-bg:#3A1520; --amber:#FFCF7A; --amber-bg:#3A2A0C;
+    --green:#7FE0A8; --green-bg:#0E3524;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:34px 18px 70px;background:#0A1733;color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif;
+    font-size:14.5px;line-height:1.75;}
+  .wrap{max-width:960px;margin:0 auto}
+  header{background:linear-gradient(135deg,#233A7A 0%,#3B2C86 55%,#5A3FB8 100%);
+    border:1px solid #3A4E86;border-radius:18px;padding:26px 28px;margin-bottom:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  header h1{margin:0 0 6px;font-size:24px;letter-spacing:.3px}
+  header .sub{color:#C6D2F2;font-size:13px}
+  .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;padding:4px 11px;border-radius:20px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22)}
+  .chip.ok{background:rgba(80,220,150,.16);border-color:rgba(80,220,150,.4);color:#A8F0C8}
+  .chip.bad{background:rgba(255,110,110,.16);border-color:rgba(255,110,110,.4);color:#FFB3B3}
+  .chip.warn{background:rgba(255,200,90,.14);border-color:rgba(255,200,90,.38);color:#FFDDA0}
+  .verdict{background:#12224A;border:1px solid #2C3F6E;border-radius:14px;
+    padding:18px 22px;margin-bottom:22px}
+  .verdict b{color:#fff}
+  h2{font-size:17.5px;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--purple)}
+  h3{font-size:15px;margin:20px 0 8px;color:#D5DFF7}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 20px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px}
+  th{background:var(--card2);color:#C6D4F2;font-weight:600;text-align:left;
+    padding:10px 12px;font-size:13px;white-space:nowrap}
+  td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#111F42}
+  code{font-family:Consolas,Menlo,monospace;font-size:12.5px;background:#1B2C55;
+    color:#9FC8FF;padding:1.5px 6px;border-radius:5px;border:1px solid #2A3F6E}
+  pre{background:#0D1932;border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;overflow-x:auto;font-size:12.5px;line-height:1.65;margin:10px 0}
+  pre code{background:none;border:none;color:#CFE0FF;padding:0}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;
+    border:1px solid transparent;white-space:nowrap}
+  .p0{background:var(--red-bg);color:var(--red);border-color:#5A2430}
+  .p1{background:var(--amber-bg);color:var(--amber);border-color:#5A4418}
+  .p2{background:#1C2A55;color:#A9B8DA;border-color:#31437A}
+  .ok{background:var(--green-bg);color:var(--green);border-color:#1C5A3A}
+  .drop{background:#242A3A;color:#8FA2C8;border-color:#39415A}
+  .box{border-radius:12px;padding:14px 18px;margin:12px 0;border:1px solid var(--line);
+    background:#12224A}
+  .box.bad{border-color:#5A2430;background:#2A1220}
+  .box.warn{border-color:#5A4418;background:#2A2010}
+  .box.ok{border-color:#1C5A3A;background:#0E2A1C}
+  .box b{color:#fff}
+  ul{margin:8px 0 8px 4px;padding-left:20px}
+  li{margin:5px 0}
+  .kv{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;margin:4px 0}
+  .kv .k{color:var(--ink3);min-width:52px}
+  .log{background:#0D1932;border:1px solid var(--line);border-radius:10px;padding:12px 15px;
+    font-family:Consolas,Menlo,monospace;font-size:12.5px;color:#D6DCFF;overflow-x:auto;margin:10px 0}
+  .log .r{color:#FF9E9E}
+  .log .g{color:#8FE8B4}
+  .foot{margin-top:34px;color:var(--ink3);font-size:12.5px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>缺口复查 · 14:00</h1>
+  <div class="sub">智能选课系统（com.example.myapplication003）— 源码逐行复核 + 模拟器真机实测。只诊断，未动任何业务代码。</div>
+  <div class="chips">
+    <span class="chip ok">编译 BUILD SUCCESSFUL</span>
+    <span class="chip ok">模拟器实测已跑通</span>
+    <span class="chip bad">新发现 1 处闪退</span>
+    <span class="chip warn">遗留 6 项</span>
+    <span class="chip">10 份报告已改深蓝底</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <b>一句话结论：</b>上轮修的三件事（登录页补 <code>setContentView</code>、语言按钮加 <code>fitsSystemWindows</code>、en/de 补字符串）全部确认生效，<b>语言切换手点就能用了，这个卡你最久的问题已经解决</b>。
+  但你这轮新加的「注册」入口<b>一点就闪退</b>——`ZhuceActivity` 既没继承 Activity、也没在清单里注册，点击直接杀进程。注册功能目前是 0% 的空壳。
+</div>
+
+<h2>一、本轮怎么查的</h2>
+<div class="card">
+  <ul>
+    <li><b>静态</b>：13 个 java + 13 个布局 + 4 个菜单/三套 strings/colors 全部重读，逐一比对修改时间</li>
+    <li><b>编译</b>：<code>JAVA_HOME="D:\aaaaa_安卓开发\jbr" ./gradlew assembleDebug</code> → <b>BUILD SUCCESSFUL</b></li>
+    <li><b>运行</b>：雷电模拟器在线，<code>adb install -r</code> 装包后点登录／点各按钮，<code>logcat -b crash</code> 抓崩溃，<code>uiautomator dump</code> 拿真实控件坐标，截图逐页核对</li>
+  </ul>
+</div>
+
+<h2>二、🔴 本轮最重要的发现：点「去注册」直接闪退</h2>
+<div class="box bad">
+  <b>实测复现：</b>登录页点「去注册」（btn2）→ App 立刻退出回到桌面，<code>pidof</code> 返回 NO_PROCESS。
+</div>
+<div class="log">
+10-09 05:59:28.196 E AndroidRuntime: FATAL EXCEPTION: main<br>
+android.content.<span class="r">ActivityNotFoundException</span>: Unable to find explicit activity class<br>
+&nbsp;&nbsp;{com.example.myapplication003/<b>com.example.myapplication003.ZhuceActivity</b>};<br>
+&nbsp;&nbsp;have you declared this activity in your AndroidManifest.xml...<br>
+&nbsp;at com.example.myapplication003.LoginActivity.<b>lambda$onCreate$2</b>(LoginActivity.java:<b>113</b>)
+</div>
+<div class="card">
+  <b>两处根因叠加，缺一不可：</b>
+  <table>
+    <tr><th style="width:26%">根因</th><th>现状</th><th style="width:30%">不改会怎样</th></tr>
+    <tr>
+      <td>① 没在清单注册</td>
+      <td>AndroidManifest.xml 里只有 <code>.LoginActivity</code> 和 <code>.MainActivity</code>，<b>没有 <code>.ZhuceActivity</code></b>（你新建了类但忘了写 &lt;activity&gt;）</td>
+      <td>就是你刚遇到的 <code>ActivityNotFoundException</code>，直接闪退</td>
+    </tr>
+    <tr>
+      <td>② 不是个 Activity</td>
+      <td><code>ZhuceActivity.java</code> 全文只有 <code>public class ZhuceActivity { }</code>，<b>没有 extends AppCompatActivity</b>，也没有 onCreate</td>
+      <td>就算补了清单，系统实例化它时会抛 <code>ClassCastException</code>，照样崩</td>
+    </tr>
+  </table>
+  <p style="margin:6px 0 0;color:#BCCBEC">顺带一提：<code>startActivity(new Intent(this, ZhuceActivity.class))</code> 这种写法<b>编译期完全不报错</b>（Intent 接受任意 Class），所以编译过了不等于能跑——这就是它一直没被发现的原因。</p>
+</div>
+
+<h3>还有 3 个隐患在注册这条线上</h3>
+<table>
+  <tr><th style="width:22%">问题</th><th>位置 / 现状</th><th style="width:24%">后果</th></tr>
+  <tr>
+    <td><span class="tag p0">P0</span> 三个按钮全跳同一个空页</td>
+    <td>LoginActivity.java:112-123 —— btn2「去注册」、btn3「重置密码」、btn4「找回账号」<b>三段监听代码一模一样</b>，都 <code>startActivity(ZhuceActivity)</code></td>
+    <td>三个功能入口无法区分，等于三个都没做</td>
+  </tr>
+  <tr>
+    <td><span class="tag p0">P0</span> 跳转还带了 finish()</td>
+    <td>同上，每个监听最后都 <code>finish()</code></td>
+    <td>登录页被关掉；用户从注册页按返回<b>直接退出 App</b>，回不到登录页</td>
+  </tr>
+  <tr>
+    <td><span class="tag p1">P1</span> 注册页是空布局</td>
+    <td><code>acti_zhuce.xml</code> 只有一个空的 <code>ConstraintLayout</code>，0 个控件</td>
+    <td>页面即使能打开也是白板</td>
+  </tr>
+</table>
+
+<h2>三、上轮问题处理核对</h2>
+<table>
+  <tr><th style="width:30%">上轮提出</th><th style="width:14%">现状</th><th>实测依据 / 位置</th></tr>
+  <tr><td>语言按钮被状态栏盖住，手点无效</td><td><span class="tag ok">已修</span></td><td>两个布局都加了 <code>fitsSystemWindows="true"</code>；实测点击 (540,202) → <code>D LANG : 切换为: en</code>，界面整体变英文 ✅</td></tr>
+  <tr><td>en/de 缺 str57-60</td><td><span class="tag ok">已修</span></td><td>三套 strings 现在都到 str60，对齐了</td></tr>
+  <tr><td>搜索不搜教室</td><td><span class="tag ok">已修</span></td><td>CourseHallFragment.java:155 已含 <code>c.location.contains(...)</code></td></tr>
+  <tr><td>底部 4 个 Tab 只显示选中项</td><td><span class="tag p0">未修</span></td><td>activity_main.xml 的 BottomNavigationView <b>仍没有</b> <code>app:labelVisibilityMode="labeled"</code>；bottom_nav_menu.xml 4 个 item <b>仍无 android:icon</b>。界面树里只有 <code>navigation_bar_item_large_label_view</code>，没有 small label；截图确认左下角只有「选课大厅」</td></tr>
+  <tr><td>成绩查询 Tab 无实现</td><td><span class="tag p0">未修</span></td><td>MainActivity.java:62-76 仍只判断 nav_my / nav_profile，其余落 <code>else → index 0</code>；实测点它页面依然是选课大厅</td></tr>
+  <tr><td>「冲突」按钮硬编码中文</td><td><span class="tag p1">未修</span></td><td>CourseHallFragment.java:59 仍 <code>Toast("功能开发中")</code>，切英文后还是中文</td></tr>
+</table>
+
+<h3>核心功能实测（这轮复跑，全部正常）</h3>
+<table>
+  <tr><th style="width:32%">功能</th><th style="width:12%">结果</th><th>实测细节</th></tr>
+  <tr><td>App 启动</td><td><span class="tag ok">通过</span></td><td>登录页正常渲染，进程存活，crash log 为空</td></tr>
+  <tr><td>登录 2024001 / 123456</td><td><span class="tag ok">通过</span></td><td>成功进主页，currentuserid 正确写入</td></tr>
+  <tr><td>搜索（课程 / 教师 / 教室）</td><td><span class="tag ok">通过</span></td><td>输入 203 → 列表从 10 门缩到 2 门，都在「实验楼A203」</td></tr>
+  <tr><td>筛选 全部 / 公共课 / 专业课 / 选修课</td><td><span class="tag ok">通过</span></td><td>点「选修课」只剩人工智能导论 1 门</td></tr>
+  <tr><td>已选 / 选课 / 退选 / 重复选课拦截</td><td><span class="tag ok">通过</span></td><td>与数据库对账一致，selectedCount 同步增减，无虚增</td></tr>
+  <tr><td>我的课表</td><td><span class="tag ok">通过</span></td><td>2 门，底部「共2门，学分共7.0分」算对</td></tr>
+  <tr><td>个人中心</td><td><span class="tag ok">通过</span></td><td>不崩溃，读到真实用户字段</td></tr>
+  <tr><td>语言切换</td><td><span class="tag ok">通过</span></td><td>手点即可，zh → en → de 循环正常</td></tr>
+  <tr><td>注册流程</td><td><span class="tag p0">闪退</span></td><td>点「去注册」→ ActivityNotFoundException，进程被杀</td></tr>
+</table>
+
+<h2>四、剩余缺口（按重要性）</h2>
+
+<h3>A 档 · 会出错或没反应（约 40 分钟）</h3>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:30%">问题</th><th>怎么改</th></tr>
+  <tr><td>1</td><td><span class="tag p0">P0</span> 注册入口闪退</td>
+      <td>① <code>ZhuceActivity</code> 改成 <code>extends AppCompatActivity</code> 并写 onCreate + setContentView；② 在 AndroidManifest 里加 <code>&lt;activity android:name=".ZhuceActivity"/&gt;</code>。<b>两步都要，缺一仍崩。</b></td></tr>
+  <tr><td>2</td><td><span class="tag p0">P0</span> 三按钮共用 + finish() 关掉登录页</td>
+      <td>至少让 btn3/btn4 不要都跳注册页（可先只留 btn2 跳转并去掉 <code>finish()</code>，或改成 Toast 占位）。保留 finish() 会导致注册页返回即退出 App。</td></tr>
+  <tr><td>3</td><td><span class="tag p0">P0</span> 底部导航 3/4 个 Tab 隐形</td>
+      <td>BottomNavigationView 加 <code>app:labelVisibilityMode="labeled"</code>；或给 4 个 item 各补 <code>android:icon</code>。最省是前者。</td></tr>
+  <tr><td>4</td><td><span class="tag p0">P0</span> 成绩查询 Tab 点了没反应</td>
+      <td>要么在 MainActivity 里补 nav_scores 分支指向一个新 Fragment，要么直接把这一项从 bottom_nav_menu.xml 删掉（效果图上没成绩页的话，删最省）。</td></tr>
+  <tr><td>5</td><td><span class="tag p1">P1</span> 冲突按钮硬编码中文</td>
+      <td>CourseHallFragment.java:59 的 Toast 文案换成 <code>getString(...)</code>，三语补一条。</td></tr>
+</table>
+
+<h3>B 档 · 界面信息不完整（约 1 小时）</h3>
+<ul>
+  <li><code>item_courselist.xml</code> 被「选课大厅」和「我的课表」共用，导致课表每张卡也带着<b>「选课」按钮</b>——课表里只该有「退选」。</li>
+  <li>课程卡片目前只有 4 个裸 TextView（课程名/教师/学分/余量），缺<b>时间、地点、类型标签、进度条</b>。</li>
+  <li>我的课表缺<b>顶部总学分条</b>、学期条，与效果图的汇总卡差得多。</li>
+  <li><code>acti_mycourse.xml:11</code> 仍挂着 <code>@string/str41</code>（“这是我的课表，看什么看”），实测界面上确实还显示着，必须删或替换。</li>
+  <li><code>item_courselist.xml</code> 字号写死 25sp，偏大，建议降到 15-16sp。</li>
+  <li>视觉素材仍是零：<code>colors.xml</code> 只有黑白两色，<code>drawable</code> 只有启动图标；紫色渐变、圆角卡、圆形头像、进度条都还没建。</li>
+</ul>
+
+<h3>C 档 · 可先抛弃（时间不够就砍）</h3>
+<ul>
+  <li><span class="tag drop">可弃</span> 课程详情弹窗（<code>豆包.png</code> 那个）——工程里没有任何 Dialog 类，从 0 做，性价比最低。</li>
+  <li><span class="tag drop">可弃</span> 个人中心 20 个按钮的二级页面——目前只有 logout 有 id，其余是占位，效果图里也多是图标摆设。</li>
+  <li><span class="tag drop">可弃</span> 「冲突检测」真正算法——需要解析时间字符串做区间相交，属于加分项，不做不影响主流程。</li>
+</ul>
+
+<h2>五、这个环境的老规矩（顺手记录）</h2>
+<div class="card">
+  <ul>
+    <li>命令行编译必须带 Android Studio 自带 JDK：<code>JAVA_HOME="D:\aaaaa_安卓开发\jbr" ./gradlew assembleDebug</code>，否则会去联网下 toolchain 然后失败。</li>
+    <li>雷电模拟器用 <code>ldconsole.exe launch --index 0</code> 起实例；adb 在 <code>D:\a_studio\aa_studio\platform-tools\adb.exe</code>。</li>
+    <li>Gradle 的纯 bash 子 shell 里 PATH 会缺 <code>System32</code>，命令前先 <code>export PATH="/c/Windows/System32:/usr/bin:/bin:/mingw64/bin"</code>。</li>
+  </ul>
+</div>
+
+<div class="foot">本轮只做了诊断与运行观察，未修改任何 .java / .xml 业务代码。报告背景已按你的新要求统一改为深蓝色。</div>
+
+</div>
+</body>
+</html>

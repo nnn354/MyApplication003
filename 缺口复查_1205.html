@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>缺口复查 12:05 · 智慧选课系统</title>
+<style>
+  :root{
+    --purple:#6C4CF1; --purple-l:#EFEAFF; --purple-b:#D9CEFF;
+    --ink:#1B1B24; --ink2:#4A4A5A; --ink3:#7C7C90;
+    --bg:#F6F5FB; --card:#FFFFFF; --line:#E6E4F2;
+    --red:#E33B3B; --red-l:#FDECEC;
+    --amber:#D98A00; --amber-l:#FFF6E5;
+    --green:#1F9D55; --green-l:#EAF8F0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+    line-height:1.7;padding:32px 20px 72px}
+  .wrap{max-width:920px;margin:0 auto}
+  header{background:linear-gradient(135deg,#6C4CF1 0%,#8B6CF5 55%,#A78BFA 100%);
+    border-radius:20px;padding:30px 32px;color:#fff;margin-bottom:24px}
+  header h1{margin:0 0 6px;font-size:26px;letter-spacing:.5px}
+  header .sub{opacity:.92;font-size:14px}
+  header .meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:4px 12px;font-size:12.5px}
+  h2{font-size:19px;margin:32px 0 12px;padding-left:12px;border-left:5px solid var(--purple)}
+  h3{font-size:15.5px;margin:20px 0 10px;color:var(--ink2)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(30,20,80,.04)}
+  .verdict{background:var(--purple-l);border:1px solid var(--purple-b);
+    border-radius:14px;padding:16px 20px;margin-bottom:18px;font-size:15px}
+  .verdict b{color:var(--purple)}
+  ul{margin:8px 0 0;padding-left:20px}
+  li{margin:7px 0}
+  code{background:#EFEEF7;border:1px solid #E2E0F0;border-radius:5px;
+    padding:1px 6px;font-size:12.5px;font-family:Consolas,Menlo,monospace;color:#4338CA}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#FAF9FE;color:var(--ink2);font-weight:600;font-size:13px}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;
+    font-weight:600;white-space:nowrap}
+  .t-p0{background:var(--red-l);color:var(--red)}
+  .t-p1{background:var(--amber-l);color:var(--amber)}
+  .t-p2{background:var(--purple-l);color:var(--purple)}
+  .t-ok{background:var(--green-l);color:var(--green)}
+  .t-off{background:#EFEFF3;color:var(--ink3)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}}
+  .stage{border-left:4px solid var(--purple);padding-left:14px;margin:16px 0}
+  .stage.a{border-color:#E33B3B}.stage.b{border-color:#D98A00}.stage.c{border-color:#8B6CF5}
+  .stage h4{margin:0 0 6px;font-size:15px}
+  .mini{font-size:13px;color:var(--ink3)}
+  .kill{background:#FFF8F8;border:1px solid #FAD9D9;border-radius:12px;padding:14px 18px}
+  .kill li{color:var(--ink2)}
+  .foot{margin-top:28px;font-size:12.5px;color:var(--ink3);text-align:center}
+</style>
+
+<!-- 深蓝主题（统一覆盖） -->
+<style id="dark-blue-theme">
+:root{
+  --bg:#0A1733!important; --page:#0A1733!important; --white:#14244D!important;
+  --card:#14244D!important; --ink:#E7EEFF!important; --text:#E7EEFF!important;
+  --ink2:#BCCBEC!important; --ink-2:#BCCBEC!important; --ink3:#93A6CC!important;
+  --ink-3:#93A6CC!important; --sub:#A9B8DA!important; --line:#25365E!important;
+  --line2:#25365E!important; --purple-bg:#1C2A55!important; --purple-l:#1C2A55!important;
+  --purple-tint:#1C2A55!important; --purple-light:#1C2A55!important; --purple-b:#2C3F6E!important;
+  --purple-dark:#C3B4FF!important; --purple-deep:#C3B4FF!important;
+}
+html{background:#0A1733!important;}
+body{background:#0A1733!important;background-image:none!important;
+  background-attachment:scroll!important;color:#E7EEFF!important;}
+.card,section,table,.box,.verdict,.kill,.feat,.log,article,main,aside,figure,details,.tbl{
+  background-color:#14244D!important;background-image:none!important;}
+th{background:#1B2C55!important;color:#C6D4F2!important;}
+td{background-color:transparent!important;}
+tr:nth-child(even) td{background-color:#111F42!important;}
+pre{background:#0D1932!important;border-color:#25365E!important;}
+pre code{background:none!important;color:#D7E6FF!important;}
+code{background:#1B2C55!important;color:#9FC8FF!important;border-color:#2A3F6E!important;}
+hr,td,th{border-color:#25365E!important;}
+a{color:#93B6FF!important;}
+.banner{background:#13224A!important;background-image:none!important;}
+.banner.ok{background:#0E3524!important;}
+.banner.warn{background:#3A2A0C!important;}
+.banner.bad{background:#3A1520!important;}
+.callout{background:#1B2A52!important;background-image:none!important;}
+[style*="background:#fdf6e3"],[style*="background:#fffafa"],[style*="background:#faf9ff"],
+[style*="background:#fff "],[style*="background: #fff"],[style*="background:#ffffff"]{
+  background:#1B2A52!important;border-color:#2C3F6E!important;}
+body *:not(pre):not(code):not(.banner):not(.banner *):not(.callout):not(.callout *):not(.badge):not(.chip):not(.tag):not(.pill):not(.pct):not(.t0):not(.t1):not(.t2):not(.t-ok):not(.t-p0):not(.t-p1):not(.t-p2):not(.t-off):not(.t-red):not(.t-amber):not(.t-green):not(.t-purple):not(.t-crash):not(.t-none):not(.ok):not(.warn):not(.bad):not(.p0):not(.p1):not(.p2){color:#E7EEFF;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>缺口复查 · 12:05</h1>
+  <div class="sub">智慧选课系统（com.example.myapplication003）— 只诊断，未改动任何一行代码</div>
+  <div class="meta">
+    <span class="chip">编译 ✅ BUILD SUCCESSFUL</span>
+    <span class="chip">上轮最致命崩溃 ✅ 已修</span>
+    <span class="chip">剩余待办 16 项</span>
+    <span class="chip">运行实测 ⚠️ 未做（模拟器未起）</span>
+  </div>
+</header>
+
+<div class="verdict">
+  <b>一句话结论：</b>App 现在能启动了。上轮那个「登录页丢 <code>setContentView</code> → 一启动就闪退」的致命问题你已经补回来了（<code>LoginActivity.java:29</code>），
+  另外「已选」按钮和搜索教室也修好了。<b>剩下的都不是崩溃级问题，是「点了不对 / 缺内容 / 没样式」</b>——功能主干已经通了。
+</div>
+
+<h2>一、本次怎么查的</h2>
+<div class="card">
+  <ul>
+    <li><b>静态通读</b>：11 个 java 文件 + 12 个布局 + 三套 strings 全部逐行看过（对照 11:32 那次逐条复核）。</li>
+    <li><b>编译实测</b>：<code>assembleDebug</code> → <b>BUILD SUCCESSFUL in 24s</b>，无编译期错误。</li>
+    <li><b>运行实测</b>：<b>这轮没做成</b>。雷电模拟器当前没开，我试着起了实例但没起来（<code>dnplayer.exe</code> 未出现），
+        <code>adb devices</code> 一直是空。所以「装上跑一遍」这一步缺了——你方便时把雷电打开我再补一遍，
+        或者你自己在 IDE 里 Run 一次确认不闪退。</li>
+  </ul>
+  <p class="mini" style="margin-top:10px">
+    附：命令行编译必须用 Android Studio 自带的 JDK 25，否则会联网去下 toolchain 然后失败 ——
+    <code>JAVA_HOME="D:\aaaaa_安卓开发\jbr" ./gradlew assembleDebug</code>
+  </p>
+</div>
+
+<h2>二、上轮 5 条问题的处置核对</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:52%">问题（11:32 提出）</th><th style="width:14%">现状</th><th>位置</th></tr>
+    <tr>
+      <td>登录页误删 <code>setContentView</code>，App 启动即 NPE 闪退</td>
+      <td><span class="tag t-ok">已修</span></td>
+      <td><code>LoginActivity.java:29</code> 已补回</td>
+    </tr>
+    <tr>
+      <td>「已选」按钮点了没反应（返回值无人接）</td>
+      <td><span class="tag t-ok">已修</span></td>
+      <td><code>CourseHallFragment.java:43-50</code> 方法内部自己 clear/addAll/notify 了</td>
+    </tr>
+    <tr>
+      <td>搜索不搜教室</td>
+      <td><span class="tag t-ok">已修</span></td>
+      <td><code>CourseHallFragment.java:154</code> 已加 <code>c.location.contains(...)</code></td>
+    </tr>
+    <tr>
+      <td>我的课表点「选课」虚增已选人数</td>
+      <td><span class="tag t-ok">已修</span></td>
+      <td><code>MyCoursesFragment.java:35-39</code> 改为只弹 <code>str60</code></td>
+    </tr>
+    <tr>
+      <td><code>ProfileFragment:61/62</code> 重复绑定同一按钮</td>
+      <td><span class="tag t-ok">已修</span></td>
+      <td>已去重</td>
+    </tr>
+    <tr>
+      <td>「冲突」按钮仍清空列表</td>
+      <td><span class="tag t-p0">未修</span></td>
+      <td><code>CourseHallFragment.java:179</code></td>
+    </tr>
+    <tr>
+      <td>en / de 缺 str57-60</td>
+      <td><span class="tag t-p0">未修</span></td>
+      <td><code>values-en</code>/<code>values-de</code> 都停在第 56 条</td>
+    </tr>
+    <tr>
+      <td>课表卡片同时挂「选课」+「退选」</td>
+      <td><span class="tag t-p1">未修</span></td>
+      <td>两个 Fragment 共用 <code>item_courselist.xml</code></td>
+    </tr>
+    <tr>
+      <td>成绩查询 Tab 无实现</td>
+      <td><span class="tag t-p0">未修</span></td>
+      <td><code>MainActivity.java:62-76</code></td>
+    </tr>
+  </table>
+</div>
+
+<h2>三、当前剩余问题（按重要性排序）</h2>
+
+<h3><span class="tag t-p0">P0</span> 功能硬伤 — 点了会出错 / 完全没反应</h3>
+<div class="card">
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:46%">问题</th><th>改哪儿 / 怎么改</th></tr>
+    <tr>
+      <td>1</td>
+      <td><b>「冲突」按钮一点，列表直接空掉</b><br>
+        <span class="mini">它走的是 <code>filter_class(...)</code>，按 <code>c.type</code> 过滤；库里 type 只有
+        「专业课 / 公共课 / 选修课」，没有任何一条 type 等于「冲突」→ 命中 0 条。</span></td>
+      <td><code>CourseHallFragment.java:179</code>。两种改法：<br>
+        ①（推荐）实现 <code>filter_confictclass()</code>——按 <code>Course.time</code> 两两比对（你 47-55 行已经把函数骨架注释好了，把注释展开填进去即可）；<br>
+        ②（省事）暂时改成弹 Toast「暂未实现」，至少不空列表。</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><b>底部「成绩查询」Tab 点了页面不动</b><br>
+        <span class="mini"><code>MainActivity</code> 只判断了 <code>nav_my</code> 和 <code>nav_profile</code>，
+        其它一律 <code>index=0</code> → 点成绩查询就停在选课大厅；<code>fragments</code> 数组也只有 3 个。</span></td>
+      <td><code>MainActivity.java:62-76</code> + <code>bottom_nav_menu.xml:5</code>。<br>
+        最快：把 <code>nav_scores</code> 这一项从菜单里删掉（效果图虽然没有成绩页设计稿，但底栏画了这个 Tab，删掉也说得过去）。<br>
+        想要更稳：加一个只有标题的 <code>ScoresFragment</code> 占位。</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><b>登录页三个按钮全是死的 + 没有注册页</b><br>
+        <span class="mini"><code>acti_login.xml</code> 里 btn2(去注册)、btn3(重置密码)、btn4(找回账号)，
+        <code>LoginActivity</code> 里一个都没绑监听。工程里也没有 <code>RegisterActivity</code>，
+        Manifest 只注册了 Login / Main。</span></td>
+      <td><code>LoginActivity.java</code>。最低成本：三个都绑 Toast「暂未开放」。<br>
+        想拿分：btn2 → 新建 <code>RegisterActivity</code> + <code>acti_register.xml</code>，
+        调 <code>DbManager.insertUser(...)</code>（这个方法已经写好了，一直没人用）。</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><b>「功能开发中」是一句写死的中文</b><br>
+        <span class="mini">三语体系里唯一的漏网之鱼，切 EN/DE 后它还是中文。</span></td>
+      <td><code>ProfileFragment.java:59</code>。改成 <code>getString(R.string.strXX)</code>，三套 strings 各补一条。</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><b>切到 EN / DE 后有几处蹦回中文</b><br>
+        <span class="mini">缺 str57(语言按钮) / str58(登录成功) / str59(用户名或密码错误) / str60(课表已选提示)。
+        Android 找不到就回落默认 values/ 的中文。</span></td>
+      <td><code>values-en/strings.xml</code> 和 <code>values-de/strings.xml</code> 各补 4 行。
+        不补的话，英文模式下登录成功提示是「登录成功」，很显眼。</td>
+    </tr>
+  </table>
+</div>
+
+<h3><span class="tag t-p1">P1</span> 体验与一致性 — 能跑，但对比效果图一眼就是残缺</h3>
+<div class="card">
+  <ul>
+    <li><b>我的课表里混进了「选课」按钮。</b>两个页面共用 <code>item_courselist.xml</code>，那里面「选课」「退选」两个按钮都在。
+      <span class="mini">现在点课表的「选课」只会弹 <code>str60</code>，不算错，但按钮本身就不该出现。</span>
+      改法：拆成 <code>item_course_hall.xml</code> / <code>item_mycourse.xml</code>，或者 Adapter 加个 flag 按场景 GONE 掉一个。</li>
+    <li><b>课程卡片信息太少。</b><code>item_courselist.xml</code> 只有 4 个 TextView（课程名/教师/学分/余量）。
+      效果图（豆包(2)）要的是：<b>上课时间、上课地点、课程类型标签、「已选 45/60」+ 进度条、已满/余量紧张状态</b>。
+      数据其实都在 <code>Course</code> 里（<code>time</code> / <code>location</code> / <code>type</code>），只是没往界面上放。</li>
+    <li><b>我的课表顶部和底部都是空的。</b>效果图（豆包(4)）要：顶部「总学分 15.0」+ 学期条 + 「第6周 / 切换周次」，
+      底部一张汇总卡「已选课程 N 门 / 累计学分 / 本周上课 N 节」+ 右箭头。
+      <span class="mini">你现在只有一个挤在角落的 <code>course_score</code> TextView，文字是「共N门，学分共M分」。
+      总学分、门数、节数这三项能从现有数据算出来，不用改库。</span></li>
+    <li><b>我的课表还挂着占位标题。</b><code>acti_mycourse.xml:11</code> 里还是 <code>str41</code>「这是我的课表，看什么看」。
+      建议直接删掉这个 TextView，换成「我的课表」标题。</li>
+    <li><b>选课大厅缺所有配色和状态。</b>搜索框、6 个筛选按钮、课程卡片全是 Android 默认灰白控件；
+      效果图里是紫色主色 + 胶囊筛选条 + 白底圆角卡 + 头像 + 进度条。</li>
+    <li><b>深色模式会「白底白字」。</b><code>acti_profile.xml</code> 有 4 处硬编码 <code>background="#FFFFFF"</code>，
+      而主题是 <code>Material3.DayNight</code> → 系统深色模式下文字变浅色、卡片还是白的，看不见字。
+      <span class="mini">顺便：<code>activity_main.xml:15</code> 的「EN/DE/中文」也是硬编码，应该写 <code>@string/str57</code>。</span></li>
+    <li><b>两处无用残留。</b><code>DbManager.updateUserInfro()</code> 从写出到现在全项目没人调过（顺手挂到「修改密码」就活了）；
+      <code>entity/Selection.java</code> 和 <code>layout/item_course.xml</code> 是早期留下的死文件。</li>
+  </ul>
+</div>
+
+<h3><span class="tag t-p2">P2</span> 完整度 — 效果图里有、你工程里完全没有的部分</h3>
+<div class="card">
+  <table>
+    <tr><th style="width:24%">效果图</th><th style="width:14%">当前完成度</th><th>还差什么</th></tr>
+    <tr>
+      <td><b>豆包(5) 登录页</b></td>
+      <td><span class="tag t-p2">40%</span></td>
+      <td>功能齐（学号/密码/登录/当前学期），但顶部紫色渐变背景、输入框图标、「欢迎使用智慧选课」主副标题、标题下的装饰圆形全没有；
+        按钮是系统默认灰，不是紫色胶囊。</td>
+    </tr>
+    <tr>
+      <td><b>豆包(3) 注册页</b></td>
+      <td><span class="tag t-off">0%</span></td>
+      <td>整页不存在。效果图要：学号(可用校验) / 姓名 / 身份证号 / 密码 / 确认密码 / 协议勾选 / 立即注册 / 返回登录。</td>
+    </tr>
+    <tr>
+      <td><b>豆包(2) 选课大厅</b></td>
+      <td><span class="tag t-p2">55%</span></td>
+      <td>搜索、6 个筛选、选课退课、真数据都已通。差的是：卡片的时间/地点/类型标签/进度条/状态文案、头像、整体紫色主题。</td>
+    </tr>
+    <tr>
+      <td><b>豆包.png 课程详情弹窗</b></td>
+      <td><span class="tag t-off">0%</span></td>
+      <td>整块不存在（点卡片不会弹）。效果图要：课程编号 / 名称 / 教师 / 学分 / 学时 / 时间 / 地点 / 考核方式 / 已选人数 / 容量上限 / 选课状态 + 取消/确认。</td>
+    </tr>
+    <tr>
+      <td><b>豆包(4) 我的课表</b></td>
+      <td><span class="tag t-p2">45%</span></td>
+      <td>查数据、退课、onResume 刷新、学分汇总是通的。差的是顶部总学分 + 学期条 + 周次切换、底部汇总卡、卡片信息、去掉占位标题。</td>
+    </tr>
+    <tr>
+      <td><b>豆包(1) 个人中心</b></td>
+      <td><span class="tag t-p2">50%</span></td>
+      <td>真数据填充 + 退出登录 + 20 个按钮 Toast 都通了。差的是：紫色渐变头部、圆形头像、两列信息排布、四张分组卡（带图标 + 右箭头）、退出按钮的红色胶囊样式。</td>
+    </tr>
+  </table>
+  <p class="mini" style="margin-top:12px">
+    <b>视觉素材目前是零：</b><code>res/values/colors.xml</code> 里只有 <code>black</code> 和 <code>white</code> 两个颜色；
+    <code>res/drawable/</code> 里只有启动图标。<b>渐变、圆角白卡、圆形头像、胶囊按钮、进度条——一个都没建。</b>
+    这也是为什么「功能都通了但看着不像那个 App」的唯一原因。
+  </p>
+</div>
+
+<h2>四、建议的动作顺序（功能优先，样式最后）</h2>
+
+<div class="stage a">
+  <h4>A 档 · 先把「点错会出问题」的堵上 · 约 45 分钟</h4>
+  <ul>
+    <li>「冲突」按钮：展开 <code>filter_confictclass()</code>，或先降级成 Toast</li>
+    <li>成绩查询 Tab：删掉，或加占位页</li>
+    <li>登录页 3 个按钮：至少都绑上 Toast（btn2 能跳注册最好）</li>
+    <li><code>ProfileFragment:59</code> 的「功能开发中」改成字符串资源</li>
+    <li><code>values-en</code> / <code>values-de</code> 各补 str57 / 58 / 59 / 60</li>
+  </ul>
+  <p class="mini">做完这 5 件，四个页面的主流程就没有「点了不对」的地方了。</p>
+</div>
+
+<div class="stage b">
+  <h4>B 档 · 把效果图上的信息补进卡片 · 约 90 分钟</h4>
+  <ul>
+    <li>课程卡片加：上课时间、地点、类型标签、「已选 N/容量」+ 进度条</li>
+    <li>我的课表：删占位标题、加顶部总学分 + 学期条、加底部汇总卡</li>
+    <li>按场景拆卡片布局，去掉课表里的「选课」按钮</li>
+    <li>修掉 <code>#FFFFFF</code> 硬编码（或直接在主题里锁死 light）</li>
+  </ul>
+</div>
+
+<div class="stage c">
+  <h4>C 档 · 样式与整页 · 约 60 分钟</h4>
+  <ul>
+    <li>最小配色：<code>colors.xml</code> 加紫色系，做 2-3 个圆角背景 drawable</li>
+    <li>注册页（新建 Activity + 布局，复用 <code>insertUser</code>）</li>
+    <li>课程详情弹窗（<code>Dialog</code> + 一个布局）</li>
+  </ul>
+</div>
+
+<h2>五、建议直接抛弃的部分</h2>
+<div class="card kill">
+  <ul>
+    <li>视觉 1:1 还原效果图（原稿 14~16 小时量，改成 A/B 档的「最小配色对齐」就够交差）</li>
+    <li>课程详情弹窗（如果时间不够，这是最该砍的一整块）</li>
+    <li>成绩查询完整页（无设计稿，删 Tab 最省）</li>
+    <li>20 个装饰按钮的真实功能（保持 Toast 占位）</li>
+    <li>周次的真实切换、真正的冲突检测算法（能做则做，做不了就 Toast 降级）</li>
+    <li>库里根本没有对应列的字段：身份证号、学时、考核方式、课程编号</li>
+    <li>深色模式适配（现在只值一行「硬编码改资源」的成本）</li>
+  </ul>
+</div>
+
+<div class="foot">
+  本次仅做检测与规划，未修改任何源码 · 编译由 <code>./gradlew assembleDebug</code> 实测通过<br>
+  运行实测未完成（模拟器未在线），下次可用「装 APK → am start → pidof → logcat -b crash」四步复核
+</div>
+
+</div>
+</body>
+</html>

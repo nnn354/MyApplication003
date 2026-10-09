@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安卓开发知识地图 · 本项目缺口对照 · Java 方向学习路线</title>
+<style>
+  :root{
+    --bg:#EAF3FB; --card:#FFFFFF; --line:#D6E6F5; --line2:#C3DAF0;
+    --ink:#2C2C2A; --ink2:#5F5E5A; --ink3:#888780;
+    --blue:#378ADD; --blue-d:#185FA5; --blue-dd:#0C447C;
+    --purple:#6C4CF1;
+    --green-bg:#EAF3DE; --green:#3B6D11;
+    --amber-bg:#FAEEDA; --amber:#854F0B;
+    --red-bg:#FCEBEB; --red:#A32D2D;
+    --blue-bg:#E6F1FB;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:36px 18px 80px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif;
+    font-size:14.5px;line-height:1.78;}
+  .wrap{max-width:980px;margin:0 auto}
+  header{background:#FFFFFF;border:1px solid var(--line2);border-left:6px solid var(--blue);
+    border-radius:16px;padding:26px 30px;margin-bottom:24px}
+  header h1{margin:0 0 8px;font-size:23px;color:var(--blue-dd);letter-spacing:.3px}
+  header .sub{color:var(--ink2);font-size:13px}
+  .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:12.5px;padding:4px 12px;border-radius:20px;background:var(--blue-bg);
+    border:1px solid #B5D4F4;color:var(--blue-d)}
+  .chip.warn{background:var(--amber-bg);border-color:#FAC775;color:var(--amber)}
+  .chip.bad{background:var(--red-bg);border-color:#F7C1C1;color:var(--red)}
+  .chip.ok{background:var(--green-bg);border-color:#C0DD97;color:var(--green)}
+  .lead{background:#FFFFFF;border:1px solid var(--line);border-radius:14px;padding:18px 24px;margin-bottom:26px}
+  .lead b{color:var(--blue-dd)}
+  h2{font-size:18px;margin:36px 0 14px;padding:0 0 8px 12px;
+    border-left:5px solid var(--blue);color:var(--blue-dd)}
+  h3{font-size:15.5px;margin:22px 0 8px;color:#14456F}
+  h4{font-size:14px;margin:16px 0 6px;color:var(--ink);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:12px 0}
+  table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px}
+  th{background:#F2F8FE;color:#14456F;font-weight:600;text-align:left;padding:10px 12px;
+    font-size:13px;border-bottom:1px solid var(--line)}
+  td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+  tr:nth-child(even) td{background:#FAFCFF}
+  code{font-family:Consolas,Menlo,monospace;font-size:12.5px;background:var(--blue-bg);
+    color:var(--blue-dd);padding:1.5px 6px;border-radius:5px;border:1px solid #CFE3F7}
+  pre{background:#F7FBFF;border:1px solid var(--line);border-radius:10px;padding:13px 16px;
+    overflow-x:auto;font-size:12.5px;line-height:1.7;margin:10px 0}
+  pre code{background:none;border:none;padding:0;color:#14456F}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;
+    border:1px solid transparent;white-space:nowrap}
+  .t-ok{background:var(--green-bg);color:var(--green);border-color:#C0DD97}
+  .t-part{background:var(--amber-bg);color:var(--amber);border-color:#FAC775}
+  .t-miss{background:var(--red-bg);color:var(--red);border-color:#F7C1C1}
+  .t-blue{background:var(--blue-bg);color:var(--blue-d);border-color:#B5D4F4}
+  .box{border-radius:12px;padding:15px 20px;margin:14px 0;border:1px solid var(--line);background:#FFFFFF}
+  .box.warn{border-color:#FAC775;background:#FFFBF0}
+  .box.bad{border-color:#F7C1C1;background:#FEF7F7}
+  .box.ok{border-color:#C0DD97;background:#F8FCF2}
+  .box b{color:var(--blue-dd)}
+  ul,ol{margin:8px 0;padding-left:22px}
+  li{margin:6px 0}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}}
+  .phase{background:#FFFFFF;border:1px solid var(--line);border-left:5px solid var(--blue);
+    border-radius:0 14px 14px 0;padding:16px 22px;margin:14px 0}
+  .phase h3{margin-top:0}
+  .phase .goal{font-size:13px;color:var(--blue-d);margin:0 0 10px}
+  .kv{font-size:13.5px;margin:5px 0}
+  .kv b{color:#14456F}
+  .foot{margin-top:40px;color:var(--ink3);font-size:12.5px;text-align:center;
+    border-top:1px solid var(--line2);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>安卓开发知识地图 · 本项目缺口对照 · Java 方向学习路线</h1>
+  <div class="sub">对象：智能选课系统（com.example.myapplication003，Java + XML + 裸 SQLite）。目标：从"能跑起来"走到"独立开发、上架、求职"。</div>
+  <div class="chips">
+    <span class="chip">本项目 = 一个及格的大作业</span>
+    <span class="chip warn">缺 2 个完整体系</span>
+    <span class="chip bad">上架知识 0 基础</span>
+    <span class="chip ok">Java 路线可行</span>
+  </div>
+</header>
+
+<div class="lead">
+  <b>先说结论。</b>这个项目让你真正摸过的是：四大组件里的两个（Activity / Fragment）、XML 布局、RecyclerView 的基础用法、多语言资源、以及用 <code>SQLiteOpenHelper</code> 手写增删改查和一条 <code>inner join</code>。
+  <br><br>
+  但你现在的写法，是 <b>2015 年前后「大作业式」的 Android</b>：Activity/Fragment 直接 new 数据库、数据装静态变量、逻辑全塞在回调里、没有 ViewModel、没有网络层、没有测试、没有版本控制、没有签名发布配置。
+  <br><br>
+  <b>换句话说：你学会了「API 怎么调」，但还没学「工程怎么组织」和「App 怎么上线」。</b>这两块恰恰是求职和上架的门槛。下面按"知识地图 → 项目欠账 → 分阶段路线 → Java 方向提醒 → 求职与上架"五部分展开。
+</div>
+
+<h2>一、这个项目已经帮你练到的（别小看）</h2>
+<table>
+  <tr><th style="width:22%">知识块</th><th style="width:34%">项目里的对应实现</th><th>说人话</th></tr>
+  <tr><td>Activity 基础</td><td><code>LoginActivity</code> / <code>MainActivity</code>，Manifest 注册 + LAUNCHER intent-filter</td><td>会开页面、会跳转、会 finish</td></tr>
+  <tr><td>Fragment + 底部导航</td><td><code>FragmentManager.beginTransaction().replace()</code> 切 3 个 Fragment</td><td>会做 Tab 结构（虽然写法是旧式 replace）</td></tr>
+  <tr><td>RecyclerView 基础</td><td><code>CourseAdapter</code> + <code>ViewHolder</code> + <code>onBindViewHolder</code></td><td>会列表、会点按钮回调</td></tr>
+  <tr><td>SQLite 手写 CRUD</td><td><code>SQLiteOpenHelper</code> 建 3 表、<code>ContentValues</code>、<code>Cursor</code>、<code>inner join</code>、<code>CONFLICT_IGNORE</code></td><td>理解关系型数据库的基本操作（这是好事，比只会 Room 注解的人更懂底层）</td></tr>
+  <tr><td>资源与多语言</td><td><code>values / values-en / values-de</code> 三套 strings + <code>getString()</code></td><td>会做本地化，知道字符串不能硬编码</td></tr>
+  <tr><td>Context 与配置切换</td><td><code>attachBaseContext()</code> + <code>createConfigurationContext()</code> 实现应用内切语言</td><td>踩过"<code>updateConfiguration</code> 在 AppCompat 下失效"这个经典坑，很值钱</td></tr>
+  <tr><td>运行时问题定位</td><td>自己用 <code>logcat</code>、<code>uiautomator dump</code>、<code>pidof</code> 抓崩溃和控件坐标</td><td>会调试，这是很多人缺的能力</td></tr>
+  <tr><td>targetSdk 适配</td><td><code>fitsSystemWindows</code> 解决 Android 15+ edge-to-edge 遮挡</td><td>知道"系统版本会改行为"这件事</td></tr>
+</table>
+
+<h2>二、这个项目完全没碰的知识板块</h2>
+
+<h3>2.1 架构与状态管理（求职面试第一大块）</h3>
+<div class="box bad">
+  <b>现状：</b>Fragment 里直接 <code>new DbManager(getContext())</code>，数据、UI、业务逻辑三层混在同一个类里；用户 id 用 <code>MainActivity.currentuserid</code> 这种静态变量传。
+</div>
+<table>
+  <tr><th style="width:26%">知识点</th><th>为什么必须有</th></tr>
+  <tr><td><b>ViewModel + LiveData/StateFlow</b></td><td>你现在旋转屏幕、切后台被回收，数据就没了（静态变量除外），Fragment 重建后 <code>onCreateView</code> 重新查库。ViewModel 就是干这个的：让数据活过配置变更。</td></tr>
+  <tr><td><b>MVVM / 单向数据流</b></td><td>UI 只读状态、只发事件；逻辑在 ViewModel。面试必问"MVC/MVP/MVVM 区别"。</td></tr>
+  <tr><td><b>Repository 模式 / 单一数据源(SSOT)</b></td><td>以后数据来源会变成"本地库 + 远端接口"，需要一个统一出口决定读哪边、怎么缓存。</td></tr>
+  <tr><td><b>依赖注入（Hilt / Dagger）</b></td><td>现在到处 <code>new DbManager(context)</code>，测试时没法替换。Hilt 对 Java 支持是完整的。</td></tr>
+  <tr><td><b>Navigation 组件</b></td><td>替掉手写 <code>replace()</code>，处理返回栈、参数传递、Deep Link。<code>FragmentResult</code> 替代 Fragment 之间互相持有引用。</td></tr>
+  <tr><td><b>模块化（多 module）</b></td><td>大项目必然要拆 module（feature / core / data），是"资深"与"初级"的分水岭之一。</td></tr>
+</table>
+
+<h3>2.2 数据层的正确姿势</h3>
+<table>
+  <tr><th style="width:26%">知识点</th><th>你现在的问题 / 为什么必须补</th></tr>
+  <tr><td><b>Room</b></td><td>行业事实标准。你手写的 <code>SQLiteOpenHelper</code> 全部能平移过去；Room 自带 <code>@Query</code> 编译期校验、<code>Migration</code>、<code>Flow</code> 响应式查询、事务。</td></tr>
+  <tr><td><b>数据库迁移 Migration</b></td><td><b>你的 <code>onUpgrade()</code> 是 <code>drop table</code> 三张表再重建 —— 用户所有数据全丢。</b>正确做法是写 <code>ALTER TABLE</code> 迁移脚本。上架后这是硬要求。</td></tr>
+  <tr><td><b>事务 Transaction</b></td><td>你的"选课"是两步：<code>insertSelection()</code> + <code>updateSelectedCount()</code>，<b>不在一个事务里</b>。中途失败会造成人数和记录不一致。Room 的 <code>@Transaction</code> 或 <code>beginTransaction()/setTransactionSuccessful()/endTransaction()</code> 解决。</td></tr>
+  <tr><td><b>DataStore / SharedPreferences</b></td><td><b>你的语言选择、登录用户 id 全在静态变量里，App 一重启就回到中文、回到登录页。</b>这就是"没有持久化"的典型症状。DataStore 是现在的首选（SharedPreferences 已被官方建议替换）。</td></tr>
+  <tr><td><b>文件存储 / Scoped Storage / SAF</b></td><td>Android 10 起分区存储，<code>WRITE_EXTERNAL_STORAGE</code> 基本作废。<code>getExternalFilesDir()</code>、<code>MediaStore</code>、<code>ACTION_OPEN_DOCUMENT</code> 是必修。</td></tr>
+  <tr><td><b>序列化（JSON）</b></td><td>Gson / Moshi / kotlinx.serialization，和网络层一体。</td></tr>
+  <tr><td><b>数据安全</b></td><td><b>你的密码是明文存库、明文比较</b>（<code>passwd text not null</code> + <code>where passwd=?</code>）。至少要哈希加盐（BCrypt/Argon2）；本地敏感数据用 <code>EncryptedSharedPreferences</code> / Keystore。</td></tr>
+</table>
+
+<h3>2.3 网络与异步（几乎每份 JD 都要求）</h3>
+<div class="box">
+  <b>现状：</b>整个项目 0 行网络代码，数据全是 <code>MyDbHelper.onCreate()</code> 里写死的 10 条种子。
+</div>
+<ul>
+  <li><b>Retrofit + OkHttp</b>：定义接口 → 拿数据；拦截器（统一加 token、打日志、统一错误处理）、超时、重试、缓存。</li>
+  <li><b>图片加载 Glide / Coil</b>：列表里加载头像/封面，含内存+磁盘缓存、占位图、圆角变换。</li>
+  <li><b>分页 Paging 3</b>：长列表下拉加载，别自己写"。</li>
+  <li><b>离线优先 / 缓存策略</b>：网络失败降级读本地，本地写操作排队重试。</li>
+  <li><b>异步与线程</b>：<b>你把 <code>db.getAllcourses()</code> 直接放在点击回调里跑，那就是主线程</b>。数据一大就 ANR。Java 方向可用 <code>ExecutorService</code>、<code>Handler/Looper</code>、<code>AsyncTask</code>（已废弃，别学）、RxJava，或直接上 Kotlin 协程。</li>
+  <li><b>主线程 / ANR / StrictMode</b>：知道什么绝对不能放主线程，会用 StrictMode 自查。</li>
+</ul>
+
+<h3>2.4 系统能力（App"像个真 App"就靠这些）</h3>
+<table>
+  <tr><th style="width:26%">知识点</th><th>项目状态</th></tr>
+  <tr><td><b>运行时权限</b></td><td><span class="tag t-miss">零</span> 危险权限需动态申请；Android 13 的通知权限、14 的"部分媒体访问"都变了。</td></tr>
+  <tr><td><b>通知 Notification</b></td><td><span class="tag t-miss">零</span> 渠道(channel)、样式、前台服务通知。</td></tr>
+  <tr><td><b>Service / 前台服务</b></td><td><span class="tag t-miss">零</span> 长任务、音乐播放、上传下载；Android 14 起必须声明 <code>foregroundServiceType</code>。</td></tr>
+  <tr><td><b>WorkManager</b></td><td><span class="tag t-miss">零</span> 可延迟的可靠后台任务（同步、重试、约束条件）。</td></tr>
+  <tr><td><b>BroadcastReceiver</b></td><td><span class="tag t-miss">零</span> 系统事件监听、本地广播。</td></tr>
+  <tr><td><b>ContentProvider</b></td><td><span class="tag t-miss">零</span> 读取系统联系人/相册，或自己暴露数据。</td></tr>
+  <tr><td><b>相机 / 相册</b></td><td><span class="tag t-miss">零</span> 拍照、选图、裁剪。</td></tr>
+  <tr><td><b>定位与地图</b></td><td><span class="tag t-miss">零</span> 高德/百度/Google Maps 定位、逆地理编码。</td></tr>
+  <tr><td><b>分享 / Deep Link / App Links</b></td><td><span class="tag t-miss">零</span> 分享到微信、外部链接直接唤起 App 指定页面。</td></tr>
+  <tr><td><b>WebView 与 H5 混合</b></td><td><span class="tag t-miss">零</span> 加载 H5、JS Bridge、安全配置。</td></tr>
+</table>
+
+<h3>2.5 工程质量（决定你是"能写"还是"能交付"）</h3>
+<table>
+  <tr><th style="width:26%">知识点</th><th>项目状态 / 说明</th></tr>
+  <tr><td><b>Git 版本控制</b></td><td><span class="tag t-miss">项目里没有 .git</span> 这是最基础也最要紧的一条。分支模型（main / feature）、提交规范（Conventional Commits）、Code Review、<code>.gitignore</code>、合并冲突处理。</td></tr>
+  <tr><td><b>单元测试</b></td><td><span class="tag t-miss">零</span> JUnit + Mockito；只测纯逻辑（比如"冲突检测"算法、学分计算）。<code>app/src/test</code> 目录存在但没写东西。</td></tr>
+  <tr><td><b>UI 测试</b></td><td><span class="tag t-miss">零</span> Espresso / Robolectric；测登录流程、选课流程。</td></tr>
+  <tr><td><b>Lint 与静态检查</b></td><td><span class="tag t-miss">零</span> <code>./gradlew lint</code>，会直接指出你现在一堆可优化项。</td></tr>
+  <tr><td><b>ViewBinding / DataBinding</b></td><td><span class="tag t-part">未用</span> 你现在全靠 <code>findViewById</code>，类型不安全（<code>setContentView</code> 被误删就是这么炸的）。ViewBinding 一行配置就能开。</td></tr>
+  <tr><td><b>buildTypes / 混淆 R8</b></td><td><span class="tag t-part">未配</span> <code>release</code> 分支、<code>minifyEnabled</code>、<code>shrinkResources</code>、keep 规则、mapping 文件上传用于崩溃还原。</td></tr>
+  <tr><td><b>多渠道打包 / Flavors</b></td><td><span class="tag t-miss">零</span> 开发/测试/生产环境切换、不同商店不同渠道号。</td></tr>
+  <tr><td><b>CI/CD</b></td><td><span class="tag t-miss">零</span> GitHub Actions 自动构建 + 签名 + 跑测试 + 出包。</td></tr>
+</table>
+
+<h3>2.6 性能与稳定性</h3>
+<div class="two">
+  <div class="card">
+    <h4>性能</h4>
+    <ul>
+      <li>冷启动优化、Splash、Baseline Profile</li>
+      <li>布局层级与过度绘制（Layout Inspector）</li>
+      <li>列表卡顿：<code>DiffUtil</code>、<code>ListAdapter</code>、<code>getItemViewType</code>、<code>ItemDecoration</code>、<code>ItemTouchHelper</code></li>
+      <li>内存与图片：Bitmap 采样、inSampleSize、Profiler</li>
+      <li>包体积：R8、资源压缩、App Bundle</li>
+      <li>基准测试 Macrobenchmark</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>稳定性</h4>
+    <ul>
+      <li>崩溃监控：Firebase Crashlytics / Bugly</li>
+      <li>ANR 监控与堆栈分析</li>
+      <li>内存泄漏：LeakCanary（你现在把 <code>getActivity()</code> 之类放进匿名内部类就有潜在泄漏）</li>
+      <li>异常兜底 + 全局 <code>Thread.setDefaultUncaughtExceptionHandler</code></li>
+      <li>Loading / Empty / Error 三态 UI（你现在只有"有数据"一种状态）</li>
+      <li>日志体系与埋点</li>
+    </ul>
+  </div>
+</div>
+
+<h3>2.7 发布与上架</h3>
+<table>
+  <tr><th style="width:26%">知识点</th><th>说明</th></tr>
+  <tr><td><b>签名与密钥管理</b></td><td>生成 keystore、<code>signingConfigs</code>、<b>keystore 丢了就永远无法更新同一个 App</b>（国内商店）</td></tr>
+  <tr><td><b>打包格式</b></td><td><code>assembleRelease</code>、AAB（Google Play 强制）、APK 分渠道、版本号 versionCode/versionName 规则</td></tr>
+  <tr><td><b>隐私合规（国内重点）</b></td><td>隐私政策、权限用途说明、第三方 SDK 清单、"个人信息收集清单"、<b>APP 备案</b>（工信部要求，各商店上架前置条件）</td></tr>
+  <tr><td><b>软件著作权</b></td><td>国内多数应用市场要求提供软著证书或受理通知书</td></tr>
+  <tr><td><b>商店账号与审核</b></td><td>华为 / 小米 / OPPO / vivo / 应用宝 / Google Play（$25 一次性）各自的开发者认证与审核规则</td></tr>
+  <tr><td><b>targetSdk 适配</b></td><td>Google Play 强制每年提升目标 API 等级；每个版本的行为变更都要适配</td></tr>
+  <tr><td><b>灰度与热修</b></td><td>分阶段发布、内测轨道、紧急回滚</td></tr>
+</table>
+
+<h2>三、把项目本身当"练习题库"：14 处现成欠账</h2>
+<div class="box">
+  下面这些不是"代码写错了"，而是<b>每一处都对应一个你还没学的知识点</b>。把它们当成"重构任务"，改完就等于把对应知识练了一遍 —— 比重开一个新 App 学得更快。
+</div>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:32%">现状（我已在源码中确认）</th><th>该用什么补 → 学到的知识点</th></tr>
+  <tr><td>1</td><td><code>MainActivity.lang="zh"</code> 静态变量，重启回中文</td><td>DataStore 持久化 → <b>数据持久化</b></td></tr>
+  <tr><td>2</td><td><code>MainActivity.currentuserid</code> 静态变量，重启要重登</td><td>会话持久化 + 自动登录 + token 机制 → <b>登录态管理</b></td></tr>
+  <tr><td>3</td><td>密码明文存库、明文 SQL 比较（<code>where passwd=?</code>）</td><td>哈希加盐 → <b>本地数据安全</b></td></tr>
+  <tr><td>4</td><td><code>onUpgrade()</code> 三张表全 drop 重建 → 用户数据丢失</td><td><code>ALTER TABLE</code> 迁移 → <b>数据库版本迁移</b></td></tr>
+  <tr><td>5</td><td>选课 = <code>insertSelection()</code> + <code>updateSelectedCount()</code> 两步，无事务</td><td><code>@Transaction</code> → <b>事务与数据一致性</b></td></tr>
+  <tr><td>6</td><td>所有 DB 调用都在 UI 回调里同步执行</td><td>ExecutorService / 协程 → <b>异步与线程模型</b></td></tr>
+  <tr><td>7</td><td>无 ViewModel，旋转屏幕后列表状态重来</td><td>ViewModel + LiveData → <b>状态管理</b></td></tr>
+  <tr><td>8</td><td>Fragment 里 <code>new DbManager(getContext())</code> 到处 new</td><td>Hilt 注入 → <b>依赖注入</b></td></tr>
+  <tr><td>9</td><td>大量 <code>findViewById</code>，类型不安全（已因此炸过一次）</td><td>ViewBinding → <b>视图绑定</b></td></tr>
+  <tr><td>10</td><td><code>notifyDataSetChanged()</code> 全量刷新，无动画无差异</td><td>DiffUtil / ListAdapter → <b>列表性能</b></td></tr>
+  <tr><td>11</td><td>RecyclerView 套在 ScrollView 里，复用机制失效、滑动手势冲突</td><td>用单 RecyclerView + 多 <code>getItemViewType</code> → <b>列表进阶</b></td></tr>
+  <tr><td>12</td><td>无 Loading / Empty / Error 三态，网络慢或空数据没有反馈</td><td>三态 UI + 骨架屏 → <b>健壮性</b></td></tr>
+  <tr><td>13</td><td>只有"有数据"和"没数据"两条路，没有任何 try/catch 兜底</td><td>全局异常捕获 + 崩溃上报 → <b>稳定性</b></td></tr>
+  <tr><td>14</td><td>没有 <code>.git</code>、没有 <code>buildTypes</code>、没有签名配置</td><td>Git + R8 + 签名 → <b>工程化与发布</b></td></tr>
+</table>
+
+<h2>四、Java 方向学习路线（4 个阶段，约 8~10 周）</h2>
+
+<div class="phase">
+  <h3>阶段 0 · 先补最不该缺的两件事（3 天）</h3>
+  <p class="goal">目标：把项目纳入"工程管理"，养成习惯。这段最便宜、收益最大。</p>
+  <ul>
+    <li><b>Git</b>：<code>git init</code> → 提交现有代码 → 学会 branch / merge / 冲突解决 / 写 <code>.gitignore</code>。以后每次改动都提交。</li>
+    <li><b>ViewBinding</b>：<code>build.gradle</code> 开启 → 把 <code>findViewById</code> 全换掉。</li>
+    <li><b>学会看 Lint</b>：跑一次 <code>./gradlew lint</code>，把报告里的 warning 逐个看懂（不用全改）。</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <h3>阶段 1 · 把项目改成"现代架构"（2 周）</h3>
+  <p class="goal">目标：掌握 ViewModel 与 Repository，做到旋转屏幕不丢状态、重启能记住登录。</p>
+  <ul>
+    <li><b>ViewModel + LiveData</b>：每个页面一个 ViewModel，数据放进去，UI 只观察。</li>
+    <li><b>Repository 层</b>：把 <code>DbManager</code> 收敛到 Repository 后面，Fragment 不再直接碰数据库。</li>
+    <li><b>DataStore</b>：语言、登录态、自动登录。</li>
+    <li><b>Room</b>：三张表迁到 Room，写 <code>Migration</code> 而不是 drop。</li>
+    <li><b>Hilt</b>：把 Repository 注入 ViewModel。</li>
+    <li><b>Navigation 组件</b>：底部导航 + 返回栈交给它管。</li>
+    <li><b>三态 UI</b>：Loading / Empty / Error 全补齐。</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <h3>阶段 2 · 加一层网络，理解"真实 App 的数据从哪来"（2~3 周）</h3>
+  <p class="goal">目标：能独立接一个后端接口，并处理网络的不确定性。</p>
+  <ul>
+    <li><b>Retrofit + OkHttp + Gson</b>：把课程列表改成从接口拉（可以自己用 Mocky / 本地 Spring Boot / 免费 API 起一个）。</li>
+    <li><b>拦截器</b>：统一加 header、统一解析错误码、打网络日志。</li>
+    <li><b>Glide / Coil</b>：列表加载图片。</li>
+    <li><b>缓存与离线</b>：网络失败读 Room；写操作排队重试。</li>
+    <li><b>异步</b>：Java 用 <code>ExecutorService</code> + Handler 回主线程（这一步做完你就会无比想学 Kotlin 协程）。</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <h3>阶段 3 · 系统能力 + 质量保障（2~3 周）</h3>
+  <p class="goal">目标：让 App 具备"真功能"，并开始用测试和工具保证质量。</p>
+  <ul>
+    <li><b>运行时权限</b> → 加一个"上传头像"功能（相机 + 相册 + 权限 + 文件）。</li>
+    <li><b>通知 + WorkManager</b> → 加"选课成功提醒"、"课程冲突后台校验"。</li>
+    <li><b>广播 / ContentProvider</b> → 监听网络变化、读取系统日历把课表写进去。</li>
+    <li><b>定位 + 地图</b>（选做）→ 显示教学楼位置。</li>
+    <li><b>单元测试</b> → 给"冲突检测"算法和"学分统计"写 JUnit 测试。</li>
+    <li><b>UI 测试</b> → Espresso 测登录与选课主流程。</li>
+    <li><b>性能</b> → LeakCanary 抓泄漏、Layout Inspector 看层级、DiffUtil 优化列表。</li>
+    <li><b>CI</b> → GitHub Actions：push 自动编译 + 跑测试。</li>
+  </ul>
+</div>
+
+<div class="phase">
+  <h3>阶段 4 · 发布与上架 + 开始转 Kotlin（2 周，与上阶段可并行）</h3>
+  <p class="goal">目标：拿到"已上架 App"这个最硬的求职凭证。</p>
+  <ul>
+    <li><b>签名</b>：生成 keystore、配置 <code>signingConfigs</code>、妥善备份。</li>
+    <li><b>R8 / 混淆</b>：开 <code>minifyEnabled</code>，处理 keep 规则。</li>
+    <li><b>隐私合规</b>：写隐私政策页、权限用途说明、第三方 SDK 清单。</li>
+    <li><b>备案与软著</b>：了解流程（国内上架前置）。</li>
+    <li><b>上架</b>：先投 Google Play（流程标准化、文档全）或国内某一家商店走通全流程。</li>
+    <li><b>崩溃监控</b>：接 Crashlytics / Bugly，看真实崩溃。</li>
+    <li><b>开始学 Kotlin</b>：语法 3 天可上手；重点学 <b>协程</b>（取代线程回调地狱）、<b>扩展函数</b>、<b>空安全</b>、<b>data class</b>。</li>
+  </ul>
+</div>
+
+<h2>五、Java 方向的现实提醒（这几点必须提前知道）</h2>
+<div class="box warn">
+  <b>1. 有些新东西是"Kotlin 独占"，Java 只能走老路。</b>
+  <table style="margin-top:10px">
+    <tr><th style="width:26%">能力</th><th style="width:37%">Java 路线</th><th>Kotlin 路线</th></tr>
+    <tr><td>UI</td><td>XML 布局 + View 体系（你正在做的）</td><td>Jetpack Compose（<b>只有 Kotlin</b>）</td></tr>
+    <tr><td>异步</td><td>ExecutorService / Handler / RxJava（回调地狱）</td><td>协程（结构化并发，写法接近同步）</td></tr>
+    <tr><td>状态</td><td>LiveData</td><td>StateFlow / Compose State</td></tr>
+    <tr><td>依赖注入</td><td>Hilt 支持完整 ✅</td><td>Hilt / Koin</td></tr>
+    <tr><td>数据库</td><td>Room 支持完整 ✅</td><td>Room</td></tr>
+    <tr><td>网络</td><td>Retrofit 支持完整 ✅</td><td>Retrofit</td></tr>
+  </table>
+  <p style="margin-bottom:0">结论：<b>Java 完全能做出一个可上架的 App，但 Compose 和协程这两块你拿不到。</b>它们正是现在招聘 JD 里出现频率最高的词。</p>
+</div>
+<div class="box warn">
+  <b>2. 中文 Android 招聘市场的现状。</b>JD 普遍写"熟悉 Kotlin"、"了解 Jetpack Compose"、"熟悉协程"，纯 Java 岗位在快速萎缩，多见于老项目维护。<b>所以 Java 是你的"过渡船"，不是终点。</b>建议节奏：先用 Java 把阶段 0~3 走完（把 Android 的"道"搞懂，这部分和语言无关），阶段 4 开始学 Kotlin，然后再用 Kotlin 把同一个 App 重写一遍 —— 这一次重写你会快得多。
+</div>
+<div class="box">
+  <b>3. 好消息。</b>你已经在用 <code>attachBaseContext</code>、<code>RecyclerView.ViewHolder</code>、<code>SQLiteOpenHelper</code> 这些"概念型"API，说明你在意"为什么这么写"。<b>这类人转 Kotlin 通常一两周就顺了</b>；反而是只会背 API 的人，换个语言就废。
+</div>
+
+<h2>六、求职：简历 / 作品集 / 面试高频</h2>
+<div class="two">
+  <div class="card">
+    <h4>简历怎么写过</h4>
+    <ul>
+      <li>项目写 3 条"动词+技术+结果"，例：<i>"用 Room + 事务重构选课链路，解决人数与记录不一致，选课接口耗时下降至 Xms"</i></li>
+      <li>写上<b>已上架</b>（商店链接 + 下载量），这是最有说服力的一行</li>
+      <li>写清你的<b>架构选择与理由</b>（为什么 MVVM、为什么用 Repository），比罗列 API 有用</li>
+      <li>别写"精通"，写"熟悉 / 了解 / 使用过"</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>作品集怎么做</h4>
+    <ul>
+      <li>GitHub 仓库 + 一份写清架构图和难点的 README</li>
+      <li>录 1~2 分钟演示视频</li>
+      <li>准备 3 个"我踩过的坑"故事（你已经有了：<code>setContentView</code> 被误删导致闪退、<code>updateConfiguration</code> 失效、状态栏吃掉点击区域）—— 这类故事面试官很爱听</li>
+    </ul>
+  </div>
+</div>
+<h3>面试高频题（你现在的项目几乎没覆盖到）</h3>
+<table>
+  <tr><th style="width:22%">板块</th><th>典型问题</th></tr>
+  <tr><td>Activity</td><td>生命周期完整流程、四种启动模式与适用场景、任务栈、<code>onSaveInstanceState</code>、A 跳 B 再返回的生命周期</td></tr>
+  <tr><td>Handler</td><td>Handler / Looper / MessageQueue 怎么协作、为什么主线程不会卡死、ThreadLocal、同步屏障</td></tr>
+  <tr><td>View</td><td>measure / layout / draw 三大流程、事件分发（dispatch / intercept / onTouch）、滑动冲突、requestLayout 与 invalidate 区别</td></tr>
+  <tr><td>性能</td><td>启动优化、卡顿定位、内存泄漏常见成因与排查、Bitmap 内存计算、包体积优化</td></tr>
+  <tr><td>架构</td><td>MVC / MVP / MVVM 区别、ViewModel 为什么能在旋转后存活、LiveData 粘性事件、Repository 的意义</td></tr>
+  <tr><td>Jetpack</td><td>Room 原理与迁移、Navigation 原理、WorkManager 原理、Lifecycle 如何感知生命周期、DataStore 为什么替代 SP</td></tr>
+  <tr><td>网络</td><td>Retrofit 动态代理原理、OkHttp 拦截器链、HTTP 缓存、HTTPS 握手</td></tr>
+  <tr><td>Frameworks</td><td>Binder、AMS/WMS 大致职责、应用启动流程、APK 安装流程</td></tr>
+  <tr><td>工程</td><td>混淆原理与 keep 规则、多渠道打包原理、Gradle 构建流程、Jetifier</td></tr>
+  <tr><td>版本适配</td><td>分区存储、后台限制、权限变更、edge-to-edge（<b>这条你已经实战过了</b>）</td></tr>
+</table>
+
+<h2>七、上架清单（照着勾）</h2>
+<div class="two">
+  <div class="card">
+    <h4>技术侧</h4>
+    <ul>
+      <li>keystore 生成 + <code>signingConfigs</code> 配置 + 备份好</li>
+      <li><code>versionCode</code> / <code>versionName</code> 规则定好</li>
+      <li><code>release</code> buildType：<code>minifyEnabled true</code>、<code>shrinkResources true</code></li>
+      <li>混淆后跑一遍全流程（很多人混淆后才炸）</li>
+      <li>输出 AAB（Play）与分渠道 APK（国内）</li>
+      <li>接入崩溃监控 + 版本号上报</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>合规侧</h4>
+    <ul>
+      <li>隐私政策页面（首次启动弹窗同意）</li>
+      <li>权限逐条说明用途，不申请用不到的权限</li>
+      <li>第三方 SDK 清单</li>
+      <li>APP 备案（工信部）</li>
+      <li>软件著作权（国内商店一般要求）</li>
+      <li>商店素材：图标、截图、介绍文案、分类</li>
+    </ul>
+  </div>
+</div>
+
+<h2>八、接下来 6 周，就干这些</h2>
+<table>
+  <tr><th style="width:14%">周次</th><th style="width:34%">目标</th><th>产出（可验证）</th></tr>
+  <tr><td>第 1 周</td><td>把现有项目"工程化"</td><td>Git 仓库 + ViewBinding 改造 + Lint 报告读懂</td></tr>
+  <tr><td>第 2-3 周</td><td>架构现代化</td><td>ViewModel + Repository + Room(含迁移) + DataStore + Hilt + Navigation + 三态 UI，全部跑通</td></tr>
+  <tr><td>第 4-5 周</td><td>网络层 + 系统能力</td><td>Retrofit 接入真实接口；头像上传（相机/相册/权限）；通知 + WorkManager 提醒</td></tr>
+  <tr><td>第 6 周</td><td>质量 + 发布 + Kotlin 起步</td><td>单元测试 + GitHub Actions + 签名 release 包 + 提交商店审核；Kotlin 语法过一遍</td></tr>
+</table>
+<div class="box ok">
+  <b>最后一句实话：</b>做完这 6 周，你会拿到两样别人简历上没有的东西 —— <b>一个真正上架、有真实架构的 App</b>，以及<b>一整套"遇到问题能自己定位"的方法论</b>（你已经在用 <code>logcat</code>/<code>uiautomator</code>/<code>adb</code> 自查了，这比会背面试题值钱）。剩下的 Kotlin、Compose、Framework 源码，都是在这套地基上继续盖。
+</div>
+
+<div class="foot">本文档为学习路线与差距分析，未修改任何项目源码。生成于 2026-10-09。</div>
+
+</div>
+</body>
+</html>

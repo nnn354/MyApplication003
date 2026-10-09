@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>距离效果图还差什么 · 10月9日复查</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 20px 64px;
+    background: #F7F7F5; color: #2C2C2A;
+    font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    font-size: 14px; line-height: 1.7;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; }
+  h1 { font-size: 23px; font-weight: 600; margin: 0 0 6px; }
+  .sub { color: #5F5E5A; font-size: 13px; margin-bottom: 26px; }
+  h2 { font-size: 17px; font-weight: 600; margin: 40px 0 14px; padding-left: 11px; border-left: 4px solid #534AB7; }
+  h3 { font-size: 15px; font-weight: 600; margin: 24px 0 10px; }
+  p { margin: 8px 0; }
+  code { font-family: Consolas, Menlo, monospace; font-size: 12.5px; background: #F1EFE8; padding: 1px 5px; border-radius: 4px; }
+  .verdict {
+    background: #EEEDFE; border: 1px solid #CECBF6; border-radius: 10px;
+    padding: 16px 18px; margin-bottom: 8px;
+  }
+  .verdict strong { color: #3C3489; }
+  .ok { background: #EAF3DE; border: 1px solid #C0DD97; border-radius: 10px; padding: 16px 18px; }
+  .ok ul { margin: 8px 0 0; padding-left: 20px; }
+  .warn { background: #FAEEDA; border: 1px solid #FAC775; border-radius: 10px; padding: 16px 18px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; background: #fff; border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #E8E6DE; vertical-align: top; }
+  th { background: #F1EFE8; font-weight: 600; font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  .card { background: #fff; border: 1px solid #E8E6DE; border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; }
+  .card h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pct { font-size: 12px; font-weight: 500; color: #5F5E5A; background: #F1EFE8; padding: 2px 9px; border-radius: 20px; }
+  .tag { font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 4px; letter-spacing: .3px; }
+  .p0 { background: #FCEBEB; color: #A32D2D; }
+  .p1 { background: #FAEEDA; color: #854F0B; }
+  .p2 { background: #E6F1FB; color: #185FA5; }
+  .drop { background: #F1EFE8; color: #5F5E5A; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 6px 0; }
+  li.d { list-style: none; margin-left: -20px; }
+  .lead { font-size: 13px; color: #5F5E5A; }
+  .mono { font-family: Consolas, Menlo, monospace; font-size: 12.5px; color: #993C1D; }
+  .foot { margin-top: 44px; padding-top: 18px; border-top: 1px solid #E8E6DE; color: #888780; font-size: 12.5px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+
+<!-- 深蓝主题（统一覆盖） -->
+<style id="dark-blue-theme">
+:root{
+  --bg:#0A1733!important; --page:#0A1733!important; --white:#14244D!important;
+  --card:#14244D!important; --ink:#E7EEFF!important; --text:#E7EEFF!important;
+  --ink2:#BCCBEC!important; --ink-2:#BCCBEC!important; --ink3:#93A6CC!important;
+  --ink-3:#93A6CC!important; --sub:#A9B8DA!important; --line:#25365E!important;
+  --line2:#25365E!important; --purple-bg:#1C2A55!important; --purple-l:#1C2A55!important;
+  --purple-tint:#1C2A55!important; --purple-light:#1C2A55!important; --purple-b:#2C3F6E!important;
+  --purple-dark:#C3B4FF!important; --purple-deep:#C3B4FF!important;
+}
+html{background:#0A1733!important;}
+body{background:#0A1733!important;background-image:none!important;
+  background-attachment:scroll!important;color:#E7EEFF!important;}
+.card,section,table,.box,.verdict,.kill,.feat,.log,article,main,aside,figure,details,.tbl{
+  background-color:#14244D!important;background-image:none!important;}
+th{background:#1B2C55!important;color:#C6D4F2!important;}
+td{background-color:transparent!important;}
+tr:nth-child(even) td{background-color:#111F42!important;}
+pre{background:#0D1932!important;border-color:#25365E!important;}
+pre code{background:none!important;color:#D7E6FF!important;}
+code{background:#1B2C55!important;color:#9FC8FF!important;border-color:#2A3F6E!important;}
+hr,td,th{border-color:#25365E!important;}
+a{color:#93B6FF!important;}
+.banner{background:#13224A!important;background-image:none!important;}
+.banner.ok{background:#0E3524!important;}
+.banner.warn{background:#3A2A0C!important;}
+.banner.bad{background:#3A1520!important;}
+.callout{background:#1B2A52!important;background-image:none!important;}
+[style*="background:#fdf6e3"],[style*="background:#fffafa"],[style*="background:#faf9ff"],
+[style*="background:#fff "],[style*="background: #fff"],[style*="background:#ffffff"]{
+  background:#1B2A52!important;border-color:#2C3F6E!important;}
+body *:not(pre):not(code):not(.banner):not(.banner *):not(.callout):not(.callout *):not(.badge):not(.chip):not(.tag):not(.pill):not(.pct):not(.t0):not(.t1):not(.t2):not(.t-ok):not(.t-p0):not(.t-p1):not(.t-p2):not(.t-off):not(.t-red):not(.t-amber):not(.t-green):not(.t-purple):not(.t-crash):not(.t-none):not(.ok):not(.warn):not(.bad):not(.p0):not(.p1):not(.p2){color:#E7EEFF;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>距离目标效果图还差什么</h1>
+  <div class="sub">2026-10-09 08:10 复查 · 逐文件核对 + 模拟器实测 · 未改动任何源码</div>
+
+  <div class="verdict">
+    <strong>一句话结论：功能主干已经通了，缺的是"效果图上的界面元素"和 4 个具体功能点。</strong><br>
+    登录 → 选课 → 课表 → 个人中心，这条链路的数据已经全部真实落库。剩下的是一个编译期的坑都没了、纯"填界面 + 补功能"的阶段。<br>
+    <span class="lead">顺带确认：昨晚那个「点个人中心必崩」已经彻底修好了（下面有实测证据）。</span>
+  </div>
+
+  <h2>一、本次实测证据</h2>
+  <table>
+    <tr><th style="width:30%">检查项</th><th>结果</th></tr>
+    <tr><td>编译</td><td><code>assembleDebug</code> → <strong>BUILD SUCCESSFUL in 12s</strong></td></tr>
+    <tr><td><code>db_version</code></td><td>已经是 <strong>3</strong>（昨晚 23:23 改的），会触发 drop 重建</td></tr>
+    <tr><td>新建表 + 种子插入</td><td>在模拟器临时库上试跑通过：7 列建表成功、<code>insert</code> 不报 NOT NULL 错误、<code>banji</code> 位于下标 6 ✅</td></tr>
+    <tr><td>设备上的旧库</td><td>仍是 <code>user_version=2</code>、<code>table_user</code> 6 列 —— 装上新 APK 后会自动 drop 重建，<strong>已选课程记录会清空</strong>（开发阶段无妨）</td></tr>
+    <tr><td>种子数据</td><td>课程 10 条、用户 1 条、编码正常</td></tr>
+  </table>
+
+  <h2>二、已经做完的（不要重做）</h2>
+  <div class="ok">
+    <ul>
+      <li><strong>数据层</strong>：三张表建表语句正确；<code>DbManager</code> 已有 <code>insertUser</code>(6 参含 banji) / <code>checklogin</code> / <code>getUser</code> / <code>getAllcourses</code> / <code>searchclass</code> / <code>insertSelection</code> / <code>deleteSelection</code> / <code>isSelected</code> / <code>updateSelectedCount</code> / <code>updateUserInfro</code></li>
+      <li><strong>登录页</strong>：已走 <code>checklogin()</code> 查库，拿到 uid 并写入 <code>MainActivity.currentuserid</code>，空值校验也有</li>
+      <li><strong>选课大厅</strong>：列表取真数据；选课/退课写库；"已选过""满员"两个分支都判断了；操作后刷新</li>
+      <li><strong>我的课表</strong>：<code>searchclass()</code> 查已选课程；退课生效；学分求和；切 Tab 会刷新（<code>onResume</code>）</li>
+      <li><strong>个人中心</strong>：<code>getUser()</code> 填真实姓名/学号/学院/专业/班级；退出登录已接通（清 uid → 回登录页 → finish）</li>
+      <li><strong>三语资源</strong>：<code>values</code> / <code>values-en</code> / <code>values-de</code> 的 str1~str56 齐备，布局文案已全部资源化</li>
+    </ul>
+  </div>
+
+  <h2>三、缺口清单（按页面，P0 &gt; P1 &gt; P2）</h2>
+
+  <div class="card">
+    <h3>① 选课大厅 <span class="pct">对标 豆包 (2) · 约 55%</span></h3>
+    <ul>
+      <li><span class="tag p0">P0</span> <strong>userid 被局部变量遮蔽 → 选课记错用户。</strong><br>
+        <span class="mono">CourseHallFragment.java:63</span> 和 <span class="mono">:85</span> 都写了 <code>int userid=1;</code>，
+        把第 22 行的字段 <code>int userid=MainActivity.currentuserid;</code> 盖掉了。
+        后果：注册一个新账号登录后，选的课仍然记在 1 号用户头上，课表里查不到。</li>
+      <li><span class="tag p0">P0</span> <strong>搜索功能接不上。</strong>
+        <span class="mono">acti_course.xml:29-38</span> 的输入框和"搜索"按钮<strong>都没有 <code>android:id</code></strong>，
+        Java 里 <code>findViewById</code> 找不到控件。控件早就在，只差两个 id。</li>
+      <li><span class="tag p1">P1</span> <strong>卡片信息只有 4 项</strong>（课程名/教师/学分/余量）。
+        <span class="mono">item_courselist.xml</span> 里就是 4 个裸 TextView。效果图卡片还有：
+        头像、学时、上课时间、上课地点、类型标签、容量进度条、状态文字（可选/余量紧张/已满）。</li>
+      <li><span class="tag p1">P1</span> <strong>已选状态无标识。</strong>
+        <code>CourseAdapter</code> 里"选课"和"退选"两个按钮<strong>一直同时显示</strong>，不区分选没选过。效果图是按状态只出一个按钮。</li>
+      <li><span class="tag p1">P1</span> 6 个筛选按钮（全部/公共课/专业课/选修课/已选/冲突）全无 id、无点击逻辑。</li>
+      <li><span class="tag p2">P2</span> 顶部没有标题栏（效果图是紫色顶栏 + "筛选" + 齿轮）；
+        <code>RecyclerView</code> 套在 <code>ScrollView</code> 里，会一次性渲染全部条目、回收复用失效。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>② 我的课表 <span class="pct">对标 豆包 (4) · 约 60%</span></h3>
+    <ul>
+      <li><span class="tag p0">P0</span> <strong>占位文案还挂着。</strong>
+        <span class="mono">acti_mycourse.xml:11</span> 的标题还是 <code>@string/str41</code> = "这是我的课表，看什么看"，必须换掉或删除。</li>
+      <li><span class="tag p0">P0</span> <strong>卡片复用了选课大厅的布局</strong> → 课表里每张卡同时出现"选课"和"退选"两个按钮。
+        效果图这里只有"退课"。</li>
+      <li><span class="tag p1">P1</span> 顶部右上角缺 <strong>"总学分：15.0"</strong>。</li>
+      <li><span class="tag p1">P1</span> 缺 <strong>学期条</strong>（2026-2027学年第一学期 / 第6周 / "切换周次"按钮）。</li>
+      <li><span class="tag p1">P1</span> 缺 <strong>底部汇总卡</strong>（已选课程 N 门 / 累计学分 X / 本周上课 N 节）—— 现在只有一行拼接文字。</li>
+      <li><span class="tag p2">P2</span> <code>RecyclerView</code> 高度是 <code>wrap_content</code>，应改 <code>match_parent</code>。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>③ 成绩查询 <span class="pct">对标：效果图里没有这一页 · 0%</span></h3>
+    <ul>
+      <li><span class="tag p0">P0</span> <strong>Tab 能点，但点了没反应。</strong>
+        <code>bottom_nav_menu.xml</code> 里有 <code>nav_scores</code>，但 <span class="mono">MainActivity.java:58-72</span>
+        <strong>只处理了 nav_my → 1、nav_profile → 2</strong>，nav_scores 落进 <code>else</code>，停在选课大厅。</li>
+      <li>没有 Fragment、没有布局、<code>DbManager</code> 没有任何查成绩的方法。</li>
+      <li><code>table_selection.score</code> 全是默认 0，且没预置任何选课记录 —— 就算做出来也是空表。</li>
+      <li><strong>关键：你给的 6 张效果图里根本没有这一页</strong>，没有设计参照。</li>
+    </ul>
+    <p class="lead">→ 建议：<strong>直接从 <code>bottom_nav_menu.xml</code> 删掉这个 item</strong>（10 分钟，4 个 Tab 变 3 个，正好和 3 个 Fragment 对齐）。要做的话最简版 40 分钟。</p>
+  </div>
+
+  <div class="card">
+    <h3>④ 个人中心 <span class="pct">对标 豆包 (1) · 约 45%</span></h3>
+    <ul>
+      <li><span class="tag p1">P1</span> <strong>除"退出登录"外，所有 Button 都没有 <code>android:id</code></strong>
+        （<span class="mono">acti_profile.xml</span> 里 20 个按钮）。所以点了全部没反应 —— 手感上像"页面没做完"。</li>
+      <li><span class="tag p1">P1</span> 4 张卡片的背景硬编码 <code>#FFFFFF</code>，深色模式下会白底白字。</li>
+      <li><span class="tag p2">P2</span> 缺圆形头像、紫色渐变头部、右上角齿轮按钮。</li>
+      <li><span class="tag drop">冗余</span> <code>str25</code>（那一大段写死的用户信息）没有任何地方引用，可删。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>⑤ 注册页 <span class="pct">对标 豆包 (3) · 0%</span></h3>
+    <ul>
+      <li><span class="tag p2">P2</span> 无 <code>RegisterActivity</code>、无布局、无 Manifest 注册；
+        登录页的 <span class="mono">btn2</span>（"没有账号？去注册"）<strong>没有监听</strong>。</li>
+      <li><strong>好消息：地基已经在了</strong> —— <code>DbManager.insertUser(username, passwd, name, college, major, banji)</code>
+        正好 6 个参数，直接能调。</li>
+      <li>效果图要"身份证号"，但 <code>table_user</code> 没这列 → 换成收<strong>「学院 / 专业 / 班级」</strong>，库里正好有，个人中心也要用。</li>
+      <li>效果图的实时校验提示（"可用"/"格式正确"）建议只保留"非空 + 两次密码一致"。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>⑥ 课程详情弹窗 <span class="pct">对标 豆包 (png) · 0% · 建议直接放弃</span></h3>
+    <ul>
+      <li>完全没有实现（无 Dialog、无布局）。</li>
+      <li>效果图里是两栏网格 11 个字段，其中 <strong>课程编号、学时、考核方式</strong> 库里都没有对应列。</li>
+      <li>它是六页里最复杂的一页，也是唯一两张效果图之一 —— 但性价比最低。</li>
+    </ul>
+  </div>
+
+  <h2>四、全局缺口</h2>
+  <table>
+    <tr><th style="width:14%">级别</th><th style="width:34%">问题</th><th>位置与说明</th></tr>
+    <tr>
+      <td><span class="tag p0">P0</span></td>
+      <td>语言切换仍然失败</td>
+      <td><span class="mono">MainActivity.java:29</span> 与 <span class="mono">LoginActivity.java:23</span> 都还是
+        <code>new Configuration()</code>（空配置）+ <code>updateConfiguration()</code>，会被 AppCompat 覆盖。
+        修法已单独写过：改用 <code>attachBaseContext()</code> + <code>createConfigurationContext()</code>。这是最容易被当场点到的一个功能。</td>
+    </tr>
+    <tr>
+      <td><span class="tag p1">P1</span></td>
+      <td>登录页有两条硬编码中文</td>
+      <td><span class="mono">LoginActivity.java:58</span> <code>"登录成功"</code>、<span class="mono">:62</span> <code>"用户名或者密码错误"</code>
+        —— 三语体系下的漏网之鱼（strings.xml 里现成有 str12，另需新增一条）。</td>
+    </tr>
+    <tr>
+      <td><span class="tag p1">P1</span></td>
+      <td>底部导航 4 个 Tab 没有图标</td>
+      <td><code>bottom_nav_menu.xml</code> 只有 <code>title</code>，没有 <code>icon</code>。补 3~4 个矢量图标即可。</td>
+    </tr>
+    <tr>
+      <td><span class="tag p2">P2</span></td>
+      <td>视觉体系完全为零</td>
+      <td><code>colors.xml</code> 只有黑/白两色；<code>drawable/</code> 里只有启动图标。
+        效果图的紫色渐变、圆角卡片、圆形头像、进度条、六组图标<strong>一个都还没建</strong>。</td>
+    </tr>
+    <tr>
+      <td><span class="tag p2">P2</span></td>
+      <td>App 名还是默认值</td>
+      <td><code>strings.xml:2</code> <code>app_name</code> = "My Application003"。</td>
+    </tr>
+  </table>
+
+  <h2>五、建议抛弃的（性价比从低到高排）</h2>
+  <div class="warn">
+    <ul>
+      <li class="d">❌ <strong>视觉 1:1 还原</strong> —— 约 14~16 小时，是剩下所有功能加起来的 3 倍。改为"最小配色对齐"（1 组色 + 2~3 个 shape drawable，约 30 分钟）。</li>
+      <li class="d">❌ <strong>课程详情弹窗</strong> —— 最复杂、字段最不匹配。用"点卡片直接选课 + Toast"替代。</li>
+      <li class="d">❌ <strong>成绩查询页</strong> —— 效果图里没有 → 极简做法是把 Tab 直接删掉。</li>
+      <li class="d">❌ <strong>效果图独有、库里无列的 7 个字段</strong> —— 身份证号、学时、考核方式、课程编号、周次、头像文件、班级课次。一律用零成本替代（学时 = <code>credit×16</code>；课程编号 = <code>"CS"+补零(courseId)</code>；考核方式按 <code>type</code> 映射）。</li>
+      <li class="d">❌ <strong>20 个装饰按钮的真实功能</strong> —— 修改资料/绑定手机/清除缓存/消息通知/意见反馈等，统一 Toast 占位即可。</li>
+      <li class="d">❌ <strong>周次切换、冲突检测、笔记、按学分排序</strong> —— 效果图有 UI，但无数据支撑。</li>
+      <li class="d">❌ <strong>深色模式适配</strong> —— 建议把主题固定为 Light，省掉一整轮对比度返工。</li>
+    </ul>
+  </div>
+
+  <h2>六、如果现在要收尾：三档排期</h2>
+  <table>
+    <tr><th style="width:12%">档位</th><th style="width:12%">约耗时</th><th>做什么</th><th style="width:24%">做完是什么样</th></tr>
+    <tr>
+      <td><strong>A 档</strong><br><span class="lead">必做</span></td>
+      <td>80 分钟</td>
+      <td>
+        ① 改掉 <code>int userid=1</code> 的遮蔽（选课大厅 2 处）<br>
+        ② 给搜索框 + 搜索按钮加 id 并接上搜索<br>
+        ③ 处理成绩查询 Tab（删掉）<br>
+        ④ 我的课表换掉 str41、卡片只留"退课"<br>
+        ⑤ 修语言切换（attachBaseContext，两个 Activity）<br>
+        ⑥ 登录页两条硬编码中文资源化
+      </td>
+      <td>主流程无死角，三个页面没有"点了没反应"的地方</td>
+    </tr>
+    <tr>
+      <td><strong>B 档</strong><br><span class="lead">推荐</span></td>
+      <td>+90 分钟</td>
+      <td>
+        ⑦ 课卡补齐：时间 / 地点 / 类型 / 学时 / 余量状态文字<br>
+        ⑧ 已选状态标识（按钮按 isSelected 切换或置灰）<br>
+        ⑨ 我的课表：顶部总学分 + 底部汇总卡<br>
+        ⑩ 个人中心 20 个按钮补 id + 统一 Toast<br>
+        ⑪ 底部导航补图标
+      </td>
+      <td>界面元素与效果图基本对得上，"功能完整"的观感</td>
+    </tr>
+    <tr>
+      <td><strong>C 档</strong><br><span class="lead">有余量</span></td>
+      <td>+60 分钟</td>
+      <td>
+        ⑫ 注册页（Activity + 布局 + Manifest + 校验 + 写库 + 登录页跳转）<br>
+        ⑬ 个人中心圆形头像 + 紫色头部<br>
+        ⑭ 最小配色对齐（色板 + 圆角卡片 shape）
+      </td>
+      <td>四页 + 注册闭环，视觉"素但整齐"</td>
+    </tr>
+  </table>
+
+  <div class="verdict" style="margin-top:20px">
+    <strong>两个止损点：</strong><br>
+    1. <strong>改完 A 档立刻装到模拟器上完整走一遍</strong>（登录 → 选课 → 课表 → 退课 → 退出 → 再登录）。这一步只要 5 分钟，但能挡住所有"改完反而崩"的情况。<br>
+    2. <strong>B 档做到 ⑩ 就停手</strong>，无论还剩多少时间都留 10 分钟打包。<strong>一个能跑的 APK 比一个漂亮但崩的界面值钱。</strong>
+  </div>
+
+  <div class="foot">
+    本次复查未改动任何源码。临时文件（构建日志、设备临时库）已清理。<br>
+    工作区根目录现有 12 份文档，其中 5 份计划已过时（<code>今晚冲刺作战计划.html</code>、<code>今晚开发计划_功能版.md</code>、<code>今晚计划_具体执行版.html</code>、<code>今日计划_0815到1200.html</code>、<code>复查报告与今晚计划清单.md</code>），建议归档或删除。
+  </div>
+
+</div>
+</body>
+</html>
